@@ -6,7 +6,7 @@ defmodule ExReferer.Referers do
 
   unless nil == referers_yaml do
     referers = case :yaml.load(referers_yaml) do
-      { :ok, referers } -> referers
+      { :ok, referers } -> referers |> hd()
       { :error, err }  ->
         IO.puts "Failed to parse referers.yaml: " <> inspect(err)
         nil
