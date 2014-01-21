@@ -14,7 +14,7 @@ defmodule ExReferer.Parser do
   defp parse_ref(ref, [{ medium, sources } | referers]) do
     case parse_ref_medium(ref, medium, sources) do
       []     -> parse_ref(ref, referers)
-      parsed -> parsed |> Keyword.merge([ string: ref ])
+      parsed -> parsed
     end
   end
 
