@@ -30,7 +30,12 @@ defmodule ExReferer.Parser do
     case parse_ref_domains(ref, source, details["domains"]) do
       []     -> []
       parsed ->
-        ref.query
+        query = case ref.query do
+          nil   -> ""
+          query -> query
+        end
+
+        query
           |> URI.query_decoder()
           |> Enum.map( &(&1) )
           |> parse_ref_term(details["parameters"])
