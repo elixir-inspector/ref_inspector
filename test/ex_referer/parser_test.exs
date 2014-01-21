@@ -49,4 +49,14 @@ defmodule ExReferer.ParserTest do
     assert ref_info[:source] == :google
     assert ref_info[:term]   == ""
   end
+
+  test "parameters less referer" do
+    referer  = "https://twitter.com/elixirlang"
+    ref_info = referer |> ExReferer.parse()
+
+    assert ref_info[:string] == referer
+    assert ref_info[:medium] == :social
+    assert ref_info[:source] == :twitter
+    assert ref_info[:term]   == ""
+  end
 end

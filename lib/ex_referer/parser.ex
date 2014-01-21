@@ -52,7 +52,8 @@ defmodule ExReferer.Parser do
     end
   end
 
-  defp parse_ref_term(_, []), do: []
+  defp parse_ref_term(_, nil), do: []
+  defp parse_ref_term(_, []),  do: []
   defp parse_ref_term(query, [param | params]) do
     if query[param] do
       [ term: query[param] ]
