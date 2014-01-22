@@ -26,7 +26,7 @@ defmodule ExReferer.ParserTest do
 
     assert ref_info[:string] == referer
     assert ref_info[:medium] == :search
-    assert ref_info[:source] == :google
+    assert ref_info[:source] == "google"
     assert ref_info[:term]   == ""
   end
 
@@ -36,7 +36,7 @@ defmodule ExReferer.ParserTest do
 
     assert ref_info[:string] == referer
     assert ref_info[:medium] == :search
-    assert ref_info[:source] == :google
+    assert ref_info[:source] == "google"
     assert ref_info[:term]   == "snowplow referer parser"
   end
 
@@ -46,7 +46,7 @@ defmodule ExReferer.ParserTest do
 
     assert ref_info[:string] == referer
     assert ref_info[:medium] == :search
-    assert ref_info[:source] == :google
+    assert ref_info[:source] == "google"
     assert ref_info[:term]   == ""
   end
 
@@ -56,7 +56,7 @@ defmodule ExReferer.ParserTest do
 
     assert ref_info[:string] == referer
     assert ref_info[:medium] == :social
-    assert ref_info[:source] == :twitter
+    assert ref_info[:source] == "twitter"
     assert ref_info[:term]   == ""
   end
 end

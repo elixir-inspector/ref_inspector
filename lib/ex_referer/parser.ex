@@ -46,7 +46,7 @@ defmodule ExReferer.Parser do
   defp parse_ref_domains(_, _, []), do: []
   defp parse_ref_domains(ref, source, [domain | domains]) do
     if domain == ref.host do
-      [ source: source |> String.downcase() |> binary_to_atom() ]
+      [ source: source |> String.downcase() ]
     else
       parse_ref_domains(ref, source, domains)
     end
