@@ -7,7 +7,7 @@ defmodule ExReferer.ParserTest do
     assert ref_info[:string] == ""
     assert ref_info[:medium] == :unknown
     assert ref_info[:source] == :unknown
-    assert ref_info[:term]   == ""
+    assert ref_info[:term]   == :none
   end
 
   test "completely unknown" do
@@ -17,7 +17,7 @@ defmodule ExReferer.ParserTest do
     assert ref_info[:string] == referer
     assert ref_info[:medium] == :unknown
     assert ref_info[:source] == :unknown
-    assert ref_info[:term]   == ""
+    assert ref_info[:term]   == :none
   end
 
   test "no query" do
@@ -27,7 +27,7 @@ defmodule ExReferer.ParserTest do
     assert ref_info[:string] == referer
     assert ref_info[:medium] == :search
     assert ref_info[:source] == "google"
-    assert ref_info[:term]   == ""
+    assert ref_info[:term]   == :none
   end
 
   test "google search" do
@@ -57,6 +57,6 @@ defmodule ExReferer.ParserTest do
     assert ref_info[:string] == referer
     assert ref_info[:medium] == :social
     assert ref_info[:source] == "twitter"
-    assert ref_info[:term]   == ""
+    assert ref_info[:term]   == :none
   end
 end

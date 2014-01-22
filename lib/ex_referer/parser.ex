@@ -5,7 +5,7 @@ defmodule ExReferer.Parser do
   @spec parse(String.t) :: tuple
   def parse(ref) do
     Keyword.merge(
-      [ string: ref, medium: :unknown, source: :unknown, term: "" ],
+      [ string: ref, medium: :unknown, source: :unknown, term: :none ],
       ref |> URI.parse() |> parse_ref(ExReferer.Referers.get())
     )
   end
