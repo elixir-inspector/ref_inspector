@@ -1,5 +1,20 @@
 # ExReferer
 
+Referer parser library.
+
+
+## Configuration
+
+To use ExReferer with your projects, edit your `mix.exs` file and add it as a
+dependency:
+
+```elixir
+defp deps do
+  [ { :ex_referer, github: "elixytics/ex_referer" } ]
+end
+```
+
+
 ## Usage
 
 ```elixir
