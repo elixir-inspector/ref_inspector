@@ -27,7 +27,7 @@ defmodule ExReferer.Parser do
   defp parse_ref_medium(_, _, _), do: []
 
   defp parse_ref_source(ref, source, details) do
-    case parse_ref_domains(ref, source, details["domains"]) do
+    case parse_ref_domains(ref, source, details[:domains]) do
       []     -> []
       parsed ->
         query = case ref.query do
@@ -36,9 +36,8 @@ defmodule ExReferer.Parser do
         end
 
         query
-          |> URI.query_decoder()
-          |> Enum.map( &(&1) )
-          |> parse_ref_term(details["parameters"])
+          |> URI.decode_query()
+          |> parse_ref_term(details[:parameters])
           |> Keyword.merge(parsed)
     end
   end
@@ -53,11 +52,11 @@ defmodule ExReferer.Parser do
   defp parse_ref_domains(_, _, _), do: []
 
   defp parse_ref_term(query, [param | params]) do
-    if query[param] do
-      [ term: query[param] ]
+    if Map.has_key?(query, param) do
+      [ term: Map.get(query, param) ]
     else
       parse_ref_term(query, params)
     end
   end
-  defp parse_ref_term(_, _), do: []
+  defp parse_ref_term(%{}, _), do: []
 end

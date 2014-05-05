@@ -18,10 +18,22 @@ defmodule ExReferer.Referers do
 
   :application.start(:yamerl)
 
-  referers =
+  referers_list =
        referers_yaml
     |> :yamerl_constr.string([ :str_node_as_binary ])
     |> hd()
+
+  referers = referers_list |> Enum.map(fn ({ type, sources }) ->
+    sources = Enum.map(sources, fn ({ name, details }) ->
+      details = Enum.map(details, fn({ key, values }) ->
+        { binary_to_atom(key), values }
+      end)
+
+      { name, details }
+    end)
+
+    { type, sources }
+  end)
 
   def get(), do: unquote(referers)
 end
