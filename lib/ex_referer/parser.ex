@@ -10,21 +10,21 @@ defmodule ExReferer.Parser do
     )
   end
 
-  defp parse_ref(_, []), do: []
   defp parse_ref(ref, [{ medium, sources } | referers]) do
     case parse_ref_medium(ref, medium, sources) do
       []     -> parse_ref(ref, referers)
       parsed -> parsed
     end
   end
+  defp parse_ref(_, _), do: []
 
-  defp parse_ref_medium(_, _, []), do: []
   defp parse_ref_medium(ref, medium, [{ source, details } | sources]) do
     case parse_ref_source(ref, source, details) do
       []     -> parse_ref_medium(ref, medium, sources)
       parsed -> parsed |> Keyword.merge([ medium: medium |> binary_to_atom() ])
     end
   end
+  defp parse_ref_medium(_, _, _), do: []
 
   defp parse_ref_source(ref, source, details) do
     case parse_ref_domains(ref, source, details["domains"]) do
@@ -43,7 +43,6 @@ defmodule ExReferer.Parser do
     end
   end
 
-  defp parse_ref_domains(_, _, []), do: []
   defp parse_ref_domains(ref, source, [domain | domains]) do
     if domain == ref.host do
       [ source: source |> String.downcase() ]
@@ -51,9 +50,8 @@ defmodule ExReferer.Parser do
       parse_ref_domains(ref, source, domains)
     end
   end
+  defp parse_ref_domains(_, _, _), do: []
 
-  defp parse_ref_term(_, nil), do: []
-  defp parse_ref_term(_, []),  do: []
   defp parse_ref_term(query, [param | params]) do
     if query[param] do
       [ term: query[param] ]
@@ -61,4 +59,5 @@ defmodule ExReferer.Parser do
       parse_ref_term(query, params)
     end
   end
+  defp parse_ref_term(_, _), do: []
 end

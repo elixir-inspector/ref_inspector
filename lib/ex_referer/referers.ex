@@ -1,24 +1,25 @@
 defmodule ExReferer.Referers do
   referers_url = "https://raw.github.com/snowplow/referer-parser/master/resources/referers.yml"
 
-  HTTPotion.start
-  HTTPotion.Response[body: referers_yaml] = referers_url |> HTTPotion.get()
+  :ssl.start
+  :inets.start
 
-  unless nil == referers_yaml do
-    referers = case :yaml.load(referers_yaml) do
-      { :ok, referers } -> referers |> hd()
-      { :error, err }  ->
-        IO.puts "Failed to parse referers.yaml: " <> inspect(err)
-        nil
-    end
+  headers = [ { 'user-agent', 'ExAgent/#{System.version}' } ]
+  request = { :binary.bin_to_list(referers_url), headers }
+
+  referers_yaml = case :httpc.request(:get, request, [], body_format: :binary) do
+    { :ok, {{_, status, _}, _, body} } when status in 200..299 ->
+      body
+    { :ok, {{_, status, _}, _, _} } ->
+      raise "Failed to download #{ referers_url }, status: #{ status }"
+    { :error, reason } ->
+      raise "Failed to download #{ referers_url }, error: #{ reason }"
   end
 
-  if nil == referers do
-    def get() do
-      IO.puts "Failed to parse referers.yaml"
-      nil
-    end
-  else
-    def get(), do: unquote(referers)
-  end
+  referers = case :yaml.load(referers_yaml) do
+    { :ok, referers }  -> referers |> hd()
+    { :error, reason } -> raise "Failed to parse referers.yaml: #{ reason }"
+   end
+
+  def get(), do: unquote(referers)
 end
