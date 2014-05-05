@@ -16,10 +16,12 @@ defmodule ExReferer.Referers do
       raise "Failed to download #{ referers_url }, error: #{ reason }"
   end
 
-  referers = case :yaml.load(referers_yaml) do
-    { :ok, referers }  -> referers |> hd()
-    { :error, reason } -> raise "Failed to parse referers.yaml: #{ reason }"
-   end
+  :application.start(:yamerl)
+
+  referers =
+       referers_yaml
+    |> :yamerl_constr.string([ :str_node_as_binary ])
+    |> hd()
 
   def get(), do: unquote(referers)
 end

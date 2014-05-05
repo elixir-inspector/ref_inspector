@@ -40,7 +40,7 @@ _String_ will return the passed referer unmodified.
 ## Resources
 
 - [referer-parser](https://github.com/snowplow/referer-parser)
-- [yamler](https://github.com/superbobry/yamler)
+- [yamerl](https://github.com/yakaz/yamerl)
 
 
 ## License
