@@ -18,11 +18,13 @@ end
 ## Usage
 
 ```elixir
-iex(1)> ExReferer.parse("http://some.referer.com/with?query=parameters")
-[ medium: :search,
+iex(1)> ExReferer.parse("http://www.google.com/search?q=ex_referer")
+%ExReferer.Response{
+  string: "http://www.google.com/search?q=ex_referer",
+  medium: "search",
   source: "google",
-  term:   "ex_referer",
-  string: "http://www.google.com/search?q=ex_referer" ]
+  term:   "ex_referer"
+}
 ```
 
 _Medium_ will be one of __:unknown__, __:email__, __:search__ or __:social__ (always an atom).

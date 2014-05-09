@@ -2,61 +2,73 @@ defmodule ExReferer.ParserTest do
   use ExUnit.Case, async: true
 
   test "empty referer" do
-    ref_info = "" |> ExReferer.parse()
+    empty = %ExReferer.Response{
+      string: "",
+      medium: :unknown,
+      source: :unknown,
+      term:   :none
+    }
 
-    assert ref_info[:string] == ""
-    assert ref_info[:medium] == :unknown
-    assert ref_info[:source] == :unknown
-    assert ref_info[:term]   == :none
+    assert ExReferer.parse("") == empty
   end
 
   test "completely unknown" do
     referer  = "http://i.will.not.be.found/"
-    ref_info = referer |> ExReferer.parse()
+    response = %ExReferer.Response{
+      string: referer,
+      medium: :unknown,
+      source: :unknown,
+      term:   :none
+    }
 
-    assert ref_info[:string] == referer
-    assert ref_info[:medium] == :unknown
-    assert ref_info[:source] == :unknown
-    assert ref_info[:term]   == :none
+    assert ExReferer.parse(referer) == response
   end
 
   test "no query" do
     referer  = "http://www.google.com/search"
-    ref_info = referer |> ExReferer.parse()
+    response = %ExReferer.Response{
+      string: referer,
+      medium: :search,
+      source: "google",
+      term:   :none
+    }
 
-    assert ref_info[:string] == referer
-    assert ref_info[:medium] == :search
-    assert ref_info[:source] == "google"
-    assert ref_info[:term]   == :none
+    assert ExReferer.parse(referer) == response
   end
 
   test "google search" do
     referer  = "http://www.google.com/search?q=snowplow+referer+parser&hl=en&client=chrome"
-    ref_info = referer |> ExReferer.parse()
+    response = %ExReferer.Response{
+      string: referer,
+      medium: :search,
+      source: "google",
+      term:   "snowplow referer parser"
+    }
 
-    assert ref_info[:string] == referer
-    assert ref_info[:medium] == :search
-    assert ref_info[:source] == "google"
-    assert ref_info[:term]   == "snowplow referer parser"
+    assert ExReferer.parse(referer) == response
   end
 
   test "google empty search" do
     referer  = "http://www.google.com/search?q=&hl=en&client=chrome"
-    ref_info = referer |> ExReferer.parse()
+    response = %ExReferer.Response{
+      string: referer,
+      medium: :search,
+      source: "google",
+      term:   ""
+    }
 
-    assert ref_info[:string] == referer
-    assert ref_info[:medium] == :search
-    assert ref_info[:source] == "google"
-    assert ref_info[:term]   == ""
+    assert ExReferer.parse(referer) == response
   end
 
   test "parameters less referer" do
     referer  = "https://twitter.com/elixirlang"
-    ref_info = referer |> ExReferer.parse()
+    response = %ExReferer.Response{
+      string: referer,
+      medium: :social,
+      source: "twitter",
+      term:   :none
+    }
 
-    assert ref_info[:string] == referer
-    assert ref_info[:medium] == :social
-    assert ref_info[:source] == "twitter"
-    assert ref_info[:term]   == :none
+    assert ExReferer.parse(referer) == response
   end
 end

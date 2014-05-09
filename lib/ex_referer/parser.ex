@@ -2,61 +2,63 @@ defmodule ExReferer.Parser do
   @doc """
   Parses a given referer string.
   """
-  @spec parse(String.t) :: tuple
+  @spec parse(String.t) :: ExReferer.Response
   def parse(ref) do
-    Keyword.merge(
-      [ string: ref, medium: :unknown, source: :unknown, term: :none ],
-      ref |> URI.parse() |> parse_ref(ExReferer.Referers.get())
-    )
+    { medium, source, term } = URI.parse(ref) |> parse_ref(ExReferer.Referers.get())
+
+    %ExReferer.Response{
+      string: ref,
+      medium: medium,
+      source: source,
+      term:   term
+    }
   end
 
   defp parse_ref(ref, [{ medium, sources } | referers]) do
     case parse_ref_medium(ref, medium, sources) do
-      []     -> parse_ref(ref, referers)
+      nil    -> parse_ref(ref, referers)
       parsed -> parsed
     end
   end
-  defp parse_ref(_, _), do: []
+  defp parse_ref(_, []), do: { :unknown, :unknown, :none }
 
   defp parse_ref_medium(ref, medium, [{ source, details } | sources]) do
     case parse_ref_source(ref, source, details) do
-      []     -> parse_ref_medium(ref, medium, sources)
-      parsed -> parsed |> Keyword.merge([ medium: medium |> binary_to_atom() ])
+      nil              -> parse_ref_medium(ref, medium, sources)
+      { source, term } -> { binary_to_atom(medium), source, term}
     end
   end
-  defp parse_ref_medium(_, _, _), do: []
+  defp parse_ref_medium(_, _, []), do: nil
 
   defp parse_ref_source(ref, source, details) do
     case parse_ref_domains(ref, source, details[:domains]) do
-      []     -> []
-      parsed ->
+      nil    -> nil
+      source ->
         query = case ref.query do
           nil   -> ""
           query -> query
         end
 
-        query
-          |> URI.decode_query()
-          |> parse_ref_term(details[:parameters])
-          |> Keyword.merge(parsed)
+        { source,
+          URI.decode_query(query) |> parse_ref_term(details[:parameters]) }
     end
   end
 
   defp parse_ref_domains(ref, source, [domain | domains]) do
     if domain == ref.host do
-      [ source: source |> String.downcase() ]
+      source |> String.downcase()
     else
       parse_ref_domains(ref, source, domains)
     end
   end
-  defp parse_ref_domains(_, _, _), do: []
+  defp parse_ref_domains(_, _, []), do: nil
 
   defp parse_ref_term(query, [param | params]) do
     if Map.has_key?(query, param) do
-      [ term: Map.get(query, param) ]
+      Map.get(query, param)
     else
       parse_ref_term(query, params)
     end
   end
-  defp parse_ref_term(%{}, _), do: []
+  defp parse_ref_term(%{}, _), do: :none
 end
