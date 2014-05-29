@@ -4,7 +4,7 @@ defmodule ExReferer.Mixfile do
   def project do
     [ app:       :ex_referer,
       version:   "0.0.1",
-      elixir:    "~> 0.13.1",
+      elixir:    "~> 0.13.3",
       deps:      deps,
       deps_path: "_deps" ]
   end
