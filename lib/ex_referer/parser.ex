@@ -2,7 +2,7 @@ defmodule ExReferer.Parser do
   @doc """
   Parses a given referer string.
   """
-  @spec parse(String.t) :: ExReferer.Response
+  @spec parse(String.t) :: ExReferer.Response.t
   def parse(ref) do
     { medium, source, term } = URI.parse(ref) |> parse_ref(ExReferer.Referers.get())
 
