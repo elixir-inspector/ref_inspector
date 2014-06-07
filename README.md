@@ -42,6 +42,22 @@ Otherwise it will be an unencoded string will the term passed (can be empty).
 
 _String_ will return the passed referer unmodified.
 
+### Downloading "referers.yml"
+
+Using `mix ex_referer.yaml.download` you can store a local copy of the referers
+database to your local MIX_HOME directory.
+
+The complete path will be shown to you upon command invocation.
+
+After downloading you can load it during startup:
+
+```elixir
+iex(1)> ExReferer.start_link()
+{ :ok, #PID<0.80.0> }
+iex(2)> ExReferer.load_yaml(Mix.ExReferer.local_yaml)
+:ok
+```
+
 
 ## Resources
 
