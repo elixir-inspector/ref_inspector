@@ -20,7 +20,9 @@ end
 ```elixir
 iex(1)> ExReferer.start_link()
 { :ok, #PID<0.80.0> }
-iex(2)> ExReferer.parse("http://www.google.com/search?q=ex_referer")
+iex(2)> ExReferer.load_yaml("/path/to/referers.yml")
+:ok
+iex(3)> ExReferer.parse("http://www.google.com/search?q=ex_referer")
 %ExReferer.Response{
   string: "http://www.google.com/search?q=ex_referer",
   medium: "search",

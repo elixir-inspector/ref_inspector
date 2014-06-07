@@ -12,6 +12,12 @@ defmodule ExReferer do
   end
 
   @doc """
+  Loads yaml file with referer definitions.
+  """
+  @spec load_yaml(String.t) :: :ok | { :error, String.t }
+  def load_yaml(file), do: GenServer.call(:ex_referer, { :load_yaml, file })
+
+  @doc """
   Parses a referer.
   """
   @spec parse(String.t) :: ExReferer.Response.t

@@ -14,7 +14,7 @@ defmodule ExReferer.Parser do
     }
   end
 
-  defp parse_ref(ref, [{ medium, sources } | referers]) do
+  defp parse_ref(ref, [ { _index, { medium, sources }} | referers]) do
     case parse_ref_medium(ref, medium, sources) do
       nil    -> parse_ref(ref, referers)
       parsed -> parsed

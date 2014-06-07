@@ -1,29 +1,35 @@
 defmodule ExReferer.Referers do
-  referers_url = "https://raw.github.com/snowplow/referer-parser/master/resources/referers.yml"
+  @doc """
+  Returns all referer definitions.
+  """
+  @spec get() :: [ Atom.t ]
+  def get(), do: :ets.tab2list(:ex_referer_ref)
 
-  :ssl.start
-  :inets.start
-
-  headers = [ { 'user-agent', 'ExAgent/#{System.version}' } ]
-  request = { :binary.bin_to_list(referers_url), headers }
-
-  referers_yaml = case :httpc.request(:get, request, [], body_format: :binary) do
-    { :ok, {{_, status, _}, _, body} } when status in 200..299 ->
-      body
-    { :ok, {{_, status, _}, _, _} } ->
-      raise "Failed to download #{ referers_url }, status: #{ status }"
-    { :error, reason } ->
-      raise "Failed to download #{ referers_url }, error: #{ reason }"
+  @doc """
+  Loads yaml file with referer definitions.
+  """
+  @spec load_yaml(String.t) :: :ok | { :error, String.t }
+  def load_yaml(file) do
+    if File.regular?(file) do
+      parse_yaml_file(file)
+    else
+      { :error, "Invalid file given: '#{ file }'" }
+    end
   end
 
-  :application.start(:yamerl)
+  defp parse_yaml_file(file) do
+    :yamerl_constr.file(file, [ :str_node_as_binary ])
+      |> hd()
+      |> parse_yaml_data()
+  end
 
-  referers_list =
-       referers_yaml
-    |> :yamerl_constr.string([ :str_node_as_binary ])
-    |> hd()
+  defp parse_yaml_data([]), do: :ok
+  defp parse_yaml_data([ { medium, sources } | datasets ]) do
+    store_refs(medium, sources)
+    parse_yaml_data(datasets)
+  end
 
-  referers = referers_list |> Enum.map(fn ({ type, sources }) ->
+  defp store_refs(medium, sources) do
     sources = Enum.map(sources, fn ({ name, details }) ->
       details = Enum.map(details, fn({ key, values }) ->
         { binary_to_atom(key), values }
@@ -32,8 +38,13 @@ defmodule ExReferer.Referers do
       { name, details }
     end)
 
-    { type, sources }
-  end)
+    store_ref({ medium, sources })
+  end
 
-  def get(), do: unquote(referers)
+  defp store_ref(ref) do
+    :ets.insert_new(
+      :ex_referer_ref,
+      { :ets.update_counter(:ex_referer, :ref_count, 1), ref }
+    )
+  end
 end

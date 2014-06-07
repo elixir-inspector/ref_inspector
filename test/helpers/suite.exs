@@ -3,7 +3,8 @@ defmodule ExReferer.TestHelper.Suite do
     quote do
       setup_all do
         { :ok, _ } = ExReferer.Server.start_link([])
-        :ok
+
+        ExReferer.TestHelper.Referers.yaml_fixture() |> ExReferer.load_yaml()
       end
 
       teardown_all do
