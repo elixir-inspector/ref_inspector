@@ -1,14 +1,14 @@
 defmodule ExReferer.TestHelper.Suite do
   defmacro __using__(_) do
     quote do
-      setup_all do
+      setup do
         { :ok, _ } = ExReferer.Server.start_link([])
 
-        ExReferer.TestHelper.Referers.yaml_fixture() |> ExReferer.load_yaml()
-      end
+        on_exit fn ->
+          :ok = ExReferer.Server.stop()
+        end
 
-      teardown_all do
-        :ok = ExReferer.Server.stop()
+        ExReferer.TestHelper.Referers.yaml_fixture() |> ExReferer.load_yaml()
       end
     end
   end
