@@ -25,7 +25,7 @@ defmodule ExReferer.Parser do
   defp parse_ref_medium(ref, medium, [{ source, details } | sources]) do
     case parse_ref_source(ref, source, details) do
       nil              -> parse_ref_medium(ref, medium, sources)
-      { source, term } -> { binary_to_atom(medium), source, term}
+      { source, term } -> { String.to_atom(medium), source, term}
     end
   end
   defp parse_ref_medium(_, _, []), do: nil

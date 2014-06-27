@@ -32,7 +32,7 @@ defmodule ExReferer.Referers do
   defp store_refs(medium, sources) do
     sources = Enum.map(sources, fn ({ name, details }) ->
       details = Enum.map(details, fn({ key, values }) ->
-        { binary_to_atom(key), values }
+        { String.to_atom(key), values }
       end)
 
       { name, details }
