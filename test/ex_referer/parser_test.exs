@@ -1,6 +1,5 @@
 defmodule ExReferer.ParserTest do
-  use ExUnit.Case, async: false
-  use ExReferer.TestHelper.Suite
+  use ExReferer.TestHelper.Case, async: false
 
   test "empty referer" do
     empty = %ExReferer.Response{
