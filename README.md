@@ -3,7 +3,9 @@
 Referer parser library.
 
 
-## Configuration
+## Setup
+
+### Dependency
 
 To use ExReferer with your projects, edit your `mix.exs` file and add it as a
 dependency:
@@ -14,15 +16,42 @@ defp deps do
 end
 ```
 
+You should also update your applications to include all necessary projects:
+
+```elixir
+def application do
+  [ applications: [ :ex_referer, :yamerl ] ]
+end
+```
+
+### Referer Database
+
+Using `mix ex_referer.yaml.download` you can store a local copy of the regexes
+database your local MIX_HOME directory. This database is taken from the
+[referer-parser](https://github.com/snowplow/referer-parser) project.
+
+The local path of the downloaded file will be shown to you upon command
+invocation.
+
+### Configuration
+
+Add the path to the referer database you want to use to your project
+configuration:
+
+```elixir
+use Mix.Config
+
+config :ex_referer,
+  yaml: Path.join(Mix.Utils.mix_home, "ex_referer/referers.yml")
+```
+
+The shown path is the default download path used by the mix task.
+
 
 ## Usage
 
 ```elixir
-iex(1)> ExReferer.start_link()
-{ :ok, #PID<0.80.0> }
-iex(2)> ExReferer.load_yaml("/path/to/referers.yml")
-:ok
-iex(3)> ExReferer.parse("http://www.google.com/search?q=ex_referer")
+iex(1)> ExReferer.parse("http://www.google.com/search?q=ex_referer")
 %ExReferer.Response{
   string: "http://www.google.com/search?q=ex_referer",
   medium: "search",
@@ -41,22 +70,6 @@ provider does not send any terms to detect (mostly social or email referers).
 Otherwise it will be an unencoded string will the term passed (can be empty).
 
 _String_ will return the passed referer unmodified.
-
-### Downloading "referers.yml"
-
-Using `mix ex_referer.yaml.download` you can store a local copy of the referers
-database to your local MIX_HOME directory.
-
-The complete path will be shown to you upon command invocation.
-
-After downloading you can load it during startup:
-
-```elixir
-iex(1)> ExReferer.start_link()
-{ :ok, #PID<0.80.0> }
-iex(2)> ExReferer.load_yaml(Mix.ExReferer.local_yaml)
-:ok
-```
 
 
 ## Resources

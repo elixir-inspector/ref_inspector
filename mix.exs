@@ -5,7 +5,7 @@ defmodule ExReferer.Mixfile do
     [ app:        :ex_referer,
       name:       "ExReferer",
       source_url: "https://github.com/elixytics/ex_referer",
-      version:    "0.0.4",
+      version:    "0.1.0",
       elixir:     "~> 0.14.0",
       deps:       deps(Mix.env),
       deps_path:  "_deps",
@@ -13,7 +13,8 @@ defmodule ExReferer.Mixfile do
   end
 
   def application do
-    [ applications: [ :yamerl ] ]
+    [ applications: [ :yamerl ],
+      mod:          { ExReferer, [] } ]
   end
 
   defp deps(:docs) do
