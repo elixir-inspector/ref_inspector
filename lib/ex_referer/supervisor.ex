@@ -6,8 +6,6 @@ defmodule ExReferer.Supervisor do
   end
 
   def init([]) do
-    import Supervisor.Spec
-
     supervise([ worker(ExReferer.Server, []) ], strategy: :one_for_one)
   end
 end

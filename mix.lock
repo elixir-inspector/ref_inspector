@@ -1,2 +1,4 @@
-%{"ex_doc": {:git, "git://github.com/elixir-lang/ex_doc.git", "6ef80510e5037e3cbcc9bb96bc30daa441e74722", [tag: "6ef80510e5037e3cbcc9bb96bc30daa441e74722"]},
-  "yamerl": {:git, "git://github.com/yakaz/yamerl.git", "9770e4bb6432e4c1d7b8bccb2b354f604b1a765f", []}}
+%{"ex_doc": {:git, "git://github.com/elixir-lang/ex_doc.git", "7c1efb88bce770b42e4f88ce01d0ed9acc45a467", []},
+  "hoedown": {:git, "git://github.com/hoedown/hoedown.git", "0610117f44b173a4e2112afb2f510156a32355b5", []},
+  "markdown": {:git, "git://github.com/devinus/markdown.git", "7b1912a693611a9445574e099687879948bafbae", []},
+  "yamerl": {:git, "git://github.com/yakaz/yamerl.git", "6d57c3945af916f0c3b248cc3ec0eb51eea78a74", []}}

@@ -8,7 +8,6 @@ defmodule ExReferer.Mixfile do
       version:    "0.1.0",
       elixir:     "~> 0.14.0",
       deps:       deps(Mix.env),
-      deps_path:  "_deps",
       docs:       &docs/0 ]
   end
 
@@ -19,7 +18,8 @@ defmodule ExReferer.Mixfile do
 
   defp deps(:docs) do
     deps(:prod) ++
-      [ { :ex_doc, github: "elixir-lang/ex_doc", tag: "6ef80510e5037e3cbcc9bb96bc30daa441e74722" } ]
+      [ { :ex_doc,   github: "elixir-lang/ex_doc" },
+        { :markdown, github: "devinus/markdown" } ]
   end
 
   defp deps(_) do
