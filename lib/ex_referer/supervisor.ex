@@ -6,6 +6,6 @@ defmodule ExReferer.Supervisor do
   end
 
   def init([]) do
-    supervise([ worker(ExReferer.Server, []) ], strategy: :one_for_one)
+    supervise([ ExReferer.Pool.child_spec ], strategy: :one_for_one)
   end
 end

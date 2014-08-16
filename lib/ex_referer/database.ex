@@ -4,8 +4,8 @@ defmodule ExReferer.Database do
   @ets_counter    :referers
 
   def init() do
-    :ets.new(@ets_table,      [ :set,         :private, :named_table ])
-    :ets.new(@ets_table_refs, [ :ordered_set, :private, :named_table ])
+    :ets.new(@ets_table,      [ :set,         :public, :named_table ])
+    :ets.new(@ets_table_refs, [ :ordered_set, :public, :named_table ])
 
     :ets.insert(@ets_table, [{ @ets_counter, 0 }])
   end
