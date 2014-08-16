@@ -2,7 +2,6 @@ defmodule ExReferer do
   use Application
 
   def start(_, _) do
-    ExReferer.Database.init()
     ExReferer.Supervisor.start_link()
 
     if Application.get_env(:ex_referer, :yaml) do
@@ -12,13 +11,11 @@ defmodule ExReferer do
     { :ok, self() }
   end
 
-  def stop(), do: ExReferer.Database.terminate()
-
   @doc """
   Loads yaml file with referer definitions.
   """
   @spec load(String.t) :: :ok | { :error, String.t }
-  def load(file), do: ExReferer.Pool.load(file)
+  def load(file), do: ExReferer.Database.load(file)
 
   @doc """
   Parses a referer.

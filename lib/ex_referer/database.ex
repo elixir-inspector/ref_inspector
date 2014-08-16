@@ -1,19 +1,42 @@
 defmodule ExReferer.Database do
+  use GenServer
+
   @ets_table      :ex_referer
   @ets_table_refs :ex_referer_refs
   @ets_counter    :referers
 
-  def init() do
-    :ets.new(@ets_table,      [ :set,         :public, :named_table ])
-    :ets.new(@ets_table_refs, [ :ordered_set, :public, :named_table ])
+
+  # GenServer lifecycle
+
+  def start_link(default \\ []) do
+    GenServer.start_link(__MODULE__, default, [ name: __MODULE__ ])
+  end
+
+  def init(_) do
+    :ets.new(@ets_table,      [ :set,         :protected, :named_table ])
+    :ets.new(@ets_table_refs, [ :ordered_set, :protected, :named_table ])
 
     :ets.insert(@ets_table, [{ @ets_counter, 0 }])
+
+    { :ok, [] }
   end
 
-  def terminate() do
+  def terminate(_, _) do
     :ets.delete(@ets_table_refs)
     :ets.delete(@ets_table)
+
+    :ok
   end
+
+
+  # GenServer callbacks
+
+  def handle_call({ :load, file }, _from, state) do
+    { :reply, load_file(file), state }
+  end
+
+
+  # Convenience methods
 
   @doc """
   Returns all referer definitions.
@@ -21,11 +44,13 @@ defmodule ExReferer.Database do
   @spec list() :: [ Atom.t ]
   def list(), do: :ets.tab2list(@ets_table_refs)
 
-  @doc """
-  Loads yaml file with referer definitions.
-  """
-  @spec load(String.t) :: :ok | { :error, String.t }
-  def load(file) do
+  @doc false
+  def load(file), do: GenServer.call(__MODULE__, { :load, file })
+
+
+  # Internal methods
+
+  defp load_file(file) do
     if File.regular?(file) do
       parse_file(file)
     else

@@ -17,14 +17,6 @@ defmodule ExReferer.Pool do
   def child_spec(), do: :poolboy.child_spec(@pool_name, @pool_options, [])
 
   @doc false
-  def load(file) do
-    :poolboy.transaction(
-      @pool_name,
-      &GenServer.call(&1, { :load, file })
-    )
-  end
-
-  @doc false
   def parse(ref) do
     :poolboy.transaction(
       @pool_name,

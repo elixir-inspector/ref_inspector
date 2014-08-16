@@ -7,10 +7,6 @@ defmodule ExReferer.Server do
 
   def init(_), do: { :ok, [] }
 
-  def handle_call({ :load, file }, _from, state) do
-    { :reply, ExReferer.Database.load(file), state }
-  end
-
   def handle_call({ :parse, ref }, _from, state) do
     { :reply, ExReferer.Parser.parse(ref), state }
   end

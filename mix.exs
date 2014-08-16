@@ -5,7 +5,7 @@ defmodule ExReferer.Mixfile do
     [ app:        :ex_referer,
       name:       "ExReferer",
       source_url: "https://github.com/elixytics/ex_referer",
-      version:    "0.3.0",
+      version:    "0.3.1",
       elixir:     ">= 0.14.0",
       deps:       deps(Mix.env),
       docs:       &docs/0 ]
