@@ -52,7 +52,7 @@ The shown path is the default download path used by the mix task.
 
 ```elixir
 iex(1)> ExReferer.parse("http://www.google.com/search?q=ex_referer")
-%ExReferer.Response{
+%{
   string: "http://www.google.com/search?q=ex_referer",
   medium: "search",
   source: "google",

@@ -2,7 +2,7 @@ defmodule ExReferer.ParserTest do
   use ExUnit.Case, async: true
 
   test "empty referer" do
-    empty = %ExReferer.Response{
+    empty = %{
       string: "",
       medium: :unknown,
       source: :unknown,
@@ -14,7 +14,7 @@ defmodule ExReferer.ParserTest do
 
   test "completely unknown" do
     referer  = "http://i.will.not.be.found/"
-    response = %ExReferer.Response{
+    response = %{
       string: referer,
       medium: :unknown,
       source: :unknown,
@@ -26,7 +26,7 @@ defmodule ExReferer.ParserTest do
 
   test "no query" do
     referer  = "http://www.google.com/search"
-    response = %ExReferer.Response{
+    response = %{
       string: referer,
       medium: :search,
       source: "google",
@@ -38,7 +38,7 @@ defmodule ExReferer.ParserTest do
 
   test "google search" do
     referer  = "http://www.google.com/search?q=snowplow+referer+parser&hl=en&client=chrome"
-    response = %ExReferer.Response{
+    response = %{
       string: referer,
       medium: :search,
       source: "google",
@@ -50,7 +50,7 @@ defmodule ExReferer.ParserTest do
 
   test "google empty search" do
     referer  = "http://www.google.com/search?q=&hl=en&client=chrome"
-    response = %ExReferer.Response{
+    response = %{
       string: referer,
       medium: :search,
       source: "google",
@@ -62,7 +62,7 @@ defmodule ExReferer.ParserTest do
 
   test "parameters less referer" do
     referer  = "https://twitter.com/elixirlang"
-    response = %ExReferer.Response{
+    response = %{
       string: referer,
       medium: :social,
       source: "twitter",

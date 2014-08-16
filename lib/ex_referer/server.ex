@@ -6,20 +6,13 @@ defmodule ExReferer.Server do
   end
 
   def init(_) do
-    :ets.new(:ex_referer,     [ :set,         :private, :named_table ])
-    :ets.new(:ex_referer_ref, [ :ordered_set, :private, :named_table ])
-
-    :ets.insert(:ex_referer, [ ref_count: 0 ])
+    ExReferer.Database.init()
 
     { :ok, [] }
   end
 
-  def stop() do
-    GenServer.call(:ex_referer, :stop)
-  end
-
-  def handle_call({ :load_yaml, file }, _from, state) do
-    { :reply, ExReferer.Referers.load_yaml(file), state }
+  def handle_call({ :load, file }, _from, state) do
+    { :reply, ExReferer.Database.load(file), state }
   end
 
   def handle_call({ :parse, ref }, _from, state) do
@@ -29,8 +22,8 @@ defmodule ExReferer.Server do
   def handle_call(:stop, _from, state), do: { :stop, :normal, :ok, state }
 
   def terminate(_, _) do
-    :ets.delete(:ex_referer_ref)
-    :ets.delete(:ex_referer)
+    ExReferer.Database.terminate()
+
     :ok
   end
 end
