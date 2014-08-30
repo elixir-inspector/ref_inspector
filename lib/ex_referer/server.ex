@@ -1,5 +1,11 @@
 defmodule ExReferer.Server do
+  @moduledoc """
+  ExReferer poolboy worker (server).
+  """
+
   use GenServer
+
+  @behaviour :poolboy_worker
 
   def start_link(default \\ []) do
     GenServer.start_link(__MODULE__, default)

@@ -1,4 +1,8 @@
 defmodule ExReferer.Database do
+  @moduledoc """
+  Referer database.
+  """
+
   use GenServer
 
   @ets_table      :ex_referer
@@ -8,6 +12,10 @@ defmodule ExReferer.Database do
 
   # GenServer lifecycle
 
+  @doc """
+  Starts the database server.
+  """
+  @spec start_link(any) :: GenServer.on_start
   def start_link(default \\ []) do
     GenServer.start_link(__MODULE__, default, [ name: __MODULE__ ])
   end
@@ -41,10 +49,13 @@ defmodule ExReferer.Database do
   @doc """
   Returns all referer definitions.
   """
-  @spec list() :: [ Atom.t ]
+  @spec list() :: list
   def list(), do: :ets.tab2list(@ets_table_refs)
 
-  @doc false
+  @doc """
+  Loads a referer database file.
+  """
+  @spec load(String.t) :: :ok | { :error, String.t }
   def load(file), do: GenServer.call(__MODULE__, { :load, file })
 
 

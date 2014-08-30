@@ -1,7 +1,11 @@
 defmodule ExReferer do
+  @moduledoc """
+  ExReferer Application
+  """
+
   use Application
 
-  def start(_, _) do
+  def start(_type, _args) do
     ExReferer.Supervisor.start_link()
 
     if Application.get_env(:ex_referer, :yaml) do
@@ -20,6 +24,6 @@ defmodule ExReferer do
   @doc """
   Parses a referer.
   """
-  @spec parse(String.t) :: Map.t
+  @spec parse(String.t) :: map
   def parse(ref), do: ExReferer.Pool.parse(ref)
 end

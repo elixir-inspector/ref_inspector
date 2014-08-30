@@ -1,18 +1,18 @@
 defmodule Mix.Tasks.Ex_referer.Yaml.Download do
-  use Mix.Task
-
-  @yaml_repo "https://github.com/snowplow/referer-parser"
-  @yaml_url  "https://raw.github.com/snowplow/referer-parser/master/resources/referers.yml"
-  @shortdoc  "Downloads referers.yml"
-
   @moduledoc """
-  Fetch a copy of referers.yml from #{ @yaml_repo }.
-  The copy will be stored inside your MIX_HOME (defaults to ~/.mix).
+  Fetches a copy of referers.yml from the
+  [snowplow referer-parser](https://github.com/snowplow/referer-parser)
+  project.
 
-  Full path to your copy: MIX_HOME/ex_referer/referers.yml
+  The copy will be stored inside your MIX_HOME (defaults to ~/.mix).
 
   `mix ex_referer.yaml.download`
   """
+
+  use Mix.Task
+
+  @yaml_url "https://raw.github.com/snowplow/referer-parser/master/resources/referers.yml"
+  @shortdoc "Downloads referers.yml"
 
   def run(_args) do
     Mix.shell.info("Download path: #{ Mix.ExReferer.local_yaml() }")

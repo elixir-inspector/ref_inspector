@@ -1,8 +1,12 @@
 defmodule ExReferer.Parser do
+  @moduledoc """
+  Parser module.
+  """
+
   @doc """
   Parses a given referer string.
   """
-  @spec parse(String.t) :: Map.t
+  @spec parse(String.t) :: map
   def parse(ref) do
     { medium, source, term } =
          ref
