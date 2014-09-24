@@ -6,10 +6,10 @@ defmodule ExReferer do
   use Application
 
   def start(_type, _args) do
-    ExReferer.Supervisor.start_link()
+    { :ok, _pid } = ExReferer.Supervisor.start_link()
 
     if Application.get_env(:ex_referer, :yaml) do
-      load(Application.get_env(:ex_referer, :yaml))
+      :ok = load(Application.get_env(:ex_referer, :yaml))
     end
 
     { :ok, self() }

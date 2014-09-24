@@ -37,13 +37,13 @@ defmodule ExReferer.Parser do
   end
   defp parse_ref_medium(_, _, []), do: nil
 
-  defp parse_ref_source(ref, source, details) do
+  defp parse_ref_source(%{ query: ref_query } = ref, source, details) do
     case parse_ref_domains(ref, source, details[:domains]) do
       nil    -> nil
       source ->
-        query = case ref.query do
-          nil   -> ""
-          query -> query
+        query = case ref_query do
+          nil -> ""
+          _   -> ref_query
         end
 
         { source,
@@ -51,8 +51,8 @@ defmodule ExReferer.Parser do
     end
   end
 
-  defp parse_ref_domains(ref, source, [domain | domains]) do
-    if domain == ref.host do
+  defp parse_ref_domains(%{ host: host } = ref, source, [domain | domains]) do
+    if domain == host do
       source |> String.downcase()
     else
       parse_ref_domains(ref, source, domains)

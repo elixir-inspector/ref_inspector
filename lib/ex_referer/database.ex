@@ -21,8 +21,8 @@ defmodule ExReferer.Database do
   end
 
   def init(_) do
-    :ets.new(@ets_table,      [ :set,         :protected, :named_table ])
-    :ets.new(@ets_table_refs, [ :ordered_set, :protected, :named_table ])
+    _tid = :ets.new(@ets_table,      [ :set,         :protected, :named_table ])
+    _tid = :ets.new(@ets_table_refs, [ :ordered_set, :protected, :named_table ])
 
     :ets.insert(@ets_table, [{ @ets_counter, 0 }])
 

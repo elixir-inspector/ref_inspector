@@ -10,7 +10,7 @@ defmodule ExReferer.Supervisor do
   """
   @spec start_link() :: Supervisor.on_start
   def start_link() do
-    Supervisor.start_link(__MODULE__, [])
+    Supervisor.start_link(__MODULE__, [], [])
   end
 
   def init([]) do
