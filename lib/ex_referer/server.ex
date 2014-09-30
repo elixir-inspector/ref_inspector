@@ -7,11 +7,9 @@ defmodule ExReferer.Server do
 
   @behaviour :poolboy_worker
 
-  def start_link(default \\ []) do
+  def start_link(default \\ %{}) do
     GenServer.start_link(__MODULE__, default)
   end
-
-  def init(_), do: { :ok, [] }
 
   def handle_call({ :parse, ref }, _from, state) do
     { :reply, ExReferer.Parser.parse(ref), state }
