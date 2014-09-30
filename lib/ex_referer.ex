@@ -6,13 +6,18 @@ defmodule ExReferer do
   use Application
 
   def start(_type, _args) do
-    { :ok, _pid } = ExReferer.Supervisor.start_link()
+    import Supervisor.Spec
+
+    options  = [ strategy: :one_for_one, name: ExAgent.Supervisor ]
+    children = [ worker(ExReferer.Database, []), ExReferer.Pool.child_spec ]
+
+    sup = Supervisor.start_link(children, options)
 
     if Application.get_env(:ex_referer, :yaml) do
       :ok = load(Application.get_env(:ex_referer, :yaml))
     end
 
-    { :ok, self() }
+    sup
   end
 
   @doc """
