@@ -8,7 +8,7 @@ defmodule ExReferer do
   def start(_type, _args) do
     import Supervisor.Spec
 
-    options  = [ strategy: :one_for_one, name: ExAgent.Supervisor ]
+    options  = [ strategy: :one_for_one, name: ExReferer.Supervisor ]
     children = [ worker(ExReferer.Database, []), ExReferer.Pool.child_spec ]
 
     sup = Supervisor.start_link(children, options)
