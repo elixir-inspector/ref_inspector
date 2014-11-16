@@ -1,14 +1,20 @@
-defmodule Mix.Tasks.ExAgent.Yaml.DownloadTest do
-  use ExUnit.Case, async: false
+defmodule Mix.Tasks.ExReferer.Yaml.DownloadTest do
+  use ExUnit.Case, async: true
 
-  require Logger
+  import ExUnit.CaptureIO
 
   test "forceable download" do
-    Mix.Tasks.Ex_referer.Yaml.Download.run(["--force"])
+    Mix.shell(Mix.Shell.IO)
 
-    Mix.ExReferer.local_yaml()
-      |> Path.expand()
-      |> File.exists?
-      |> assert
+    console = capture_io fn ->
+      Mix.Tasks.Ex_referer.Yaml.Download.run(["--force"])
+
+      Mix.ExReferer.local_yaml()
+        |> Path.expand()
+        |> File.exists?
+        |> assert
+    end
+
+    assert String.contains?(console, Mix.ExReferer.local_yaml)
   end
 end
