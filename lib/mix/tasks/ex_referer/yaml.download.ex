@@ -14,18 +14,25 @@ defmodule Mix.Tasks.Ex_referer.Yaml.Download do
   @yaml_url "https://raw.github.com/snowplow/referer-parser/master/resources/referers.yml"
   @shortdoc "Downloads referers.yml"
 
-  def run(_args) do
-    Mix.shell.info("Download path: #{ Mix.ExReferer.local_yaml() }")
+  def run(args) do
+    Mix.shell.info "Download path: #{ Mix.ExReferer.local_yaml() }"
+    Mix.shell.info "This command will replace any already existing copy!"
 
-    if File.regular?(Mix.ExReferer.local_yaml()) do
-      if Mix.shell.yes?("Overwrite existing referers.yml?") do
-        download_yaml()
-      end
-    else
-      if Mix.shell.yes?("Download referers.yml?") do
-        download_yaml()
-      end
-    end
+    { opts, _argv, _errors } = OptionParser.parse(args, aliases: [ f: :force ])
+
+    run_confirmed(opts)
+
+    Mix.shell.info "Download complete!"
+  end
+
+  defp run_confirmed([ force: true ]), do: run_confirmed(true)
+  defp run_confirmed(false), do: :ok
+  defp run_confirmed(true) do
+    download_yaml()
+  end
+  defp run_confirmed(_) do
+    Mix.shell.yes?("Download referers.yml?")
+      |> run_confirmed()
   end
 
   defp download_yaml() do
