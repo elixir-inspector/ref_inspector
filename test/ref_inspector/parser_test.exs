@@ -1,4 +1,4 @@
-defmodule ExReferer.ParserTest do
+defmodule RefInspector.ParserTest do
   use ExUnit.Case, async: true
 
   test "empty referer" do
@@ -9,7 +9,7 @@ defmodule ExReferer.ParserTest do
       term:   :none
     }
 
-    assert ExReferer.parse("") == empty
+    assert RefInspector.parse("") == empty
   end
 
   test "completely unknown" do
@@ -21,7 +21,7 @@ defmodule ExReferer.ParserTest do
       term:   :none
     }
 
-    assert ExReferer.parse(referer) == response
+    assert RefInspector.parse(referer) == response
   end
 
   test "no query" do
@@ -33,7 +33,7 @@ defmodule ExReferer.ParserTest do
       term:   :none
     }
 
-    assert ExReferer.parse(referer) == response
+    assert RefInspector.parse(referer) == response
   end
 
   test "google search" do
@@ -45,7 +45,7 @@ defmodule ExReferer.ParserTest do
       term:   "snowplow referer parser"
     }
 
-    assert ExReferer.parse(referer) == response
+    assert RefInspector.parse(referer) == response
   end
 
   test "google empty search" do
@@ -57,7 +57,7 @@ defmodule ExReferer.ParserTest do
       term:   ""
     }
 
-    assert ExReferer.parse(referer) == response
+    assert RefInspector.parse(referer) == response
   end
 
   test "parameters less referer" do
@@ -69,6 +69,6 @@ defmodule ExReferer.ParserTest do
       term:   :none
     }
 
-    assert ExReferer.parse(referer) == response
+    assert RefInspector.parse(referer) == response
   end
 end

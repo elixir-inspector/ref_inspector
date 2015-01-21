@@ -1,14 +1,14 @@
-defmodule ExReferer.Pool do
+defmodule RefInspector.Pool do
   @moduledoc """
-  Connects the plain ExReferer interface with the underlying pool.
+  Connects the plain RefInspector interface with the underlying pool.
   """
 
-  @pool_name    :ex_referer_pool
+  @pool_name    :ref_inspector_pool
   @pool_options [
     name:          { :local, @pool_name },
-    worker_module: ExReferer.Server,
-    size:          Application.get_env(:ex_referer, :pool_size, 5),
-    max_overflow:  Application.get_env(:ex_referer, :pool_max_overflow, 10)
+    worker_module: RefInspector.Server,
+    size:          Application.get_env(:ref_inspector, :pool_size, 5),
+    max_overflow:  Application.get_env(:ref_inspector, :pool_max_overflow, 10)
   ]
 
   @doc """

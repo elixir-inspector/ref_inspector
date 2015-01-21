@@ -1,6 +1,6 @@
-defmodule ExReferer.Server do
+defmodule RefInspector.Server do
   @moduledoc """
-  ExReferer poolboy worker (server).
+  RefInspector poolboy worker (server).
   """
 
   use GenServer
@@ -12,7 +12,7 @@ defmodule ExReferer.Server do
   end
 
   def handle_call({ :parse, ref }, _from, state) do
-    { :reply, ExReferer.Parser.parse(ref), state }
+    { :reply, RefInspector.Parser.parse(ref), state }
   end
 
   def handle_call(:stop, _from, state), do: { :stop, :normal, :ok, state }

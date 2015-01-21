@@ -1,4 +1,4 @@
-# ExReferer
+# Ref Inspector
 
 Referer parser library.
 
@@ -7,12 +7,12 @@ Referer parser library.
 
 ### Dependency
 
-To use ExReferer with your projects, edit your `mix.exs` file and add it as a
+To use Ref Inspector with your projects, edit your `mix.exs` file and add it as a
 dependency:
 
 ```elixir
 defp deps do
-  [ { :ex_referer, github: "elixytics/ex_referer" } ]
+  [ { :ref_inspector, github: "elixytics/ref_inspector" } ]
 end
 ```
 
@@ -20,13 +20,13 @@ You should also update your applications to include all necessary projects:
 
 ```elixir
 def application do
-  [ applications: [ :ex_referer, :yamerl ] ]
+  [ applications: [ :ref_inspector, :yamerl ] ]
 end
 ```
 
 ### Referer Database
 
-Using `mix ex_referer.yaml.download` you can store a local copy of the regexes
+Using `mix ref_inspector.yaml.download` you can store a local copy of the regexes
 database your local MIX_HOME directory. This database is taken from the
 [referer-parser](https://github.com/snowplow/referer-parser) project.
 
@@ -41,8 +41,8 @@ configuration:
 ```elixir
 use Mix.Config
 
-config :ex_referer,
-  yaml: Path.join(Mix.Utils.mix_home, "ex_referer/referers.yml")
+config :ref_inspector,
+  yaml: Path.join(Mix.Utils.mix_home, "ref_inspector/referers.yml")
 ```
 
 The shown path is the default download path used by the mix task.
@@ -51,12 +51,12 @@ The shown path is the default download path used by the mix task.
 ## Usage
 
 ```elixir
-iex(1)> ExReferer.parse("http://www.google.com/search?q=ex_referer")
+iex(1)> RefInspector.parse("http://www.google.com/search?q=ref_inspector")
 %{
-  string: "http://www.google.com/search?q=ex_referer",
+  string: "http://www.google.com/search?q=ref_inspector",
   medium: "search",
   source: "google",
-  term:   "ex_referer"
+  term:   "ref_inspector"
 }
 ```
 

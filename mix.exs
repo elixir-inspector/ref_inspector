@@ -1,11 +1,11 @@
-defmodule ExReferer.Mixfile do
+defmodule RefInspector.Mixfile do
   use Mix.Project
 
   def project do
-    [ app:           :ex_referer,
-      name:          "ExReferer",
-      source_url:    "https://github.com/elixytics/ex_referer",
-      version:       "0.4.0",
+    [ app:           :ref_inspector,
+      name:          "RefInspector",
+      source_url:    "https://github.com/elixytics/ref_inspector",
+      version:       "0.5.0",
       elixir:        "~> 1.0",
       deps:          deps(Mix.env),
       docs:          [ readme: "README.md", main: "README" ],
@@ -14,7 +14,7 @@ defmodule ExReferer.Mixfile do
 
   def application do
     [ applications: [ :yamerl ],
-      mod:          { ExReferer, [] } ]
+      mod:          { RefInspector, [] } ]
   end
 
   def deps(:docs) do

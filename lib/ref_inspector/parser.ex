@@ -1,4 +1,4 @@
-defmodule ExReferer.Parser do
+defmodule RefInspector.Parser do
   @moduledoc """
   Parser module.
   """
@@ -11,7 +11,7 @@ defmodule ExReferer.Parser do
     { medium, source, term } =
          ref
       |> URI.parse()
-      |> parse_ref(ExReferer.Database.list)
+      |> parse_ref(RefInspector.Database.list)
 
     %{
       string: ref,

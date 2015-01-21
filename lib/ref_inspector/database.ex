@@ -1,12 +1,12 @@
-defmodule ExReferer.Database do
+defmodule RefInspector.Database do
   @moduledoc """
   Referer database.
   """
 
   use GenServer
 
-  @ets_table      :ex_referer
-  @ets_table_refs :ex_referer_refs
+  @ets_table      :ref_inspector
+  @ets_table_refs :ref_inspector_refs
   @ets_counter    :referers
 
 

@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Ex_referer.Yaml.Download do
+defmodule Mix.Tasks.Ref_inspector.Yaml.Download do
   @moduledoc """
   Fetches a copy of referers.yml from the
   [snowplow referer-parser](https://github.com/snowplow/referer-parser)
@@ -6,7 +6,7 @@ defmodule Mix.Tasks.Ex_referer.Yaml.Download do
 
   The copy will be stored inside your MIX_HOME (defaults to ~/.mix).
 
-  `mix ex_referer.yaml.download`
+  `mix ref_inspector.yaml.download`
   """
 
   use Mix.Task
@@ -15,7 +15,7 @@ defmodule Mix.Tasks.Ex_referer.Yaml.Download do
   @shortdoc "Downloads referers.yml"
 
   def run(args) do
-    Mix.shell.info "Download path: #{ Mix.ExReferer.local_yaml() }"
+    Mix.shell.info "Download path: #{ Mix.RefInspector.local_yaml() }"
     Mix.shell.info "This command will replace any already existing copy!"
 
     { opts, _argv, _errors } = OptionParser.parse(args, aliases: [ f: :force ])
@@ -36,7 +36,7 @@ defmodule Mix.Tasks.Ex_referer.Yaml.Download do
   end
 
   defp download_yaml() do
-    File.mkdir_p! Path.dirname(Mix.ExReferer.local_yaml())
-    File.write! Mix.ExReferer.local_yaml(), Mix.Utils.read_path!(@yaml_url)
+    File.mkdir_p! Path.dirname(Mix.RefInspector.local_yaml())
+    File.write! Mix.RefInspector.local_yaml(), Mix.Utils.read_path!(@yaml_url)
   end
 end
