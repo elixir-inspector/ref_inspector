@@ -24,11 +24,11 @@ defmodule RefInspector do
   Loads yaml file with referer definitions.
   """
   @spec load(String.t) :: :ok | { :error, String.t }
-  def load(file), do: RefInspector.Database.load(file)
+  defdelegate load(file), to: RefInspector.Database
 
   @doc """
   Parses a referer.
   """
   @spec parse(String.t) :: map
-  def parse(ref), do: RefInspector.Pool.parse(ref)
+  defdelegate parse(ref), to: RefInspector.Pool
 end
