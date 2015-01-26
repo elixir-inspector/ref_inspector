@@ -5,7 +5,7 @@ defmodule RefInspector.Mixfile do
     [ app:           :ref_inspector,
       name:          "RefInspector",
       source_url:    "https://github.com/elixytics/ref_inspector",
-      version:       "0.5.0",
+      version:       "0.6.0-dev",
       elixir:        "~> 1.0",
       deps:          deps(Mix.env),
       docs:          [ readme: "README.md", main: "README" ],
