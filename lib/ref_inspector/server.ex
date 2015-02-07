@@ -14,6 +14,4 @@ defmodule RefInspector.Server do
   def handle_call({ :parse, ref }, _from, state) do
     { :reply, RefInspector.Parser.parse(ref), state }
   end
-
-  def handle_call(:stop, _from, state), do: { :stop, :normal, :ok, state }
 end

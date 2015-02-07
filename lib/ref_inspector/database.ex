@@ -29,13 +29,6 @@ defmodule RefInspector.Database do
     { :ok, [] }
   end
 
-  def terminate(_, _) do
-    :ets.delete(@ets_table_refs)
-    :ets.delete(@ets_table)
-
-    :ok
-  end
-
 
   # GenServer callbacks
 
