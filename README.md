@@ -26,8 +26,8 @@ end
 
 ### Referer Database
 
-Using `mix ref_inspector.yaml.download` you can store a local copy of the regexes
-database your local MIX_HOME directory. This database is taken from the
+Using `mix ref_inspector.yaml.download` you can store a local copy of the
+regexes database in the configured path. This database is taken from the
 [referer-parser](https://github.com/snowplow/referer-parser) project.
 
 The local path of the downloaded file will be shown to you upon command
