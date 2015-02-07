@@ -11,7 +11,7 @@ defmodule Mix.Tasks.Ref_inspector.Yaml.Download do
 
   use Mix.Task
 
-  @yaml_url "https://raw.github.com/snowplow/referer-parser/master/resources/referers.yml"
+  @yaml_url "https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referers.yml"
   @shortdoc "Downloads referers.yml"
 
   def run(args) do
