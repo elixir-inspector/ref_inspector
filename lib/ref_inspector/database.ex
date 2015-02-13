@@ -49,6 +49,7 @@ defmodule RefInspector.Database do
   Loads a referer database file.
   """
   @spec load(String.t) :: :ok | { :error, String.t }
+  def load(nil),  do: :ok
   def load(file), do: GenServer.call(__MODULE__, { :load, file })
 
 

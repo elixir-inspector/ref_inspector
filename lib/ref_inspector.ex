@@ -12,10 +12,7 @@ defmodule RefInspector do
     children = [ worker(RefInspector.Database, []), RefInspector.Pool.child_spec ]
 
     sup = Supervisor.start_link(children, options)
-
-    if Application.get_env(:ref_inspector, :yaml) do
-      :ok = load(Application.get_env(:ref_inspector, :yaml))
-    end
+    :ok = Application.get_env(:ref_inspector, :yaml) |> load()
 
     sup
   end
