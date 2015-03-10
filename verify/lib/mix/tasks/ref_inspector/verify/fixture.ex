@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Ref_inspector.Verify.Fixture do
+defmodule Mix.Tasks.RefInspector.Verify.Fixture do
   @moduledoc """
   Utility module to bundle/download the verification fixture.
   """

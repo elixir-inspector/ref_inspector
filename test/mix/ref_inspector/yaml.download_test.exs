@@ -15,7 +15,7 @@ defmodule Mix.Tasks.RefInspector.Yaml.DownloadTest do
 
     console = capture_io fn ->
       Application.put_env(:ref_inspector, :yaml, test_yaml)
-      Mix.Tasks.Ref_inspector.Yaml.Download.run(["--force"])
+      Mix.Tasks.RefInspector.Yaml.Download.run(["--force"])
       Application.put_env(:ref_inspector, :yaml, orig_yaml)
 
       assert File.exists?(test_yaml)

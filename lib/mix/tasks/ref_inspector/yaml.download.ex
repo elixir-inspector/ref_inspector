@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Ref_inspector.Yaml.Download do
+defmodule Mix.Tasks.RefInspector.Yaml.Download do
   @moduledoc """
   Fetches a copy of referers.yml from the
   [snowplow referer-parser](https://github.com/snowplow/referer-parser)
@@ -42,4 +42,11 @@ defmodule Mix.Tasks.Ref_inspector.Yaml.Download do
   end
 
   defp local_yaml, do: Application.get_env(:ref_inspector, :yaml)
+end
+
+# Underscore naming required by elixir <= 1.0.2
+defmodule Mix.Tasks.Ref_inspector.Yaml.Download do
+  @moduledoc false
+
+  defdelegate run(args), to: Mix.Tasks.RefInspector.Yaml.Download
 end
