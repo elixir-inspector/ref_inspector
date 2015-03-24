@@ -1,74 +1,62 @@
 defmodule RefInspector.ParserTest do
   use ExUnit.Case, async: true
 
-  test "empty referer" do
-    empty = %{
-      referer: "",
-      medium:  :unknown,
-      source:  :unknown,
-      term:    :none
-    }
+  alias RefInspector.Result
 
-    assert RefInspector.parse("") == empty
+  test "empty referer" do
+    assert %Result{} == RefInspector.parse("")
   end
 
   test "completely unknown" do
-    referer  = "http://i.will.not.be.found/"
-    response = %{
-      referer: referer,
-      medium:  :unknown,
-      source:  :unknown,
-      term:    :none
-    }
+    referer = "http://i.will.not.be.found/"
+    parsed  = %Result{ referer: referer }
 
-    assert RefInspector.parse(referer) == response
+    assert parsed == RefInspector.parse(referer)
   end
 
   test "no query" do
-    referer  = "http://www.google.com/search"
-    response = %{
+    referer = "http://www.google.com/search"
+    parsed  = %Result{
       referer: referer,
       medium:  :search,
-      source:  "google",
-      term:    :none
+      source:  "google"
     }
 
-    assert RefInspector.parse(referer) == response
+    assert parsed == RefInspector.parse(referer)
   end
 
   test "google search" do
-    referer  = "http://www.google.com/search?q=snowplow+referer+parser&hl=en&client=chrome"
-    response = %{
+    referer = "http://www.google.com/search?q=snowplow+referer+parser&hl=en&client=chrome"
+    parsed = %Result{
       referer: referer,
       medium:  :search,
       source:  "google",
       term:    "snowplow referer parser"
     }
 
-    assert RefInspector.parse(referer) == response
+    assert parsed == RefInspector.parse(referer)
   end
 
   test "google empty search" do
-    referer  = "http://www.google.com/search?q=&hl=en&client=chrome"
-    response = %{
+    referer = "http://www.google.com/search?q=&hl=en&client=chrome"
+    parsed  = %Result{
       referer: referer,
       medium:  :search,
       source:  "google",
       term:    ""
     }
 
-    assert RefInspector.parse(referer) == response
+    assert parsed == RefInspector.parse(referer)
   end
 
   test "parameters less referer" do
-    referer  = "https://twitter.com/elixirlang"
-    response = %{
+    referer = "https://twitter.com/elixirlang"
+    parsed  = %Result{
       referer: referer,
       medium:  :social,
-      source:  "twitter",
-      term:    :none
+      source:  "twitter"
     }
 
-    assert RefInspector.parse(referer) == response
+    assert parsed == RefInspector.parse(referer)
   end
 end

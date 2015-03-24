@@ -3,6 +3,8 @@ defmodule RefInspector.Parser do
   Parser module.
   """
 
+  alias RefInspector.Result
+
   @doc """
   Parses a given referer string.
   """
@@ -13,7 +15,7 @@ defmodule RefInspector.Parser do
       |> URI.parse()
       |> parse_ref(RefInspector.Database.list)
 
-    %{
+    %Result{
       referer: ref,
       medium:  medium,
       source:  source,
