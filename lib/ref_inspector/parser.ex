@@ -14,10 +14,10 @@ defmodule RefInspector.Parser do
       |> parse_ref(RefInspector.Database.list)
 
     %{
-      string: ref,
-      medium: medium,
-      source: source,
-      term:   term
+      referer: ref,
+      medium:  medium,
+      source:  source,
+      term:    term
     }
   end
 
