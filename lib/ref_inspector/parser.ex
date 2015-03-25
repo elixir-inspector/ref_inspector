@@ -23,7 +23,13 @@ defmodule RefInspector.Parser do
     }
   end
 
-  defp parse_ref(ref, [ { _index, { medium, sources }} | referers]) do
+
+  defp matches_domain?(ref, domain) do
+    String.ends_with?((ref.host || ""), domain[:host])
+    && String.starts_with?((ref.path || "/"), domain[:path])
+  end
+
+  defp parse_ref(ref, [{ _index, { medium, sources }} | referers ]) do
     case parse_ref_medium(ref, medium, sources) do
       nil    -> parse_ref(ref, referers)
       parsed -> parsed
@@ -31,8 +37,8 @@ defmodule RefInspector.Parser do
   end
   defp parse_ref(_, []), do: { :unknown, :unknown, :none }
 
-  defp parse_ref_medium(ref, medium, [{ source, details } | sources]) do
-    case parse_ref_source(ref, source, details) do
+  defp parse_ref_medium(ref, medium, [ source | sources ]) do
+    case parse_ref_source(ref, source[:name], source[:details]) do
       nil              -> parse_ref_medium(ref, medium, sources)
       { source, term } -> { String.to_atom(medium), source, term}
     end
@@ -53,8 +59,8 @@ defmodule RefInspector.Parser do
     end
   end
 
-  defp parse_ref_domains(%{ host: host } = ref, source, [domain | domains]) do
-    if domain == host do
+  defp parse_ref_domains(ref, source, [ domain | domains ]) do
+    if matches_domain?(ref, domain) do
       source
     else
       parse_ref_domains(ref, source, domains)

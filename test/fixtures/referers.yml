@@ -1,4 +1,10 @@
 search:
+  Google Images:
+    parameters:
+      - q
+    domains:
+      - google.fr/imgres
+
   Google:
     parameters:
       - q

@@ -63,28 +63,50 @@ defmodule RefInspector.Database do
     end
   end
 
-  defp parse_file(file) do
-    :yamerl_constr.file(file, [ :str_node_as_binary ])
-      |> hd()
-      |> parse_data()
-  end
-
   defp parse_data([]), do: :ok
   defp parse_data([ { medium, sources } | datasets ]) do
     store_refs(medium, sources)
     parse_data(datasets)
   end
 
+  defp parse_details([],                                  acc), do: acc
+  defp parse_details([{ "domains", domains } | details ], acc)  do
+    acc = Map.put(acc, :domains, parse_domains(domains, []))
+
+    parse_details(details, acc)
+  end
+  defp parse_details([{ key, values } | details ], acc)  do
+    acc = Map.put(acc, String.to_atom(key), values)
+
+    parse_details(details, acc)
+  end
+
+  defp parse_domains([],                   acc), do: acc
+  defp parse_domains([ domain | domains ], acc)  do
+    uri  = URI.parse("http://#{ domain }")
+    data = %{ host: uri.host, path: uri.path || "/" }
+
+    parse_domains(domains, acc ++ [ data ])
+  end
+
+  defp parse_file(file) do
+    :yamerl_constr.file(file, [ :str_node_as_binary ])
+      |> hd()
+      |> parse_data()
+  end
+
+  defp parse_sources([],                             acc), do: acc
+  defp parse_sources([{ name, details } | sources ], acc)  do
+    source = %{
+      name:    name,
+      details: parse_details(details, %{})
+    }
+
+    parse_sources(sources, acc ++ [ source ])
+  end
+
   defp store_refs(medium, sources) do
-    sources = Enum.map(sources, fn ({ name, details }) ->
-      details = Enum.map(details, fn({ key, values }) ->
-        { String.to_atom(key), values }
-      end)
-
-      { name, details }
-    end)
-
-    store_ref({ medium, sources })
+    store_ref({ medium, parse_sources(sources, []) })
   end
 
   defp store_ref(ref) do

@@ -15,11 +15,11 @@ defmodule RefInspector.ParserTest do
   end
 
   test "no query" do
-    referer = "http://www.google.com/search"
+    referer = "http://www.google.fr/imgres?ignored=parameters"
     parsed  = %Result{
       referer: referer,
       medium:  :search,
-      source:  "Google"
+      source:  "Google Images"
     }
 
     assert parsed == RefInspector.parse(referer)
