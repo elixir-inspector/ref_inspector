@@ -55,7 +55,7 @@ defmodule RefInspector.Parser do
 
   defp parse_ref_domains(%{ host: host } = ref, source, [domain | domains]) do
     if domain == host do
-      source |> String.downcase()
+      source
     else
       parse_ref_domains(ref, source, domains)
     end

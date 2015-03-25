@@ -19,7 +19,7 @@ defmodule RefInspector.ParserTest do
     parsed  = %Result{
       referer: referer,
       medium:  :search,
-      source:  "google"
+      source:  "Google"
     }
 
     assert parsed == RefInspector.parse(referer)
@@ -30,7 +30,7 @@ defmodule RefInspector.ParserTest do
     parsed = %Result{
       referer: referer,
       medium:  :search,
-      source:  "google",
+      source:  "Google",
       term:    "snowplow referer parser"
     }
 
@@ -42,7 +42,7 @@ defmodule RefInspector.ParserTest do
     parsed  = %Result{
       referer: referer,
       medium:  :search,
-      source:  "google",
+      source:  "Google",
       term:    ""
     }
 
@@ -54,7 +54,7 @@ defmodule RefInspector.ParserTest do
     parsed  = %Result{
       referer: referer,
       medium:  :social,
-      source:  "twitter"
+      source:  "Twitter"
     }
 
     assert parsed == RefInspector.parse(referer)
