@@ -10,70 +10,60 @@ defmodule RefInspector.Parser do
   """
   @spec parse(String.t) :: map
   def parse(ref) do
-    { medium, source, term } =
+    result =
          ref
       |> URI.parse()
       |> parse_ref(RefInspector.Database.list)
 
-    %Result{
-      referer: ref,
-      medium:  medium,
-      source:  source,
-      term:    term
-    }
+    %{ result | referer: ref }
   end
 
 
-  defp matches_domain?(ref, domain) do
-    String.ends_with?((ref.host || ""), domain[:host])
-    && String.starts_with?((ref.path || "/"), domain[:path])
+  # Internal methods
+
+  defp maybe_parse_query(  nil,      _, result), do: result
+  defp maybe_parse_query(    _,     [], result), do: result
+  defp maybe_parse_query(query, params, result)  do
+    term =
+         query
+      |> URI.decode_query()
+      |> parse_query(params)
+
+    %{ result | term: term }
   end
 
-  defp parse_ref(ref, [{ _index, { medium, sources }} | referers ]) do
-    case parse_ref_medium(ref, medium, sources) do
-      nil    -> parse_ref(ref, referers)
-      parsed -> parsed
-    end
-  end
-  defp parse_ref(_, []), do: { :unknown, :unknown, :none }
 
-  defp parse_ref_medium(ref, medium, [ source | sources ]) do
-    case parse_ref_source(ref, source[:name], source[:details]) do
-      nil              -> parse_ref_medium(ref, medium, sources)
-      { source, term } -> { String.to_atom(medium), source, term}
-    end
-  end
-  defp parse_ref_medium(_, _, []), do: nil
+  defp match_medium(_,   { _,      []}),                  do: nil
+  defp match_medium(ref, { medium, [ source | sources ]}) do
+    case matches_source?(ref, source) do
+      false -> match_medium(ref, { medium, sources })
+      true  ->
+        result = %Result{
+          medium: medium,
+          source: source.name
+        }
 
-  defp parse_ref_source(%{ query: ref_query } = ref, source, details) do
-    case parse_ref_domains(ref, source, details[:domains]) do
-      nil    -> nil
-      source ->
-        query = case ref_query do
-          nil -> ""
-          _   -> ref_query
-        end
-
-        { source,
-          URI.decode_query(query) |> parse_ref_term(details[:parameters]) }
+        maybe_parse_query(ref.query, source[:parameters], result)
     end
   end
 
-  defp parse_ref_domains(ref, source, [ domain | domains ]) do
-    if matches_domain?(ref, domain) do
-      source
-    else
-      parse_ref_domains(ref, source, domains)
-    end
+  defp matches_source?(ref, source) do
+    String.ends_with?((ref.host || ""), source[:host])
+    && String.starts_with?((ref.path || "/"), source[:path])
   end
-  defp parse_ref_domains(_, _, []), do: nil
 
-  defp parse_ref_term(query, [param | params]) do
-    if Map.has_key?(query, param) do
-      Map.get(query, param)
-    else
-      parse_ref_term(query, params)
+
+  defp parse_query(    _, []                ), do: :none
+  defp parse_query(query, [ param | params ])  do
+    Map.get(query, param, parse_query(query, params))
+  end
+
+
+  defp parse_ref(_,   []),                              do: %Result{}
+  defp parse_ref(ref, [{ _index, medium } | referers ]) do
+    case match_medium(ref, medium) do
+      nil   -> parse_ref(ref, referers)
+      match -> match
     end
   end
-  defp parse_ref_term(%{}, _), do: :none
 end

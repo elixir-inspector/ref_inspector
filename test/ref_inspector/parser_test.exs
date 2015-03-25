@@ -49,8 +49,19 @@ defmodule RefInspector.ParserTest do
     assert parsed == RefInspector.parse(referer)
   end
 
-  test "parameters less referer" do
+  test "referer without parameters" do
     referer = "https://twitter.com/elixirlang"
+    parsed  = %Result{
+      referer: referer,
+      medium:  :social,
+      source:  "Twitter"
+    }
+
+    assert parsed == RefInspector.parse(referer)
+  end
+
+  test "referer without defined parameters" do
+    referer = "https://twitter.com/elixirlang?nothing=defined"
     parsed  = %Result{
       referer: referer,
       medium:  :social,

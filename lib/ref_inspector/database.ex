@@ -79,7 +79,10 @@ defmodule RefInspector.Database do
   end
 
   defp store_ref(sources, medium) do
-    :ets.insert_new(@ets_table_refs, { update_counter(), { medium, sources }})
+    medium  = String.to_atom(medium)
+    dataset = { medium, sources }
+
+    :ets.insert_new(@ets_table_refs, { update_counter(), dataset })
   end
 
   defp update_counter(), do: :ets.update_counter(@ets_table, @ets_counter, 1)
@@ -87,33 +90,26 @@ defmodule RefInspector.Database do
 
   # Parsing methods
 
-  defp parse_details([],                                  acc), do: acc
-  defp parse_details([{ "domains", domains } | details ], acc)  do
-    acc = Map.put(acc, :domains, parse_domains(domains, []))
-
-    parse_details(details, acc)
-  end
-  defp parse_details([{ key, values } | details ], acc)  do
-    acc = Map.put(acc, String.to_atom(key), values)
-
-    parse_details(details, acc)
-  end
-
-  defp parse_domains([],                   acc), do: acc
-  defp parse_domains([ domain | domains ], acc)  do
+  defp parse_domains(_,      [],                   acc), do: acc
+  defp parse_domains(source, [ domain | domains ], acc)  do
     uri  = URI.parse("http://#{ domain }")
-    data = %{ host: uri.host, path: uri.path || "/" }
+    data =
+         source
+      |> Map.put(:host, uri.host)
+      |> Map.put(:path, uri.path || "/")
 
-    parse_domains(domains, acc ++ [ data ])
+    parse_domains(source, domains, acc ++ [ data ])
   end
 
   defp parse_sources([],                             acc), do: acc
   defp parse_sources([{ name, details } | sources ], acc)  do
-    source = %{
-      name:    name,
-      details: parse_details(details, %{})
-    }
+    details    = details |> Enum.into(%{})
+    domains    = Map.get(details, "domains", [])
+    parameters = Map.get(details, "parameters", [])
 
-    parse_sources(sources, acc ++ [ source ])
+    source = %{ name: name, parameters: parameters }
+    acc    = acc ++ parse_domains(source, domains, [])
+
+    parse_sources(sources, acc)
   end
 end
