@@ -63,11 +63,29 @@ defmodule RefInspector.Database do
     end
   end
 
-  defp parse_data([]), do: :ok
-  defp parse_data([ { medium, sources } | datasets ]) do
-    store_refs(medium, sources)
-    parse_data(datasets)
+  defp parse_file(file) do
+    :yamerl_constr.file(file, [ :str_node_as_binary ])
+      |> hd()
+      |> parse_entries()
   end
+
+  defp parse_entries([]),                              do: :ok
+  defp parse_entries([{ medium, sources } | entries ]) do
+    sources
+    |> parse_sources([])
+    |> store_ref(medium)
+
+    parse_entries(entries)
+  end
+
+  defp store_ref(sources, medium) do
+    :ets.insert_new(@ets_table_refs, { update_counter(), { medium, sources }})
+  end
+
+  defp update_counter(), do: :ets.update_counter(@ets_table, @ets_counter, 1)
+
+
+  # Parsing methods
 
   defp parse_details([],                                  acc), do: acc
   defp parse_details([{ "domains", domains } | details ], acc)  do
@@ -89,12 +107,6 @@ defmodule RefInspector.Database do
     parse_domains(domains, acc ++ [ data ])
   end
 
-  defp parse_file(file) do
-    :yamerl_constr.file(file, [ :str_node_as_binary ])
-      |> hd()
-      |> parse_data()
-  end
-
   defp parse_sources([],                             acc), do: acc
   defp parse_sources([{ name, details } | sources ], acc)  do
     source = %{
@@ -104,14 +116,4 @@ defmodule RefInspector.Database do
 
     parse_sources(sources, acc ++ [ source ])
   end
-
-  defp store_refs(medium, sources) do
-    store_ref({ medium, parse_sources(sources, []) })
-  end
-
-  defp store_ref(ref) do
-    :ets.insert_new(@ets_table_refs, { update_counter(), ref })
-  end
-
-  defp update_counter(), do: :ets.update_counter(@ets_table, @ets_counter, 1)
 end
