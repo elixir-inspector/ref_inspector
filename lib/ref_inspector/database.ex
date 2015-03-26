@@ -73,6 +73,7 @@ defmodule RefInspector.Database do
   defp parse_entries([{ medium, sources } | entries ]) do
     sources
     |> parse_sources([])
+    |> sort_sources()
     |> store_ref(medium)
 
     parse_entries(entries)
@@ -88,7 +89,7 @@ defmodule RefInspector.Database do
   defp update_counter(), do: :ets.update_counter(@ets_table, @ets_counter, 1)
 
 
-  # Parsing methods
+  # Parsing and sorting methods
 
   defp parse_domains(_,      [],                   acc), do: acc
   defp parse_domains(source, [ domain | domains ], acc)  do
@@ -111,5 +112,12 @@ defmodule RefInspector.Database do
     acc    = acc ++ parse_domains(source, domains, [])
 
     parse_sources(sources, acc)
+  end
+
+  defp sort_sources(sources) do
+    sources
+    |> Enum.map( &Map.put(&1, :sort, "#{ &1.host }#{ &1.path }") )
+    |> Enum.sort( &(String.length(&1[:sort]) > String.length(&2[:sort])) )
+    |> Enum.map( &Map.delete(&1, :sort) )
   end
 end
