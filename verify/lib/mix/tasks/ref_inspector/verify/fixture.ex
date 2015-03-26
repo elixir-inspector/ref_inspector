@@ -3,26 +3,28 @@ defmodule Mix.Tasks.RefInspector.Verify.Fixture do
   Utility module to bundle/download the verification fixture.
   """
 
-  @fixture { "referer-tests.json", "https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referer-tests.json" }
+  @local  "referer-tests.json"
+  @remote "https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referer-tests.json"
 
   def download() do
     Mix.shell.info "Download path: #{ download_path }"
 
     setup()
-    download(@fixture)
+    download_fixture()
 
     Mix.shell.info "Download complete!"
     :ok
   end
 
-  def download({ local, remote }) do
-    target = Path.join([ download_path, local ])
+  def download_fixture() do
+    target = local_file
 
-    Mix.shell.info ".. downloading: #{ local }"
-    File.write! target, Mix.Utils.read_path!(remote)
+    Mix.shell.info ".. downloading: #{ @local }"
+    File.write! target, Mix.Utils.read_path!(@remote)
   end
 
   def download_path, do: Path.join(__DIR__, "../../../../../database")
+  def local_file,    do: Path.join([ download_path, @local ])
 
   def setup() do
     File.mkdir_p! download_path
