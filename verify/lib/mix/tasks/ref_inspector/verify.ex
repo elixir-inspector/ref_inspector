@@ -1,5 +1,14 @@
 defmodule Mix.Tasks.RefInspector.Verify do
-  use Mix.Task
+  @moduledoc """
+  Verifies RefInspector results.
+  """
+
+  if Version.match?(System.version, ">= 1.0.3") do
+    # ensures "mix help" displays a proper task
+    use Mix.Task
+
+    @shortdoc "Verifies parser results"
+  end
 
   alias Mix.Tasks.RefInspector.Verify
 
@@ -58,6 +67,13 @@ defmodule Mix.Tasks.RefInspector.Verify do
 end
 
 # Underscore naming required by elixir <= 1.0.2
-defmodule Mix.Tasks.Ref_inspector.Verify do
-  defdelegate run(args), to: Mix.Tasks.RefInspector.Verify
+if Version.match?(System.version, "<= 1.0.2") do
+  defmodule Mix.Tasks.Ref_inspector.Verify do
+    @moduledoc false
+    @shortdoc  "Verifies parser results"
+
+    use Mix.Task
+
+    defdelegate run(args), to: Mix.Tasks.RefInspector.Verify
+  end
 end

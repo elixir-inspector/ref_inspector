@@ -9,10 +9,14 @@ defmodule Mix.Tasks.RefInspector.Yaml.Download do
   `mix ref_inspector.yaml.download`
   """
 
-  use Mix.Task
+  if Version.match?(System.version, ">= 1.0.3") do
+    # ensures "mix help" displays a proper task
+    use Mix.Task
+
+    @shortdoc "Downloads referers.yml"
+  end
 
   @yaml_url "https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referers.yml"
-  @shortdoc "Downloads referers.yml"
 
   def run(args) do
     case local_yaml do
@@ -61,8 +65,13 @@ defmodule Mix.Tasks.RefInspector.Yaml.Download do
 end
 
 # Underscore naming required by elixir <= 1.0.2
-defmodule Mix.Tasks.Ref_inspector.Yaml.Download do
-  @moduledoc false
+if Version.match?(System.version, "<= 1.0.2") do
+  defmodule Mix.Tasks.Ref_inspector.Yaml.Download do
+    @moduledoc false
+    @shortdoc  "Downloads referers.yml"
 
-  defdelegate run(args), to: Mix.Tasks.RefInspector.Yaml.Download
+    use Mix.Task
+
+    defdelegate run(args), to: Mix.Tasks.RefInspector.Yaml.Download
+  end
 end
