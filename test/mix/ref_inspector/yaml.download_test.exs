@@ -23,4 +23,18 @@ defmodule Mix.Tasks.RefInspector.Yaml.DownloadTest do
 
     assert String.contains?(console, test_yaml)
   end
+
+  test "missing configuration" do
+    Mix.shell(Mix.Shell.IO)
+
+    orig_yaml = Application.get_env(:ref_inspector, :yaml)
+
+    console = capture_io :stderr, fn ->
+      Application.put_env(:ref_inspector, :yaml, nil)
+      Mix.Tasks.RefInspector.Yaml.Download.run([])
+      Application.put_env(:ref_inspector, :yaml, orig_yaml)
+    end
+
+    assert String.contains?(console, "not configured")
+  end
 end

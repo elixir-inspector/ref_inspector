@@ -15,20 +15,36 @@ defmodule Mix.Tasks.RefInspector.Yaml.Download do
   @shortdoc "Downloads referers.yml"
 
   def run(args) do
+    case local_yaml do
+      nil -> exit_unconfigured()
+      _   -> do_run(args)
+    end
+  end
+
+
+  defp do_run(args) do
     Mix.shell.info "Download path: #{ local_yaml }"
     Mix.shell.info "This command will replace any already existing copy!"
 
     { opts, _argv, _errors } = OptionParser.parse(args, aliases: [ f: :force ])
 
     run_confirmed(opts)
-
-    Mix.shell.info "Download complete!"
   end
+
+  defp exit_unconfigured() do
+    Mix.shell.error "Local path not configured."
+    Mix.shell.error "See README.md for details."
+  end
+
 
   defp run_confirmed([ force: true ]), do: run_confirmed(true)
   defp run_confirmed(false),           do: :ok
   defp run_confirmed(true)             do
     download_yaml()
+
+    Mix.shell.info "Download complete!"
+
+    :ok
   end
   defp run_confirmed(_) do
     "Download referers.yml?"
