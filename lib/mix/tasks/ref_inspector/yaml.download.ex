@@ -42,19 +42,27 @@ defmodule Mix.Tasks.RefInspector.Yaml.Download do
 
 
   defp run_confirmed([ force: true ]), do: run_confirmed(true)
-  defp run_confirmed(false),           do: :ok
-  defp run_confirmed(true)             do
+
+  defp run_confirmed(false) do
+    Mix.shell.info "Download aborted!"
+
+    :ok
+  end
+
+  defp run_confirmed(true) do
     download_yaml()
 
     Mix.shell.info "Download complete!"
 
     :ok
   end
+
   defp run_confirmed(_) do
     "Download referers.yml?"
     |> Mix.shell.yes?()
     |> run_confirmed()
   end
+
 
   defp download_yaml() do
     local_yaml |> Path.dirname() |> File.mkdir_p!

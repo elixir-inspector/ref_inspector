@@ -3,6 +3,28 @@ defmodule Mix.Tasks.RefInspector.Yaml.DownloadTest do
 
   import ExUnit.CaptureIO
 
+  test "aborted download" do
+    Mix.shell(Mix.Shell.IO)
+
+    console = capture_io fn ->
+      Mix.Tasks.RefInspector.Yaml.Download.run([])
+
+      IO.write "n"
+    end
+
+    assert String.contains?(console, "Download aborted")
+  end
+
+  test "confirmed download" do
+    Mix.shell(Mix.Shell.IO)
+
+    console = capture_io [capture_prompt: true], fn ->
+      Mix.Tasks.RefInspector.Yaml.Download.run([])
+    end
+
+    assert String.contains?(console, "Download referers.yml? [Yn]")
+  end
+
   test "forceable download" do
     Mix.shell(Mix.Shell.IO)
 
