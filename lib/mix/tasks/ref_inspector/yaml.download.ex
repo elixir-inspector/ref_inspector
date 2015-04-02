@@ -9,10 +9,10 @@ defmodule Mix.Tasks.RefInspector.Yaml.Download do
   `mix ref_inspector.yaml.download`
   """
 
+  use Mix.Task
+
   if Version.match?(System.version, ">= 1.0.3") do
     # ensures "mix help" displays a proper task
-    use Mix.Task
-
     @shortdoc "Downloads referers.yml"
   end
 
