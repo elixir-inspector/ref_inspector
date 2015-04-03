@@ -1,11 +1,14 @@
 defmodule RefInspector.Mixfile do
   use Mix.Project
 
+  @url_docs "http://hexdocs.pm/ref_inspector"
   @url_github "https://github.com/elixytics/ref_inspector"
 
   def project do
     [ app:           :ref_inspector,
       name:          "RefInspector",
+      description:   "Referer parser library",
+      package:       package,
       version:       "0.6.0-dev",
       elixir:        "~> 1.0",
       deps:          deps(Mix.env),
@@ -40,5 +43,12 @@ defmodule RefInspector.Mixfile do
       readme:     "README.md",
       source_ref: "master",
       source_url: @url_github ]
+  end
+
+  def package do
+    %{ contributors: [ "Marc Neudert" ],
+       files:        [ "LICENSE", "mix.exs", "README.md", "lib" ],
+       licenses:     [ "Apache 2.0" ],
+       links:        %{ "Docs" => @url_docs, "Github" => @url_github }}
   end
 end
