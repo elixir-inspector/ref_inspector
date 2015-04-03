@@ -7,12 +7,13 @@ Referer parser library.
 
 ### Dependency
 
-To use Ref Inspector with your projects, edit your `mix.exs` file and add it as a
-dependency:
+To use Ref Inspector with your projects, edit your `mix.exs` file and add the
+required dependencies:
 
 ```elixir
 defp deps do
-  [ { :ref_inspector, github: "elixytics/ref_inspector" } ]
+  [ { :ref_inspector, "~> 0.6" },
+    { :yamerl,        github: "yakaz/yamerl" } ]
 end
 ```
 
