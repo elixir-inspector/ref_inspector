@@ -12,9 +12,11 @@ defmodule Mix.Tasks.RefInspector.Verify do
 
   alias Mix.Tasks.RefInspector.Verify
 
-  def run(_args) do
-    { :ok, _ } = Application.ensure_all_started(:ref_inspector)
-    :ok        = Verify.Fixture.download()
+  def run(args) do
+    { :ok, _ }               = Application.ensure_all_started(:ref_inspector)
+    { opts, _argv, _errors } = OptionParser.parse(args)
+
+    :ok = maybe_download_fixture(opts)
 
     Verify.Fixture.local_file() |> verify_all()
 
@@ -28,6 +30,15 @@ defmodule Mix.Tasks.RefInspector.Verify do
     && testcase.medium == result.medium
     && testcase.source == result.source
     && testcase.term == result.term
+  end
+
+  defp maybe_download_fixture([ quick: true ]), do: :ok
+  defp maybe_download_fixture(_)                do
+    res = Verify.Fixture.download()
+
+    Mix.shell.info "Skip fixture download using '--quick'."
+
+    res
   end
 
   defp parse(case_data) when is_list(case_data) do
