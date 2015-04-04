@@ -69,7 +69,12 @@ defmodule Mix.Tasks.RefInspector.Yaml.Download do
     local_yaml |> File.write!(Mix.Utils.read_path!(@yaml_url))
   end
 
-  defp local_yaml, do: Application.get_env(:ref_inspector, :yaml)
+  defp local_yaml do
+    case Application.get_env(:ref_inspector, :yaml) do
+      nil  -> nil
+      yaml -> yaml |> Path.expand()
+    end
+  end
 end
 
 # Underscore naming required by elixir <= 1.0.2

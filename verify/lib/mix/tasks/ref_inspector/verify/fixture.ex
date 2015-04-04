@@ -23,7 +23,7 @@ defmodule Mix.Tasks.RefInspector.Verify.Fixture do
     File.write! target, Mix.Utils.read_path!(@remote)
   end
 
-  def download_path, do: Path.join(__DIR__, "../../../../../database")
+  def download_path, do: Path.join(__DIR__, "../../../../../database") |> Path.expand()
   def local_file,    do: Path.join([ download_path, @local ])
 
   def setup() do
