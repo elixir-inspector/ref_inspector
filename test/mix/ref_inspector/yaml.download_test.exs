@@ -29,7 +29,7 @@ defmodule Mix.Tasks.RefInspector.Yaml.DownloadTest do
     Mix.shell(Mix.Shell.IO)
 
     orig_yaml = Application.get_env(:ref_inspector, :yaml)
-    test_yaml = Path.join(__DIR__, "../../downloads/referers.yml")
+    test_yaml = Path.join(__DIR__, "../../downloads/referers.yml") |> Path.expand()
 
     if File.exists?(test_yaml) do
       test_yaml |> File.rm!
