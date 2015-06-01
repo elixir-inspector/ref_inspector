@@ -3,6 +3,7 @@
 ## v0.7.0-dev
 
 - Enhancements
+  - Dependencies not used in production builds are marked as optional
   - Displays expanded download path for `mix ref_inspector.yaml.download`
   - Verification script now automatically downloads database file
   - Worker pool options are no longer defined at compile time
