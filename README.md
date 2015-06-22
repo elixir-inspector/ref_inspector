@@ -61,7 +61,8 @@ iex(1)> RefInspector.parse("http://www.google.com/search?q=ref_inspector")
 }
 ```
 
-_Medium_ will be one of `:unknown`, `:email`, `:search` or `:social` (always an atom).
+_Medium_ will be one of `:unknown`, `:email`, `:search` or `:social`
+(always an atom). If configured to do so it might also be `:internal`.
 
 _Source_ will be `:unknown` (as atom) if nothing was matched, otherwise a string
 with the detected provider.
@@ -71,6 +72,21 @@ provider does not send any terms to detect (mostly social or email referers).
 Otherwise it will be an unencoded string will the term passed (can be empty).
 
 _Referer_ will return the passed referer unmodified.
+
+### Internal Domains
+
+To exclude some domains from parsing you can mark them as `:internal` using
+your configuration:
+
+```elixir
+config :ref_inspector,
+  internal: [ "www.example.com", "www.example.org" ]
+```
+
+If a referer matches (== ends with) at least one of the configured domains
+(paths ignored!), it will return a result with the medium `:internal`.
+Both `:source` and `:term` will be left at the initial/unknown state not
+intended for further processing.
 
 
 ## Resources

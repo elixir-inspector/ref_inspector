@@ -3,6 +3,7 @@ defmodule RefInspector.Parser do
   Parser module.
   """
 
+  alias RefInspector.Database
   alias RefInspector.Result
 
   @doc """
@@ -10,16 +11,25 @@ defmodule RefInspector.Parser do
   """
   @spec parse(String.t) :: map
   def parse(ref) do
-    result =
-         ref
-      |> URI.parse()
-      |> parse_ref(RefInspector.Database.list)
+    uri = ref |> URI.parse()
+
+    result = case is_internal?(uri.host || "") do
+      true  -> %Result{ medium: :internal }
+      false -> uri |> parse_ref()
+    end
 
     %{ result | referer: ref }
   end
 
 
   # Internal methods
+
+  defp is_internal?(host) do
+    sources = Application.get_env(:ref_inspector, :internal, [])
+
+    host |> String.ends_with?(sources)
+  end
+
 
   defp maybe_parse_query(  nil,      _, result), do: result
   defp maybe_parse_query(    _,     [], result), do: result
@@ -58,6 +68,10 @@ defmodule RefInspector.Parser do
     Map.get(query, param, parse_query(query, params))
   end
 
+
+  defp parse_ref(ref) do
+    ref |> parse_ref(Database.list)
+  end
 
   defp parse_ref(_,   []),                              do: %Result{}
   defp parse_ref(ref, [{ _index, medium } | referers ]) do

@@ -14,6 +14,20 @@ defmodule RefInspector.ParserTest do
     assert parsed == RefInspector.parse(referer)
   end
 
+  test "internal referer" do
+    referer = "http://www.example.com/sub-page"
+    parsed  = %Result{ referer: referer, medium: :internal }
+
+    assert parsed == RefInspector.parse(referer)
+  end
+
+  test "internal referer (subdomain)" do
+    referer = "http://some.subdomain.from.www.example.org/"
+    parsed  = %Result{ referer: referer, medium: :internal }
+
+    assert parsed == RefInspector.parse(referer)
+  end
+
   test "no query" do
     referer = "http://www.google.fr/imgres?ignored=parameters"
     parsed  = %Result{

@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.8.0-dev
+
+- Enhancements
+  - Domains to be detected as `:internal` can be configured
+
 ## v0.7.0 (2015-06-01)
 
 - Enhancements
