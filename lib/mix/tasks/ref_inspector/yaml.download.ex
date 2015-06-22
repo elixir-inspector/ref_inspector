@@ -11,6 +11,9 @@ defmodule Mix.Tasks.RefInspector.Yaml.Download do
 
   use Mix.Task
 
+  alias RefInspector.Config
+
+
   if Version.match?(System.version, ">= 1.0.3") do
     # ensures "mix help" displays a proper task
     @shortdoc "Downloads referers.yml"
@@ -19,7 +22,7 @@ defmodule Mix.Tasks.RefInspector.Yaml.Download do
   @yaml_url "https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referers.yml"
 
   def run(args) do
-    case local_yaml do
+    case Config.yaml_path do
       nil -> exit_unconfigured()
       _   -> do_run(args)
     end
@@ -27,7 +30,7 @@ defmodule Mix.Tasks.RefInspector.Yaml.Download do
 
 
   defp do_run(args) do
-    Mix.shell.info "Download path: #{ local_yaml }"
+    Mix.shell.info "Download path: #{ Config.yaml_path }"
     Mix.shell.info "This command will replace any already existing copy!"
 
     { opts, _argv, _errors } = OptionParser.parse(args, aliases: [ f: :force ])
@@ -65,15 +68,8 @@ defmodule Mix.Tasks.RefInspector.Yaml.Download do
 
 
   defp download_yaml() do
-    local_yaml |> Path.dirname() |> File.mkdir_p!
-    local_yaml |> File.write!(Mix.Utils.read_path!(@yaml_url))
-  end
-
-  defp local_yaml do
-    case Application.get_env(:ref_inspector, :yaml) do
-      nil  -> nil
-      yaml -> yaml |> Path.expand()
-    end
+    Config.yaml_path |> Path.dirname() |> File.mkdir_p!
+    Config.yaml_path |> File.write!(Mix.Utils.read_path!(@yaml_url))
   end
 end
 
