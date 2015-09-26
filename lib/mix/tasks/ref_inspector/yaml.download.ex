@@ -67,9 +67,19 @@ defmodule Mix.Tasks.RefInspector.Yaml.Download do
   end
 
 
-  defp download_yaml() do
-    Config.yaml_path |> Path.dirname() |> File.mkdir_p!
-    Config.yaml_path |> File.write!(Mix.Utils.read_path!(@yaml_url))
+  if Version.match?(System.version, ">= 1.1.0") do
+    defp download_yaml() do
+      Config.yaml_path |> Path.dirname() |> File.mkdir_p!
+
+      { :ok, content } = Mix.Utils.read_path(@yaml_url)
+
+      Config.yaml_path |> File.write(content)
+    end
+  else
+    defp download_yaml() do
+      Config.yaml_path |> Path.dirname() |> File.mkdir_p!
+      Config.yaml_path |> File.write!(Mix.Utils.read_path!(@yaml_url))
+    end
   end
 end
 
