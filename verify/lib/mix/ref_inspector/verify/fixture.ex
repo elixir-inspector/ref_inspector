@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.RefInspector.Verify.Fixture do
+defmodule Mix.RefInspector.Verify.Fixture do
   @moduledoc """
   Utility module to bundle/download the verification fixture.
   """
@@ -30,7 +30,7 @@ defmodule Mix.Tasks.RefInspector.Verify.Fixture do
     File.write! target, content
   end
 
-  def download_path, do: Path.join(__DIR__, "../../../../../database") |> Path.expand()
+  def download_path, do: Path.join(__DIR__, "../../../../database") |> Path.expand()
   def local_file,    do: Path.join([ download_path, @local ])
 
   def setup() do

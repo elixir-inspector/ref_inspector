@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.RefInspector.Yaml.DownloadTest do
+defmodule Mix.RefInspector.Yaml.DownloadTest do
   use ExUnit.Case, async: false
 
   import ExUnit.CaptureIO
@@ -7,7 +7,7 @@ defmodule Mix.Tasks.RefInspector.Yaml.DownloadTest do
     Mix.shell(Mix.Shell.IO)
 
     console = capture_io fn ->
-      Mix.Tasks.RefInspector.Yaml.Download.run([])
+      Mix.RefInspector.Yaml.Download.run([])
 
       IO.write "n"
     end
@@ -19,7 +19,7 @@ defmodule Mix.Tasks.RefInspector.Yaml.DownloadTest do
     Mix.shell(Mix.Shell.IO)
 
     console = capture_io [capture_prompt: true], fn ->
-      Mix.Tasks.RefInspector.Yaml.Download.run([])
+      Mix.RefInspector.Yaml.Download.run([])
     end
 
     assert String.contains?(console, "Download referers.yml? [Yn]")
@@ -37,7 +37,7 @@ defmodule Mix.Tasks.RefInspector.Yaml.DownloadTest do
 
     console = capture_io fn ->
       Application.put_env(:ref_inspector, :yaml, test_yaml)
-      Mix.Tasks.RefInspector.Yaml.Download.run(["--force"])
+      Mix.RefInspector.Yaml.Download.run(["--force"])
       Application.put_env(:ref_inspector, :yaml, orig_yaml)
 
       assert File.exists?(test_yaml)
@@ -53,7 +53,7 @@ defmodule Mix.Tasks.RefInspector.Yaml.DownloadTest do
 
     console = capture_io :stderr, fn ->
       Application.put_env(:ref_inspector, :yaml, nil)
-      Mix.Tasks.RefInspector.Yaml.Download.run([])
+      Mix.RefInspector.Yaml.Download.run([])
       Application.put_env(:ref_inspector, :yaml, orig_yaml)
     end
 
