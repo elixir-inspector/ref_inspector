@@ -3,6 +3,7 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
 
   import ExUnit.CaptureIO
 
+  @tag :download
   test "aborted download" do
     Mix.shell(Mix.Shell.IO)
 
@@ -15,6 +16,7 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
     assert String.contains?(console, "Download aborted")
   end
 
+  @tag :download
   test "confirmed download" do
     Mix.shell(Mix.Shell.IO)
 
@@ -25,6 +27,7 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
     assert String.contains?(console, "Download referers.yml? [Yn]")
   end
 
+  @tag :download
   test "forceable download" do
     Mix.shell(Mix.Shell.IO)
 
@@ -46,6 +49,7 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
     assert String.contains?(console, test_yaml)
   end
 
+  @tag :download
   test "missing configuration" do
     Mix.shell(Mix.Shell.IO)
 
