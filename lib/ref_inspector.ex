@@ -11,10 +11,10 @@ defmodule RefInspector do
     options  = [ strategy: :one_for_one, name: RefInspector.Supervisor ]
     children = [ worker(RefInspector.Database, []), RefInspector.Pool.child_spec ]
 
-    sup = Supervisor.start_link(children, options)
-    :ok = RefInspector.Config.yaml_path |> load()
+    { :ok, sup } = Supervisor.start_link(children, options)
+    :ok          = RefInspector.Config.yaml_path |> load()
 
-    sup
+    { :ok, sup }
   end
 
   @doc """
