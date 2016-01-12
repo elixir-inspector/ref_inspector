@@ -5,6 +5,8 @@ defmodule RefInspector.Database do
 
   use GenServer
 
+  alias RefInspector.Database.State
+
   @ets_table      :ref_inspector
   @ets_table_refs :ref_inspector_refs
   @ets_counter    :referers
@@ -21,12 +23,15 @@ defmodule RefInspector.Database do
   end
 
   def init(_) do
-    _tid = :ets.new(@ets_table,      [ :set,         :protected, :named_table ])
-    _tid = :ets.new(@ets_table_refs, [ :ordered_set, :protected, :named_table ])
+    opts_counter  = [ :protected, :named_table, :set ]
+    opts_referers = [ :protected, :named_table, :ordered_set ]
+
+    tid_counter  = :ets.new(@ets_table,  opts_counter)
+    tid_referers = :ets.new(@ets_table_refs, opts_referers)
 
     :ets.insert(@ets_table, [{ @ets_counter, 0 }])
 
-    { :ok, [] }
+    { :ok, %State{ ets_counter: tid_counter, ets_referers: tid_referers }}
   end
 
 
