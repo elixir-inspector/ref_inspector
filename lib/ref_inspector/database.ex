@@ -41,6 +41,10 @@ defmodule RefInspector.Database do
     { :reply, load_file(file), state }
   end
 
+  def handle_call(:list, _from, state) do
+    { :reply, :ets.tab2list(state.ets_referers), state }
+  end
+
 
   # Convenience methods
 
@@ -48,7 +52,7 @@ defmodule RefInspector.Database do
   Returns all referer definitions.
   """
   @spec list() :: list
-  def list(), do: :ets.tab2list(@ets_table_refs)
+  def list(), do: GenServer.call(__MODULE__, :list)
 
   @doc """
   Loads a referer database file.
