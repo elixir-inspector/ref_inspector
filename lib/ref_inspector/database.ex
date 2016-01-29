@@ -23,13 +23,13 @@ defmodule RefInspector.Database do
   end
 
   def init(_) do
-    opts_counter  = [ :protected, :named_table, :set ]
-    opts_referers = [ :protected, :named_table, :ordered_set ]
+    opts_counter  = [ :protected, :set ]
+    opts_referers = [ :protected, :ordered_set ]
 
     tid_counter  = :ets.new(@ets_table,  opts_counter)
     tid_referers = :ets.new(@ets_table_refs, opts_referers)
 
-    :ets.insert(@ets_table, [{ @ets_counter, 0 }])
+    :ets.insert(tid_counter, [{ @ets_counter, 0 }])
 
     { :ok, %State{ ets_counter: tid_counter, ets_referers: tid_referers }}
   end
@@ -38,7 +38,7 @@ defmodule RefInspector.Database do
   # GenServer callbacks
 
   def handle_call({ :load, file }, _from, state) do
-    { :reply, load_file(file), state }
+    { :reply, file |> load_file() |> store_refs(state), state }
   end
 
   def handle_call(:list, _from, state) do
@@ -66,7 +66,7 @@ defmodule RefInspector.Database do
 
   defp load_file(file) do
     if File.regular?(file) do
-      file |> parse_file() |> store_refs()
+      file |> parse_file()
     else
       { :error, "Invalid file given: '#{ file }'" }
     end
@@ -90,16 +90,27 @@ defmodule RefInspector.Database do
     parse_entries([{ medium, sources }] ++ acc, entries)
   end
 
-  defp store_ref({ medium, sources }) do
+  defp store_ref({ medium, sources }, state) do
     medium  = String.to_atom(medium)
     dataset = { medium, sources }
 
-    :ets.insert_new(@ets_table_refs, { update_counter(), dataset })
+    :ets.insert_new(
+      state.ets_referers,
+      { update_counter(state), dataset }
+    )
   end
 
-  defp store_refs(refs), do: refs |> Enum.each(&store_ref/1)
+  defp store_refs({ :error, _ } = error, _ ), do: error
 
-  defp update_counter(), do: :ets.update_counter(@ets_table, @ets_counter, 1)
+  defp store_refs(refs, state) do
+    Enum.each refs, fn(ref) -> store_ref(ref, state) end
+
+    :ok
+  end
+
+  defp update_counter(state) do
+    :ets.update_counter(state.ets_counter, @ets_counter, 1)
+  end
 
 
   # Parsing and sorting methods
