@@ -7,10 +7,6 @@ defmodule RefInspector.Database do
 
   alias RefInspector.Database.State
 
-  @ets_table      :ref_inspector
-  @ets_table_refs :ref_inspector_refs
-  @ets_counter    :referers
-
 
   # GenServer lifecycle
 
@@ -23,15 +19,9 @@ defmodule RefInspector.Database do
   end
 
   def init(_) do
-    opts_counter  = [ :protected, :set ]
-    opts_referers = [ :protected, :ordered_set ]
+    tid = :ets.new(:ref_inspector, [ :protected, :ordered_set ])
 
-    tid_counter  = :ets.new(@ets_table,  opts_counter)
-    tid_referers = :ets.new(@ets_table_refs, opts_referers)
-
-    :ets.insert(tid_counter, [{ @ets_counter, 0 }])
-
-    { :ok, %State{ ets_counter: tid_counter, ets_referers: tid_referers }}
+    { :ok, %State{ ets: tid }}
   end
 
 
@@ -42,7 +32,7 @@ defmodule RefInspector.Database do
   end
 
   def handle_call(:list, _from, state) do
-    { :reply, :ets.tab2list(state.ets_referers), state }
+    { :reply, :ets.tab2list(state.ets), state }
   end
 
 
@@ -94,10 +84,7 @@ defmodule RefInspector.Database do
     medium  = String.to_atom(medium)
     dataset = { medium, sources }
 
-    :ets.insert_new(
-      state.ets_referers,
-      { update_counter(state), dataset }
-    )
+    :ets.insert_new(state.ets, dataset)
   end
 
   defp store_refs({ :error, _ } = error, _ ), do: error
@@ -106,10 +93,6 @@ defmodule RefInspector.Database do
     Enum.each refs, fn(ref) -> store_ref(ref, state) end
 
     :ok
-  end
-
-  defp update_counter(state) do
-    :ets.update_counter(state.ets_counter, @ets_counter, 1)
   end
 
 

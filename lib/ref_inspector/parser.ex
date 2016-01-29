@@ -73,8 +73,8 @@ defmodule RefInspector.Parser do
     ref |> parse_ref(Database.list)
   end
 
-  defp parse_ref(_,   []),                              do: %Result{}
-  defp parse_ref(ref, [{ _index, medium } | referers ]) do
+  defp parse_ref(_,   []),                   do: %Result{}
+  defp parse_ref(ref, [ medium | referers ]) do
     case match_medium(ref, medium) do
       nil   -> parse_ref(ref, referers)
       match -> match

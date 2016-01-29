@@ -4,12 +4,10 @@ defmodule RefInspector.Database.State do
   """
 
   defstruct [
-    :ets_counter,
-    :ets_referers
+    :ets
   ]
 
   @opaque t :: %__MODULE__{
-    ets_counter:  :ets.tid,
-    ets_referers: :ets.tid
+    ets: :ets.tid
   }
 end
