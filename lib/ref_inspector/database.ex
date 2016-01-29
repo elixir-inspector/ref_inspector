@@ -66,7 +66,7 @@ defmodule RefInspector.Database do
 
   defp load_file(file) do
     if File.regular?(file) do
-      parse_file(file)
+      file |> parse_file() |> store_refs()
     else
       { :error, "Invalid file given: '#{ file }'" }
     end
@@ -78,22 +78,26 @@ defmodule RefInspector.Database do
       |> parse_entries()
   end
 
-  defp parse_entries([]),                              do: :ok
-  defp parse_entries([{ medium, sources } | entries ]) do
-    sources
-    |> parse_sources([])
-    |> sort_sources()
-    |> store_ref(medium)
+  defp parse_entries(entries), do: parse_entries([], entries)
 
-    parse_entries(entries)
+  defp parse_entries(acc, []), do: Enum.reverse(acc)
+  defp parse_entries(acc, [{ medium, sources } | entries ]) do
+    sources =
+         sources
+      |> parse_sources([])
+      |> sort_sources()
+
+    parse_entries([{ medium, sources }] ++ acc, entries)
   end
 
-  defp store_ref(sources, medium) do
+  defp store_ref({ medium, sources }) do
     medium  = String.to_atom(medium)
     dataset = { medium, sources }
 
     :ets.insert_new(@ets_table_refs, { update_counter(), dataset })
   end
+
+  defp store_refs(refs), do: refs |> Enum.each(&store_ref/1)
 
   defp update_counter(), do: :ets.update_counter(@ets_table, @ets_counter, 1)
 
