@@ -21,10 +21,11 @@ defmodule Mix.RefInspector.Verify.Fixture do
 
     target = local_file
 
-    if Version.match?(System.version, ">= 1.1.0") do
-      { :ok, content } = Mix.Utils.read_path(@remote)
-    else
-      content = Mix.Utils.read_path!(@remote)
+    content = case Version.match?(System.version, ">= 1.1.0") do
+      false -> Mix.Utils.read_path!(@remote)
+      true  ->
+        { :ok, content } = Mix.Utils.read_path(@remote)
+        content
     end
 
     File.write! target, content
