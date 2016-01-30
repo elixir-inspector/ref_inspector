@@ -18,17 +18,21 @@ defmodule RefInspector.Database do
     GenServer.start_link(__MODULE__, default, [ name: __MODULE__ ])
   end
 
-  def init(_) do
-    tid = :ets.new(:ref_inspector, [ :protected, :ordered_set ])
-
-    { :ok, %State{ ets: tid }}
-  end
+  def init(_), do: { :ok, %State{} }
 
 
   # GenServer callbacks
 
   def handle_call({ :load, file }, _from, state) do
-    { :reply, file |> load_file() |> store_refs(state), state }
+    case load_file(file) do
+      { :error, _ } = error -> { :reply, error, state }
+
+      entries when is_list(entries) ->
+        tid   = :ets.new(:ref_inspector, [ :protected, :ordered_set ])
+        state = %{ state | ets: tid }
+
+        { :reply, store_refs(entries, state), state }
+    end
   end
 
   def handle_call(:list, _from, state) do
@@ -80,19 +84,13 @@ defmodule RefInspector.Database do
     parse_entries([{ medium, sources }] ++ acc, entries)
   end
 
-  defp store_ref({ medium, sources }, state) do
+  defp store_refs([],                            _state), do: :ok
+  defp store_refs([{ medium, sources } | refs ], state)   do
     medium  = String.to_atom(medium)
     dataset = { medium, sources }
 
     :ets.insert_new(state.ets, dataset)
-  end
-
-  defp store_refs({ :error, _ } = error, _ ), do: error
-
-  defp store_refs(refs, state) do
-    Enum.each refs, fn(ref) -> store_ref(ref, state) end
-
-    :ok
+    store_refs(refs, state)
   end
 
 

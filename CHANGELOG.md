@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.9.0-dev
+
+- Enhancements
+  - Referer database can be reloaded usind `RefInspector.load/1`
+
+- Backwards incompatible changes
+  - Reloading the database drops an previously loaded entries
+
 ## v0.8.0 (2015-07-18)
 
 - Enhancements

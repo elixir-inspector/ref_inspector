@@ -48,6 +48,15 @@ config :ref_inspector,
 
 The shown path is the default download path used by the mix task.
 
+Upon application start the database will be automatically loaded.
+You can always reload it like this:
+
+```elixir
+:ref_inspector
+|> Application.get_env(:yaml)
+|> RefInspector.load()
+```
+
 
 ## Usage
 
