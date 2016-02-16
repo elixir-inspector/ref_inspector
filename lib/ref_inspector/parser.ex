@@ -43,7 +43,7 @@ defmodule RefInspector.Parser do
   end
 
 
-  defp match_medium(_,   { _,      []}),                  do: nil
+  defp match_medium(  _, {      _, [] }),                 do: nil
   defp match_medium(ref, { medium, [ source | sources ]}) do
     case matches_source?(ref, source) do
       false -> match_medium(ref, { medium, sources })
@@ -63,7 +63,7 @@ defmodule RefInspector.Parser do
   end
 
 
-  defp parse_query(    _, []                ), do: :none
+  defp parse_query(    _, []),                 do: :none
   defp parse_query(query, [ param | params ])  do
     Map.get(query, param, parse_query(query, params))
   end
@@ -73,7 +73,7 @@ defmodule RefInspector.Parser do
     ref |> parse_ref(Database.list)
   end
 
-  defp parse_ref(_,   []),                   do: %Result{}
+  defp parse_ref(  _, []),                   do: %Result{}
   defp parse_ref(ref, [ medium | referers ]) do
     case match_medium(ref, medium) do
       nil   -> parse_ref(ref, referers)

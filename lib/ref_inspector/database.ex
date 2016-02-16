@@ -15,7 +15,7 @@ defmodule RefInspector.Database do
   """
   @spec start_link(any) :: GenServer.on_start
   def start_link(default \\ []) do
-    GenServer.start_link(__MODULE__, default, [ name: __MODULE__ ])
+    GenServer.start_link(__MODULE__, default, name: __MODULE__)
   end
 
   def init(_), do: { :ok, %State{} }

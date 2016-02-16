@@ -9,7 +9,10 @@ defmodule RefInspector do
     import Supervisor.Spec
 
     options  = [ strategy: :one_for_one, name: RefInspector.Supervisor ]
-    children = [ worker(RefInspector.Database, []), RefInspector.Pool.child_spec ]
+    children = [
+      RefInspector.Pool.child_spec,
+      worker(RefInspector.Database, [])
+    ]
 
     { :ok, sup } = Supervisor.start_link(children, options)
     :ok          = RefInspector.Config.yaml_path |> load()
