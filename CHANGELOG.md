@@ -6,7 +6,7 @@
     - Referer database can be reloaded usind `RefInspector.load/1`
 
 - Backwards incompatible changes
-    - Reloading the database drops an previously loaded entries
+    - Reloading the database drops previously loaded (unconfigured) entries
 
 ## v0.8.0 (2015-07-18)
 
