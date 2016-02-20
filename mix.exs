@@ -14,6 +14,15 @@ defmodule RefInspector.Mixfile do
       build_embedded:  Mix.env == :prod,
       start_permanent: Mix.env == :prod,
 
+      preferred_cli_env: [
+        coveralls:          :test,
+        'coveralls.detail': :test,
+        'coveralls.travis': :test,
+        dialyze:            :test,
+        docs:               :docs,
+        'hex.docs':         :docs
+      ],
+
       description:   "Referer parser library",
       docs:          docs,
       package:       package,
