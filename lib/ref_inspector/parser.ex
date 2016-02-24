@@ -43,10 +43,9 @@ defmodule RefInspector.Parser do
   end
 
 
-  defp match_medium(  _, {      _, [] }),                 do: nil
-  defp match_medium(ref, { medium, [ source | sources ]}) do
+  defp match_medium(ref, { index, medium, [ source | sources ]}) do
     case matches_source?(ref, source) do
-      false -> match_medium(ref, { medium, sources })
+      false -> match_medium(ref, { index, medium, sources })
       true  ->
         result = %Result{
           medium: medium,
@@ -56,6 +55,7 @@ defmodule RefInspector.Parser do
         maybe_parse_query(ref.query, source[:parameters], result)
     end
   end
+  defp match_medium(_, { _, _, [] }), do: nil
 
   defp matches_source?(ref, source) do
     String.ends_with?((ref.host || ""), source[:host])

@@ -29,14 +29,15 @@ defmodule RefInspector.Database do
 
       entries when is_list(entries) ->
         tid   = :ets.new(:ref_inspector, [ :protected, :ordered_set ])
-        state = %{ state | ets: tid }
+        state = %{ state | ets_tid: tid }
+        state = store_refs(entries, state)
 
-        { :reply, store_refs(entries, state), state }
+        { :reply, :ok, state }
     end
   end
 
   def handle_call(:list, _from, state) do
-    { :reply, :ets.tab2list(state.ets), state }
+    { :reply, :ets.tab2list(state.ets_tid), state }
   end
 
 
@@ -84,13 +85,14 @@ defmodule RefInspector.Database do
     parse_entries([{ medium, sources }] ++ acc, entries)
   end
 
-  defp store_refs([],                            _state), do: :ok
-  defp store_refs([{ medium, sources } | refs ], state)   do
+  defp store_refs([],                            state), do: state
+  defp store_refs([{ medium, sources } | refs ], state)  do
+    index   = state.ets_index + 1
     medium  = String.to_atom(medium)
-    dataset = { medium, sources }
+    dataset = { index, medium, sources }
 
-    :ets.insert_new(state.ets, dataset)
-    store_refs(refs, state)
+    :ets.insert_new(state.ets_tid, dataset)
+    store_refs(refs, %{ state | ets_index: index })
   end
 
 
