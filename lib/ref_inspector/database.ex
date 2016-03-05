@@ -28,8 +28,10 @@ defmodule RefInspector.Database do
       { :error, _ } = error -> { :reply, error, state }
 
       entries when is_list(entries) ->
-        tid   = :ets.new(:ref_inspector, [ :protected, :ordered_set ])
-        state = %{ state | ets_tid: tid }
+        ets_opts = [ :protected, :ordered_set, read_concurrency: true ]
+        ets_tid  = :ets.new(:ref_inspector, ets_opts)
+
+        state = %{ state | ets_tid: ets_tid }
         state = store_refs(entries, state)
 
         { :reply, :ok, state }
