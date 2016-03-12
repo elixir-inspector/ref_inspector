@@ -42,8 +42,13 @@ configuration:
 ```elixir
 use Mix.Config
 
+# static configuration
 config :ref_inspector,
   yaml: Path.join(Mix.Utils.mix_home, "ref_inspector/referers.yml")
+
+# system environment configuration
+config :ref_inspector,
+  yaml: { :system, "SOME_SYSTEM_ENV_VARIABLE" }
 ```
 
 The shown path is the default download path used by the mix task.

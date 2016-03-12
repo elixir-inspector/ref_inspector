@@ -3,6 +3,7 @@
 ## v0.9.0-dev
 
 - Enhancements
+    - Path can be configured by accessing the system environment
     - Referer database can be reloaded usind `RefInspector.load/1`
 
 - Backwards incompatible changes

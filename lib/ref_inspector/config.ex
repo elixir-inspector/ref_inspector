@@ -8,9 +8,10 @@ defmodule RefInspector.Config do
   """
   @spec yaml_path :: String.t | nil
   def yaml_path do
-    case Application.get_env(:ref_inspector, :yaml, nil) do
-      nil  -> nil
-      path -> path |> Path.expand()
+    case Application.get_env(:ref_inspector, :yaml) do
+      nil              -> nil
+      { :system, var } -> var |> System.get_env()
+      path             -> path |> Path.expand()
     end
   end
 end
