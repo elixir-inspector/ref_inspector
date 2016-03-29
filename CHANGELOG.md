@@ -3,6 +3,7 @@
 ## v0.9.0-dev
 
 - Enhancements
+    - Database is reloaded if the storage process gets restarted
     - Path can be configured by accessing the system environment
     - Referer database can be reloaded usind `RefInspector.load/1`
 

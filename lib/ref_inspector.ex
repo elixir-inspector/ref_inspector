@@ -14,10 +14,7 @@ defmodule RefInspector do
       worker(RefInspector.Database, [])
     ]
 
-    { :ok, sup } = Supervisor.start_link(children, options)
-    :ok          = RefInspector.Config.yaml_path |> load()
-
-    { :ok, sup }
+    Supervisor.start_link(children, options)
   end
 
   @doc """

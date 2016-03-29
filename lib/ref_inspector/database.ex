@@ -18,24 +18,18 @@ defmodule RefInspector.Database do
     GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
   end
 
-  def init(_), do: { :ok, %State{} }
+  def init(_) do
+    { _,   state } = RefInspector.Config.yaml_path |> do_load(%State{})
+    { :ok, state }
+  end
 
 
   # GenServer callbacks
 
   def handle_call({ :load, file }, _from, state) do
-    case load_file(file) do
-      { :error, _ } = error -> { :reply, error, state }
+    { result, state } = do_load(file, state)
 
-      entries when is_list(entries) ->
-        ets_opts = [ :protected, :ordered_set, read_concurrency: true ]
-        ets_tid  = :ets.new(:ref_inspector, ets_opts)
-
-        state = %{ state | ets_tid: ets_tid }
-        state = store_refs(entries, state)
-
-        { :reply, :ok, state }
-    end
+    { :reply, result, state }
   end
 
   def handle_call(:ets_tid, _from, state) do
@@ -60,6 +54,21 @@ defmodule RefInspector.Database do
 
 
   # Internal methods
+
+  def do_load(file, state) do
+    case load_file(file) do
+      { :error, _ } = error -> { error, state }
+
+      entries when is_list(entries) ->
+        ets_opts = [ :protected, :ordered_set, read_concurrency: true ]
+        ets_tid  = :ets.new(:ref_inspector, ets_opts)
+
+        state = %{ state | ets_tid: ets_tid }
+        state = store_refs(entries, state)
+
+        { :ok, state }
+    end
+  end
 
   defp load_file(file) do
     if File.regular?(file) do
