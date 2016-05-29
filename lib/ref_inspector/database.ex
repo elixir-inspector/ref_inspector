@@ -78,10 +78,13 @@ defmodule RefInspector.Database do
     end
   end
 
+  defp maybe_hd([]),   do: []
+  defp maybe_hd(data), do: hd(data)
+
   defp parse_file(file) do
     :yamerl_constr.file(file, [ :str_node_as_binary ])
-      |> hd()
-      |> parse_entries()
+    |> maybe_hd()
+    |> parse_entries()
   end
 
   defp parse_entries(entries), do: parse_entries([], entries)
