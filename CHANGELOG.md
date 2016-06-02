@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.10.0-dev
+
+- Enhancements
+    - If the initial load of the database (during process initialisation)
+      fails a message will be sent through `Logger.info/1`
+
 ## v0.9.0 (2016-03-30)
 
 - Enhancements

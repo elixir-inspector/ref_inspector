@@ -29,7 +29,7 @@ defmodule RefInspector.Mixfile do
   end
 
   def application do
-    [ applications: [ :poolboy, :yamerl ],
+    [ applications: [ :logger, :poolboy, :yamerl ],
       mod:          { RefInspector, [] } ]
   end
 

@@ -5,6 +5,8 @@ defmodule RefInspector.Database do
 
   use GenServer
 
+  require Logger
+
   alias RefInspector.Database.State
 
 
@@ -19,7 +21,13 @@ defmodule RefInspector.Database do
   end
 
   def init(_) do
-    { _,   state } = RefInspector.Config.yaml_path |> do_load(%State{})
+    { res, state } = RefInspector.Config.yaml_path |> do_load(%State{})
+
+    case res do
+      { :error, reason } -> Logger.info(reason)
+      _                  -> nil
+    end
+
     { :ok, state }
   end
 
@@ -74,7 +82,7 @@ defmodule RefInspector.Database do
     if File.regular?(file) do
       file |> parse_file()
     else
-      { :error, "Invalid file given: '#{ file }'" }
+      { :error, "invalid file given: '#{ file }'" }
     end
   end
 
