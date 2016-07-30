@@ -12,8 +12,7 @@ required dependencies:
 
 ```elixir
 defp deps do
-  [ { :ref_inspector, "~> 0.9" },
-    { :yamerl,        github: "yakaz/yamerl" } ]
+  [{ :ref_inspector, "~> 0.9" }]
 end
 ```
 
