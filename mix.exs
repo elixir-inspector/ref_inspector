@@ -7,7 +7,7 @@ defmodule RefInspector.Mixfile do
     [ app:     :ref_inspector,
       name:    "RefInspector",
       version: "0.10.0-dev",
-      elixir:  "~> 1.0",
+      elixir:  "~> 1.2",
       deps:    deps,
 
       build_embedded:  Mix.env == :prod,

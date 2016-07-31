@@ -6,6 +6,10 @@
     - If the initial load of the database (during process initialisation)
       fails a message will be sent through `Logger.info/1`
 
+- Backwards incompatible changes
+    - Minimum required elixir version is now "~> 1.2"
+    - Minimum required erlang version is now "~> 18.0"
+
 ## v0.9.0 (2016-03-30)
 
 - Enhancements
