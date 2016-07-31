@@ -8,7 +8,7 @@ defmodule RefInspector.Mixfile do
       name:    "RefInspector",
       version: "0.10.0-dev",
       elixir:  "~> 1.2",
-      deps:    deps,
+      deps:    deps(),
 
       build_embedded:  Mix.env == :prod,
       start_permanent: Mix.env == :prod,
@@ -23,8 +23,8 @@ defmodule RefInspector.Mixfile do
       ],
 
       description:   "Referer parser library",
-      docs:          docs,
-      package:       package,
+      docs:          docs(),
+      package:       package(),
       test_coverage: [ tool: ExCoveralls ] ]
   end
 
