@@ -1,7 +1,6 @@
 use Mix.Config
 
-env_config = Path.expand("#{ Mix.env }.exs", __DIR__)
-
-if File.exists?(env_config) do
-  import_config(env_config)
-end
+config :ref_inspector,
+  internal: [ "www.example.com", "www.example.org" ],
+  yaml:     Path.join(__DIR__, "../test/fixtures/referers.yml"),
+  pool:     [ max_overflow: 0, size: 1 ]
