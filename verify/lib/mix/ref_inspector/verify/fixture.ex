@@ -19,16 +19,9 @@ defmodule Mix.RefInspector.Verify.Fixture do
   def download_fixture() do
     Mix.shell.info ".. downloading: #{ @local }"
 
-    target = local_file
+    { :ok, content } = Mix.Utils.read_path(@remote)
 
-    content = case Version.match?(System.version, ">= 1.1.0") do
-      false -> Mix.Utils.read_path!(@remote)
-      true  ->
-        { :ok, content } = Mix.Utils.read_path(@remote)
-        content
-    end
-
-    File.write! target, content
+    File.write! local_file(), content
   end
 
   def download_path, do: Path.join(__DIR__, "../../../../database") |> Path.expand()
