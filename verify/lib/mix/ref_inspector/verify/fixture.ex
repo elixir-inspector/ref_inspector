@@ -3,8 +3,12 @@ defmodule Mix.RefInspector.Verify.Fixture do
   Utility module to bundle/download the verification fixture.
   """
 
+  alias Mix.RefInspector.Download
+
+
   @local  "referer-tests.json"
   @remote "https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referer-tests.json"
+
 
   def download() do
     Mix.shell.info "Download path: #{ download_path }"
@@ -19,7 +23,7 @@ defmodule Mix.RefInspector.Verify.Fixture do
   def download_fixture() do
     Mix.shell.info ".. downloading: #{ @local }"
 
-    { :ok, content } = Mix.Utils.read_path(@remote)
+    { :ok, content } = Download.read_remote(@remote)
 
     File.write! local_file(), content
   end

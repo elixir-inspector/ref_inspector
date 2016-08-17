@@ -9,7 +9,9 @@ defmodule Mix.RefInspector.Yaml.Download do
   `mix ref_inspector.yaml.download`
   """
 
+  alias Mix.RefInspector.Download
   alias RefInspector.Config
+
 
   @behaviour Mix.Task
 
@@ -65,7 +67,7 @@ defmodule Mix.RefInspector.Yaml.Download do
   defp download_yaml() do
     Config.yaml_path |> Path.dirname() |> File.mkdir_p!
 
-    { :ok, content } = Mix.Utils.read_path(@yaml_url)
+    { :ok, content } = Download.read_remote(@yaml_url)
 
     Config.yaml_path |> File.write(content)
   end

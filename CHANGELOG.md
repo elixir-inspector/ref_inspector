@@ -3,10 +3,14 @@
 ## v0.10.0-dev
 
 - Enhancements
+    - Database download is done using hackney in order to prepare an
+      upcoming auto-update feature
     - If the initial load of the database (during process initialisation)
       fails a message will be sent through `Logger.info/1`
 
 - Backwards incompatible changes
+    - Downloads are now done using `:hackney` instead of `mix`. This may force
+      you to manually reconfigure the client
     - Minimum required elixir version is now "~> 1.2"
     - Minimum required erlang version is now "~> 18.0"
 

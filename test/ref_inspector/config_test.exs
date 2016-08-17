@@ -11,6 +11,7 @@ defmodule RefInspector.ConfigTest do
     end
   end
 
+
   test "application configuration" do
     path = "/configuration/by/application/configuration"
 
@@ -33,5 +34,19 @@ defmodule RefInspector.ConfigTest do
     Application.put_env(:ref_inspector, :yaml, nil)
 
     assert nil == Config.yaml_path
+  end
+
+
+  test "nested system environment access" do
+    var = "REF_INSPECTOR_NESTED_CONFIG"
+    val = "very-nested"
+
+    System.put_env(var, val)
+
+    Application.put_env(:ref_inspector, :test_only, deep: { :system, var })
+
+    assert [ deep: val ] == Config.get(:test_only)
+
+    Application.delete_env(:ref_inspector, :test_only)
   end
 end
