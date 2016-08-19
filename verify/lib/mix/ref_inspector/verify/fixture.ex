@@ -11,7 +11,7 @@ defmodule Mix.RefInspector.Verify.Fixture do
 
 
   def download() do
-    Mix.shell.info "Download path: #{ download_path }"
+    Mix.shell.info "Download path: #{ download_path() }"
 
     setup()
     download_fixture()
@@ -29,9 +29,9 @@ defmodule Mix.RefInspector.Verify.Fixture do
   end
 
   def download_path, do: Path.join(__DIR__, "../../../../database") |> Path.expand()
-  def local_file,    do: Path.join([ download_path, @local ])
+  def local_file,    do: Path.join([ download_path(), @local ])
 
   def setup() do
-    File.mkdir_p! download_path
+    File.mkdir_p! download_path()
   end
 end
