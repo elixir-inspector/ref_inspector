@@ -15,8 +15,6 @@ defmodule Mix.RefInspector.Yaml.Download do
 
   @behaviour Mix.Task
 
-  @yaml_url "https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referers.yml"
-
 
   def run(args) do
     case Config.yaml_path do
@@ -67,7 +65,7 @@ defmodule Mix.RefInspector.Yaml.Download do
   defp download_yaml() do
     Config.yaml_path |> Path.dirname() |> File.mkdir_p!
 
-    { :ok, content } = Download.read_remote(@yaml_url)
+    { :ok, content } = Download.read_remote(Config.yaml_url)
 
     Config.yaml_path |> File.write(content)
   end

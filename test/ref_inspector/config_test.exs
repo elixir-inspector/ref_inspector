@@ -14,11 +14,15 @@ defmodule RefInspector.ConfigTest do
 
   test "application configuration" do
     path = "/configuration/by/application/configuration"
+    url  = "http://some/host/database.yml"
 
     Application.put_env(:ref_inspector, :yaml, path)
+    Application.put_env(:ref_inspector, :remote_url, url)
 
     assert path == Config.yaml_path
+    assert url  == Config.yaml_url
   end
+
 
   test "system environment configuration" do
     path = "/configuration/by/system/environment"

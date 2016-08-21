@@ -61,6 +61,17 @@ You can always reload it like this:
 |> RefInspector.load()
 ```
 
+#### Configuration (Database File)
+
+The remote url of the database file is configurable:
+
+```elixir
+config :ref_inspector,
+  remote_url: https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referers.yml
+```
+
+Shown configuration is used as the default location during download.
+
 #### Configuration (HTTP client)
 
 The database is downloaded using
