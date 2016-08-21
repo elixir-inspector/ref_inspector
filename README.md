@@ -129,7 +129,6 @@ These tests are all tagged `:download` to allow skipping them.
 ## Resources
 
 - [referer-parser](https://github.com/snowplow/referer-parser)
-- [yamerl](https://github.com/yakaz/yamerl)
 
 
 ## License
