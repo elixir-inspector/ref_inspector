@@ -131,12 +131,6 @@ Both `:source` and `:term` will be left at the initial/unknown state not
 intended for further processing.
 
 
-## Testing
-
-Some (mix task) tests may download files from the internet.
-These tests are all tagged `:download` to allow skipping them.
-
-
 ## Resources
 
 - [referer-parser](https://github.com/snowplow/referer-parser)

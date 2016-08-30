@@ -3,7 +3,32 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
 
   import ExUnit.CaptureIO
 
-  @tag :download
+
+  setup_all do
+    # setup internal testing webserver
+    Application.ensure_all_started(:inets)
+
+    fixture_path       = Path.join([ __DIR__, '../../fixtures' ]) |> Path.expand()
+    httpd_opts         = [ port:          0,
+                           server_name:   'ref_inspector_test',
+                           server_root:   fixture_path |> to_char_list,
+                           document_root: fixture_path |> to_char_list ]
+    { :ok, httpd_pid } = :inets.start(:httpd, httpd_opts)
+
+    # configure app to use testing webserver
+    yaml_url = Application.get_env(:ref_inspector, :remote_url)
+    :ok      = Application.put_env(
+      :ref_inspector,
+      :remote_url,
+      "http://localhost:#{ :httpd.info(httpd_pid)[:port] }/referers.yml"
+    )
+
+    on_exit fn ->
+      Application.put_env(:ref_inspector, :remote_url, yaml_url)
+    end
+  end
+
+
   test "aborted download" do
     Mix.shell(Mix.Shell.IO)
 
@@ -16,7 +41,6 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
     assert String.contains?(console, "Download aborted")
   end
 
-  @tag :download
   test "confirmed download" do
     Mix.shell(Mix.Shell.IO)
 
@@ -27,7 +51,6 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
     assert String.contains?(console, "Download referers.yml? [Yn]")
   end
 
-  @tag :download
   test "forceable download" do
     Mix.shell(Mix.Shell.IO)
 
@@ -49,7 +72,6 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
     assert String.contains?(console, test_yaml)
   end
 
-  @tag :download
   test "missing configuration" do
     Mix.shell(Mix.Shell.IO)
 
