@@ -50,8 +50,6 @@ config :ref_inspector,
   yaml: { :system, "SOME_SYSTEM_ENV_VARIABLE" }
 ```
 
-The shown path is the default download path used by the mix task.
-
 Upon application start the database will be automatically loaded.
 You can always reload it like this:
 
