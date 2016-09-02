@@ -6,12 +6,12 @@ defmodule RefInspector.Database.InitTest do
   @filename "something_that_is_no_file"
 
   setup do
-    app_path = Application.get_env(:ref_inspector, :yaml)
+    app_files = Application.get_env(:ref_inspector, :database_files)
 
-    Application.put_env(:ref_inspector, :yaml, @filename)
+    Application.put_env(:ref_inspector, :database_files, [ @filename ])
 
     on_exit fn ->
-      Application.put_env(:ref_inspector, :yaml, app_path)
+      Application.put_env(:ref_inspector, :database_files, app_files)
     end
   end
 

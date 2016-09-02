@@ -1,15 +1,15 @@
 defmodule RefInspector.Database.EmptyTest do
   use ExUnit.Case, async: false
 
-  @filename Path.join([ __DIR__, "../../fixtures/empty.yml" ])
+  @filename "empty.yml"
 
   setup do
-    app_path = Application.get_env(:ref_inspector, :yaml)
+    app_files = Application.get_env(:ref_inspector, :database_files)
 
-    Application.put_env(:ref_inspector, :yaml, @filename)
+    Application.put_env(:ref_inspector, :database_files, [ @filename ])
 
     on_exit fn ->
-      Application.put_env(:ref_inspector, :yaml, app_path)
+      Application.put_env(:ref_inspector, :database_files, app_files)
     end
   end
 

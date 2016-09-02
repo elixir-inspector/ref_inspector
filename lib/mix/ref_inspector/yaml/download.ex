@@ -17,7 +17,7 @@ defmodule Mix.RefInspector.Yaml.Download do
 
 
   def run(args) do
-    case Config.yaml_path do
+    case Config.database_path do
       nil -> exit_unconfigured()
       _   -> do_run(args)
     end
@@ -25,7 +25,7 @@ defmodule Mix.RefInspector.Yaml.Download do
 
 
   defp do_run(args) do
-    Mix.shell.info "Download path: #{ Config.yaml_path }"
+    Mix.shell.info "Download path: #{ yaml_path() }"
     Mix.shell.info "This command will replace any already existing copy!"
 
     { opts, _argv, _errors } = OptionParser.parse(args, aliases: [ f: :force ])
@@ -63,10 +63,18 @@ defmodule Mix.RefInspector.Yaml.Download do
 
 
   defp download_yaml() do
-    Config.yaml_path |> Path.dirname() |> File.mkdir_p!
+    yaml_path() |> Path.dirname() |> File.mkdir_p!
 
     { :ok, content } = Download.read_remote(Config.yaml_url)
 
-    Config.yaml_path |> File.write(content)
+    yaml_path() |> File.write(content)
+  end
+
+
+  defp yaml_path do
+    database_file = hd(Config.database_files)
+    database_path = Config.database_path
+
+    Path.join([ database_path, database_file ])
   end
 end

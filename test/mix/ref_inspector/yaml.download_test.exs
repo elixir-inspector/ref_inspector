@@ -54,33 +54,34 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
   test "forceable download" do
     Mix.shell(Mix.Shell.IO)
 
-    orig_yaml = Application.get_env(:ref_inspector, :yaml)
-    test_yaml = Path.join(__DIR__, "../../downloads/referers.yml") |> Path.expand()
+    orig_path = Application.get_env(:ref_inspector, :database_path)
+    test_path = Path.join([ __DIR__, "../../downloads" ]) |> Path.expand()
+    test_file = Path.join([ test_path, "referers.yml" ])
 
-    if File.exists?(test_yaml) do
-      test_yaml |> File.rm!
+    if File.exists?(test_file) do
+      test_file |> File.rm!
     end
 
     console = capture_io fn ->
-      Application.put_env(:ref_inspector, :yaml, test_yaml)
+      Application.put_env(:ref_inspector, :database_path, test_path)
       Mix.RefInspector.Yaml.Download.run(["--force"])
-      Application.put_env(:ref_inspector, :yaml, orig_yaml)
+      Application.put_env(:ref_inspector, :database_path, orig_path)
 
-      assert File.exists?(test_yaml)
+      assert File.exists?(test_file)
     end
 
-    assert String.contains?(console, test_yaml)
+    assert String.contains?(console, test_file)
   end
 
   test "missing configuration" do
     Mix.shell(Mix.Shell.IO)
 
-    orig_yaml = Application.get_env(:ref_inspector, :yaml)
+    orig_path = Application.get_env(:ref_inspector, :database_path)
 
     console = capture_io :stderr, fn ->
-      Application.put_env(:ref_inspector, :yaml, nil)
+      Application.put_env(:ref_inspector, :database_path, nil)
       Mix.RefInspector.Yaml.Download.run([])
-      Application.put_env(:ref_inspector, :yaml, orig_yaml)
+      Application.put_env(:ref_inspector, :database_path, orig_path)
     end
 
     assert String.contains?(console, "not configured")

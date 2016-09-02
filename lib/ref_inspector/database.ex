@@ -7,6 +7,7 @@ defmodule RefInspector.Database do
 
   require Logger
 
+  alias RefInspector.Config
   alias RefInspector.Database.State
 
 
@@ -21,7 +22,11 @@ defmodule RefInspector.Database do
   end
 
   def init(_) do
-    { res, state } = RefInspector.Config.yaml_path |> do_load(%State{})
+    database_file = hd(Config.database_files)
+    database_path = Config.database_path
+    database      = Path.join([ database_path, database_file ])
+
+    { res, state } = do_load(database, %State{})
 
     case res do
       { :error, reason } -> Logger.info(reason)

@@ -4,10 +4,10 @@ defmodule RefInspector.ConfigTest do
   alias RefInspector.Config
 
   setup do
-    app_path = Application.get_env(:ref_inspector, :yaml)
+    app_path = Application.get_env(:ref_inspector, :database_path)
 
     on_exit fn ->
-      Application.put_env(:ref_inspector, :yaml, app_path)
+      Application.put_env(:ref_inspector, :database_path, app_path)
     end
   end
 
@@ -16,10 +16,10 @@ defmodule RefInspector.ConfigTest do
     path = "/configuration/by/application/configuration"
     url  = "http://some/host/database.yml"
 
-    Application.put_env(:ref_inspector, :yaml, path)
+    Application.put_env(:ref_inspector, :database_path, path)
     Application.put_env(:ref_inspector, :remote_url, url)
 
-    assert path == Config.yaml_path
+    assert path == Config.database_path
     assert url  == Config.yaml_url
   end
 
@@ -28,16 +28,16 @@ defmodule RefInspector.ConfigTest do
     path = "/configuration/by/system/environment"
     var  = "REF_INSPECTOR_CONFIG_TEST"
 
-    Application.put_env(:ref_inspector, :yaml, { :system, var })
+    Application.put_env(:ref_inspector, :database_path, { :system, var })
     System.put_env(var, path)
 
-    assert path == Config.yaml_path
+    assert path == Config.database_path
   end
 
   test "missing configuration" do
-    Application.put_env(:ref_inspector, :yaml, nil)
+    Application.put_env(:ref_inspector, :database_path, nil)
 
-    assert nil == Config.yaml_path
+    assert nil == Config.database_path
   end
 
 

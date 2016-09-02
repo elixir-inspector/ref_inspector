@@ -5,6 +5,9 @@
 - Enhancements
     - Remote url of database file is now configurable
 
+- Deprecations
+    - Configuring a single `:yaml` as the database has been deprecated
+
 - Backwards incompatible changes
     - Support for loading a database file at runtime
       using `RefInspector.load/1` has been removed
