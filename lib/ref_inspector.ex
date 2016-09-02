@@ -18,12 +18,6 @@ defmodule RefInspector do
   end
 
   @doc """
-  Loads yaml file with referer definitions.
-  """
-  @spec load(String.t) :: :ok | { :error, String.t }
-  defdelegate load(file), to: RefInspector.Database
-
-  @doc """
   Parses a referer.
   """
   @spec parse(String.t) :: map

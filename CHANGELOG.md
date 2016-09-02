@@ -5,6 +5,10 @@
 - Enhancements
     - Remote url of database file is now configurable
 
+- Backwards incompatible changes
+    - Support for loading a database file at runtime
+      using `RefInspector.load/1` has been removed
+
 ## v0.10.0 (2016-08-19)
 
 - Enhancements

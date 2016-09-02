@@ -34,12 +34,6 @@ defmodule RefInspector.Database do
 
   # GenServer callbacks
 
-  def handle_call({ :load, file }, _from, state) do
-    { result, state } = do_load(file, state)
-
-    { :reply, result, state }
-  end
-
   def handle_call(:ets_tid, _from, state) do
     { :reply, state.ets_tid, state }
   end
@@ -52,13 +46,6 @@ defmodule RefInspector.Database do
   """
   @spec list() :: list
   def list(), do: GenServer.call(__MODULE__, :ets_tid) |> :ets.tab2list()
-
-  @doc """
-  Loads a referer database file.
-  """
-  @spec load(String.t) :: :ok | { :error, String.t }
-  def load(nil),  do: :ok
-  def load(file), do: GenServer.call(__MODULE__, { :load, file })
 
 
   # Internal methods

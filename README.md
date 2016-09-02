@@ -50,15 +50,6 @@ config :ref_inspector,
   yaml: { :system, "SOME_SYSTEM_ENV_VARIABLE" }
 ```
 
-Upon application start the database will be automatically loaded.
-You can always reload it like this:
-
-```elixir
-:ref_inspector
-|> Application.get_env(:yaml)
-|> RefInspector.load()
-```
-
 #### Configuration (Database File)
 
 The remote url of the database file is configurable:
