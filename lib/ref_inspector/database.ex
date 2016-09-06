@@ -49,7 +49,7 @@ defmodule RefInspector.Database do
   @doc """
   Returns all referer definitions.
   """
-  @spec list() :: list
+  @spec list() :: [tuple]
   def list(), do: GenServer.call(__MODULE__, :ets_tid) |> :ets.tab2list()
 
 
