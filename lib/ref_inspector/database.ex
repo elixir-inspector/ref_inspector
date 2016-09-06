@@ -139,7 +139,7 @@ defmodule RefInspector.Database do
     sources
     |> Enum.map( &Map.put(&1, :sort, "#{ &1.host }#{ &1.path }") )
     |> Enum.sort( &(String.length(&1[:sort]) > String.length(&2[:sort])) )
-    |> Enum.uniq( &(&1[:sort]) )
+    |> Enum.uniq_by( &(&1[:sort]) )
     |> Enum.map( &Map.delete(&1, :sort) )
   end
 end
