@@ -61,9 +61,10 @@ defmodule RefInspector.Config do
     case get(:yaml) do
       nil  -> nil
       yaml ->
-        IO.write :stderr, "You are using a deprecated ':yaml' configuration" <>
-                          " to define the filename for your database." <>
-                          " Please update your configuration to the new format."
+        IO.write :stderr, "RefInspector: You are using a deprecated ':yaml'" <>
+                          " configuration to define the filename for your" <>
+                          " database. Please update your configuration to" <>
+                          " the new format.\n"
 
         [ Path.basename(yaml) ]
     end
@@ -73,9 +74,10 @@ defmodule RefInspector.Config do
     case get(:yaml) do
       nil  -> nil
       yaml ->
-        IO.write :stderr, "You are using a deprecated ':yaml' configuration" <>
-                          " to define the path for your database." <>
-                          " Please update your configuration to the new format."
+        IO.write :stderr, "RefInspector: You are using a deprecated ':yaml'" <>
+                          " configuration to define the path for your" <>
+                          " database. Please update your configuration to" <>
+                          " the new format.\n"
 
         Path.dirname(yaml)
     end
