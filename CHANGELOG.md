@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.11.0-dev
+## v0.11.0 (2016-09-07)
 
 - Enhancements
     - Remote url of database file is now configurable
