@@ -22,9 +22,8 @@ defmodule RefInspector.Config do
   @spec database_files :: list
   def database_files do
     case get(:database_files) do
+      nil -> @default_files
       files when is_list(files) and 0 < length(files) -> files
-
-      _ -> maybe_fetch_legacy_files() || @default_files
     end
   end
 
@@ -34,7 +33,7 @@ defmodule RefInspector.Config do
   @spec database_path :: String.t | nil
   def database_path do
     case get(:database_path) do
-      nil  -> maybe_fetch_legacy_path()
+      nil  -> nil
       path -> Path.expand(path)
     end
   end
@@ -55,31 +54,4 @@ defmodule RefInspector.Config do
 
   defp maybe_fetch_system({ :system, var }), do: System.get_env(var)
   defp maybe_fetch_system(config),           do: config
-
-
-  defp maybe_fetch_legacy_files() do
-    case get(:yaml) do
-      nil  -> nil
-      yaml ->
-        IO.write :stderr, "RefInspector: You are using a deprecated ':yaml'" <>
-                          " configuration to define the filename for your" <>
-                          " database. Please update your configuration to" <>
-                          " the new format.\n"
-
-        [ Path.basename(yaml) ]
-    end
-  end
-
-  defp maybe_fetch_legacy_path() do
-    case get(:yaml) do
-      nil  -> nil
-      yaml ->
-        IO.write :stderr, "RefInspector: You are using a deprecated ':yaml'" <>
-                          " configuration to define the path for your" <>
-                          " database. Please update your configuration to" <>
-                          " the new format.\n"
-
-        Path.dirname(yaml)
-    end
-  end
 end

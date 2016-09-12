@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.12.0-dev
+
+- Backwards incompatible changes
+    - Support for `:yaml` as database configuration has been removed
+
 ## v0.11.0 (2016-09-07)
 
 - Enhancements
