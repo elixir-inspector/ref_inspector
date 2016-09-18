@@ -22,11 +22,13 @@ defmodule RefInspector.Database do
   end
 
   def init(_) do
+    state = setup_storage()
+
     database_file = hd(Config.database_files)
     database_path = Config.database_path
     database      = Path.join([ database_path, database_file ])
 
-    { res, state } = do_load(database, %State{})
+    { res, state } = do_load(database, state)
 
     case res do
       { :error, reason } -> Logger.info(reason)
@@ -57,16 +59,8 @@ defmodule RefInspector.Database do
 
   def do_load(file, state) do
     case load_file(file) do
-      { :error, _ } = error -> { error, state }
-
-      entries when is_list(entries) ->
-        ets_opts = [ :protected, :ordered_set, read_concurrency: true ]
-        ets_tid  = :ets.new(:ref_inspector, ets_opts)
-
-        state = %{ state | ets_tid: ets_tid }
-        state = store_refs(entries, state)
-
-        { :ok, state }
+      { :error, _ } = error         -> { error, state }
+      entries when is_list(entries) -> { :ok, store_refs(entries, state) }
     end
   end
 
@@ -97,6 +91,13 @@ defmodule RefInspector.Database do
       |> sort_sources()
 
     parse_entries([{ medium, sources }] ++ acc, entries)
+  end
+
+  defp setup_storage() do
+    ets_opts = [ :protected, :ordered_set, read_concurrency: true ]
+    ets_tid  = :ets.new(:ref_inspector, ets_opts)
+
+    %State{ ets_tid: ets_tid }
   end
 
   defp store_refs([],                            state), do: state
