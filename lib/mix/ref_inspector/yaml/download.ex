@@ -72,7 +72,7 @@ defmodule Mix.RefInspector.Yaml.Download do
 
 
   defp yaml_path do
-    database_file = hd(Config.database_files)
+    database_file = Path.basename(Config.yaml_url)
     database_path = Config.database_path
 
     Path.join([ database_path, database_file ])

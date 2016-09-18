@@ -3,6 +3,8 @@
 ## v0.12.0-dev
 
 - Backwards incompatible changes
+    - Downloaded databases are stored under the basename of the remote file
+      instead of the filename of the "first configured database"
     - Support for `:yaml` as database configuration has been removed
 
 ## v0.11.0 (2016-09-07)
