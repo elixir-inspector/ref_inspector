@@ -42,7 +42,7 @@ use Mix.Config
 
 # static configuration
 config :ref_inspector,
-  database_files: [ "referers.yml" ],
+  database_files: [ "referers_search.yml", "referers_social.yml" ],
   database_path:  Path.join(Mix.Utils.mix_home, "ref_inspector") ]
 
 # system environment configuration
@@ -50,9 +50,6 @@ config :ref_inspector,
   database_files: [{ :system, "SOME_SYSTEM_ENV_VARIABLE" }],
   database_path:  { :system, "SOME_SYSTEM_ENV_VARIABLE" }
 ```
-
-__Note:__ For now the key `database_files` must be a list of a single database
-file. Multiple files will be supported in the future.
 
 #### Configuration (Database Files)
 

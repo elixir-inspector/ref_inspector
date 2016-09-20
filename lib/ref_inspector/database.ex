@@ -22,17 +22,21 @@ defmodule RefInspector.Database do
   end
 
   def init(_) do
+    database_files = Config.database_files
+    database_path  = Config.database_path
+
     state = setup_storage()
+    state = Enum.reduce database_files, state, fn (database_file, acc_state) ->
+      database = Path.join([ database_path, database_file ])
 
-    database_file = hd(Config.database_files)
-    database_path = Config.database_path
-    database      = Path.join([ database_path, database_file ])
+      { res, new_state } = do_load(database, acc_state)
 
-    { res, state } = do_load(database, state)
+      case res do
+        { :error, reason } -> Logger.info(reason)
+        _                  -> nil
+      end
 
-    case res do
-      { :error, reason } -> Logger.info(reason)
-      _                  -> nil
+      new_state
     end
 
     { :ok, state }

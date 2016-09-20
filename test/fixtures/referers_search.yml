@@ -10,8 +10,3 @@ search:
       - q
     domains:
       - www.google.com
-
-social:
-  Twitter:
-    domains:
-      - twitter.com

@@ -2,6 +2,10 @@
 
 ## v0.12.0-dev
 
+- Enhancements
+    - Multiple databases can be configured to load during startup.
+      Lookups are done in order until a match is found
+
 - Backwards incompatible changes
     - Downloaded databases are stored under the basename of the remote file
       instead of the filename of the "first configured database"
