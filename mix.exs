@@ -6,7 +6,7 @@ defmodule RefInspector.Mixfile do
   def project do
     [ app:     :ref_inspector,
       name:    "RefInspector",
-      version: "0.12.0-dev",
+      version: "0.12.0",
       elixir:  "~> 1.2",
       deps:    deps(),
 
@@ -45,7 +45,7 @@ defmodule RefInspector.Mixfile do
   defp docs do
     [ extras:     [ "CHANGELOG.md", "README.md" ],
       main:       "readme",
-      source_ref: "master",
+      source_ref: "v0.12.0",
       source_url: @url_github ]
   end
 

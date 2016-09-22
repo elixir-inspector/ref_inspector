@@ -12,7 +12,7 @@ required dependencies:
 
 ```elixir
 defp deps do
-  [{ :ref_inspector, "~> 0.11" }]
+  [{ :ref_inspector, "~> 0.12" }]
 end
 ```
 

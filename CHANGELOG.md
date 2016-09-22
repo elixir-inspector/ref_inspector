@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.12.0-dev
+## v0.12.0 (2016-09-22)
 
 - Enhancements
     - Multiple databases can be configured to load during startup.
