@@ -3,16 +3,18 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
 
   import ExUnit.CaptureIO
 
+  @fixture_path Path.join([ __DIR__, '../../fixtures' ]) |> Path.expand()
+  @test_file    "referers_social.yml"
+  @test_path    Path.join([ __DIR__, "../../downloads" ]) |> Path.expand()
 
   setup_all do
     # setup internal testing webserver
     Application.ensure_all_started(:inets)
 
-    fixture_path       = Path.join([ __DIR__, '../../fixtures' ]) |> Path.expand()
     httpd_opts         = [ port:          0,
                            server_name:   'ref_inspector_test',
-                           server_root:   fixture_path |> to_char_list,
-                           document_root: fixture_path |> to_char_list ]
+                           server_root:   to_char_list(@fixture_path),
+                           document_root: to_char_list(@fixture_path) ]
     { :ok, httpd_pid } = :inets.start(:httpd, httpd_opts)
 
     # configure app to use testing webserver
@@ -20,7 +22,7 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
     :ok      = Application.put_env(
       :ref_inspector,
       :remote_url,
-      "http://localhost:#{ :httpd.info(httpd_pid)[:port] }/referers.yml"
+      "http://localhost:#{ :httpd.info(httpd_pid)[:port] }/referers_social.yml"
     )
 
     on_exit fn ->
@@ -54,16 +56,16 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
   test "forceable download" do
     Mix.shell(Mix.Shell.IO)
 
-    orig_path = Application.get_env(:ref_inspector, :database_path)
-    test_path = Path.join([ __DIR__, "../../downloads" ]) |> Path.expand()
-    test_file = Path.join([ test_path, "referers.yml" ])
+    fixture_file = Path.join([ @fixture_path, @test_file ])
+    orig_path    = Application.get_env(:ref_inspector, :database_path)
+    test_file    = Path.join([ @test_path, @test_file ])
 
     if File.exists?(test_file) do
       test_file |> File.rm!
     end
 
     console = capture_io fn ->
-      Application.put_env(:ref_inspector, :database_path, test_path)
+      Application.put_env(:ref_inspector, :database_path, @test_path)
       Mix.RefInspector.Yaml.Download.run(["--force"])
       Application.put_env(:ref_inspector, :database_path, orig_path)
 
@@ -71,6 +73,7 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
     end
 
     assert String.contains?(console, test_file)
+    assert File.stat!(test_file).size == File.stat!(fixture_file).size
   end
 
   test "missing configuration" do
