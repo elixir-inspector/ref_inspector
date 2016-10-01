@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.13.0-dev
+
+- Enhancements
+    - Multiple files can be configured for download
+
+- Backwards incompatible changes
+    - Configuring a single `:remote_url` for download has been deprecated
+
 ## v0.12.0 (2016-09-22)
 
 - Enhancements

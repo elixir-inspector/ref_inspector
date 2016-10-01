@@ -53,12 +53,17 @@ config :ref_inspector,
 
 #### Configuration (Database Files)
 
-The remote url of the database file is configurable:
+The remote urls of your database file are configurable:
 
 ```elixir
 config :ref_inspector,
-  remote_url: "https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referers.yml"
+  remote_urls: [
+    "https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referers.yml"
+  ]
 ```
+
+All files configured will be saved as under the configured database path
+with the filename of the url.
 
 Shown configuration is used as the default location during download.
 

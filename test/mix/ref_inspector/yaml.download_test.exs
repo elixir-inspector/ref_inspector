@@ -4,7 +4,7 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
   import ExUnit.CaptureIO
 
   @fixture_path Path.join([ __DIR__, '../../fixtures' ]) |> Path.expand()
-  @test_file    "referers_social.yml"
+  @test_files   [ "referers_search.yml", "referers_social.yml" ]
   @test_path    Path.join([ __DIR__, "../../downloads" ]) |> Path.expand()
 
   setup_all do
@@ -18,15 +18,16 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
     { :ok, httpd_pid } = :inets.start(:httpd, httpd_opts)
 
     # configure app to use testing webserver
-    yaml_url = Application.get_env(:ref_inspector, :remote_url)
-    :ok      = Application.put_env(
+    remote_base = "http://localhost:#{ :httpd.info(httpd_pid)[:port] }"
+    yaml_urls   = Application.get_env(:ref_inspector, :remote_urls)
+    :ok         = Application.put_env(
       :ref_inspector,
-      :remote_url,
-      "http://localhost:#{ :httpd.info(httpd_pid)[:port] }/referers_social.yml"
+      :remote_urls,
+      Enum.map(@test_files, &( "#{remote_base}/#{&1}" ))
     )
 
     on_exit fn ->
-      Application.put_env(:ref_inspector, :remote_url, yaml_url)
+      Application.put_env(:ref_inspector, :remote_urls, yaml_urls)
     end
   end
 
@@ -56,24 +57,28 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
   test "forceable download" do
     Mix.shell(Mix.Shell.IO)
 
-    fixture_file = Path.join([ @fixture_path, @test_file ])
-    orig_path    = Application.get_env(:ref_inspector, :database_path)
-    test_file    = Path.join([ @test_path, @test_file ])
+    orig_path  = Application.get_env(:ref_inspector, :database_path)
+    test_files = Enum.map(@test_files, &( Path.join([ @test_path, &1 ]) ))
 
-    if File.exists?(test_file) do
-      test_file |> File.rm!
+    Enum.each test_files, fn (test_file) ->
+      if File.exists?(test_file) do
+        test_file |> File.rm!
+      end
     end
 
     console = capture_io fn ->
       Application.put_env(:ref_inspector, :database_path, @test_path)
       Mix.RefInspector.Yaml.Download.run(["--force"])
       Application.put_env(:ref_inspector, :database_path, orig_path)
-
-      assert File.exists?(test_file)
     end
 
-    assert String.contains?(console, test_file)
-    assert File.stat!(test_file).size == File.stat!(fixture_file).size
+    Enum.each test_files, fn (test_file) ->
+      fixture_file = Path.join([ @fixture_path, Path.basename(test_file) ])
+
+      assert File.exists?(test_file)
+      assert String.contains?(console, test_file)
+      assert File.stat!(test_file).size == File.stat!(fixture_file).size
+    end
   end
 
   test "missing configuration" do

@@ -25,7 +25,8 @@ defmodule Mix.RefInspector.Yaml.Download do
 
 
   defp do_run(args) do
-    Mix.shell.info "Download path: #{ yaml_path() }"
+    Mix.shell.info "Download paths:"
+    Enum.each Config.yaml_urls, &( Mix.shell.info "- #{ local_path(&1) }" )
     Mix.shell.info "This command will replace any already existing copy!"
 
     { opts, _argv, _errors } = OptionParser.parse(args, aliases: [ f: :force ])
@@ -63,16 +64,18 @@ defmodule Mix.RefInspector.Yaml.Download do
 
 
   defp download_yaml() do
-    yaml_path() |> Path.dirname() |> File.mkdir_p!
+    File.mkdir_p! Config.database_path
 
-    { :ok, content } = Download.read_remote(Config.yaml_url)
+    Enum.each Config.yaml_urls, fn (yaml_url) ->
+      { :ok, content } = Download.read_remote(yaml_url)
 
-    yaml_path() |> File.write(content)
+      yaml_url |> local_path() |> File.write(content)
+    end
   end
 
 
-  defp yaml_path do
-    database_file = Path.basename(Config.yaml_url)
+  defp local_path(url) do
+    database_file = Path.basename(url)
     database_path = Config.database_path
 
     Path.join([ database_path, database_file ])

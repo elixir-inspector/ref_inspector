@@ -3,7 +3,7 @@ defmodule RefInspector.Config do
   Utility module to simplify access to configuration values.
   """
 
-  @default_url   "https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referers.yml"
+  @default_urls  [ "https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referers.yml" ]
   @default_files [ "referers.yml" ]
 
   @doc """
@@ -39,10 +39,29 @@ defmodule RefInspector.Config do
   end
 
   @doc """
-  Returns the remote url of the database file.
+  Returns the remote urls of the database file.
   """
-  @spec yaml_url :: String.t
-  def yaml_url, do: get(:remote_url, @default_url)
+  @spec yaml_urls :: [String.t]
+  def yaml_urls do
+    case get(:remote_urls) do
+      files when is_list(files) and 0 < length(files) -> files
+
+      _ -> maybe_fetch_legacy_urls || @default_urls
+    end
+  end
+
+
+  defp maybe_fetch_legacy_urls() do
+    case get(:remote_url) do
+      nil -> nil
+      url ->
+        IO.write :stderr, "You are using a deprecated ':remote_url'" <>
+		          " configuration for downloading database files." <>
+                          " Please update your configuration to the new format."
+
+        [ url ]
+    end
+  end
 
 
   defp maybe_fetch_system(config) when is_list(config) do
