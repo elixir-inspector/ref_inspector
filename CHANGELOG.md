@@ -5,7 +5,7 @@
 - Enhancements
     - Multiple files can be configured for download
 
-- Backwards incompatible changes
+- Deprecations
     - Configuring a single `:remote_url` for download has been deprecated
 
 ## v0.12.0 (2016-09-22)
