@@ -3,6 +3,8 @@
 ## v0.13.0-dev
 
 - Enhancements
+    - Downloaded files can be automatically stored under a custom filename
+      differing from the url basename
     - Multiple files can be configured for download
 
 - Deprecations

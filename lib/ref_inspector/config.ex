@@ -3,8 +3,10 @@ defmodule RefInspector.Config do
   Utility module to simplify access to configuration values.
   """
 
-  @default_urls  [ "https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referers.yml" ]
+  @upstream_remote "https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referers.yml"
+
   @default_files [ "referers.yml" ]
+  @default_urls  [{ "referers.yml", @upstream_remote }]
 
   @doc """
   Provides access to configuration values with optional environment lookup.
@@ -41,7 +43,7 @@ defmodule RefInspector.Config do
   @doc """
   Returns the remote urls of the database file.
   """
-  @spec yaml_urls :: [String.t]
+  @spec yaml_urls :: [String.t | { String.t, String.t }]
   def yaml_urls do
     case get(:remote_urls) do
       files when is_list(files) and 0 < length(files) -> files

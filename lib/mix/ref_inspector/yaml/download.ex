@@ -66,18 +66,24 @@ defmodule Mix.RefInspector.Yaml.Download do
   defp download_yaml() do
     File.mkdir_p! Config.database_path
 
-    Enum.each Config.yaml_urls, fn (yaml_url) ->
-      { :ok, content } = Download.read_remote(yaml_url)
+    Enum.each Config.yaml_urls, fn (config) ->
+      local  = local_path(config)
+      remote = remote_path(config)
 
-      yaml_url |> local_path() |> File.write(content)
+      { :ok, content } = Download.read_remote(remote)
+
+      File.write(local, content)
     end
   end
 
-
-  defp local_path(url) do
-    database_file = Path.basename(url)
-    database_path = Config.database_path
-
-    Path.join([ database_path, database_file ])
+  defp local_path({ local, _remote }) do
+    Path.join([ Config.database_path, local ])
   end
+
+  defp local_path(remote) do
+    Path.join([ Config.database_path, Path.basename(remote) ])
+  end
+
+  defp remote_path({ _locale, remote }), do: remote
+  defp remote_path(remote),              do: remote
 end
