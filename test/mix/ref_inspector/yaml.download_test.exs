@@ -3,7 +3,7 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
 
   import ExUnit.CaptureIO
 
-  @fixture_path Path.join([ __DIR__, '../../fixtures' ]) |> Path.expand()
+  @fixture_path Path.join([ __DIR__, "../../fixtures" ]) |> Path.expand()
   @test_files   [ "referers_search.yml", "referers_social.yml" ]
   @test_path    Path.join([ __DIR__, "../../downloads" ]) |> Path.expand()
 
