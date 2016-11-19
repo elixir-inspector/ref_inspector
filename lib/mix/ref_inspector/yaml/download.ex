@@ -84,6 +84,6 @@ defmodule Mix.RefInspector.Yaml.Download do
     Path.join([ Config.database_path, Path.basename(remote) ])
   end
 
-  defp remote_path({ _locale, remote }), do: remote
-  defp remote_path(remote),              do: remote
+  defp remote_path({ _local, remote }), do: remote
+  defp remote_path(remote),             do: remote
 end
