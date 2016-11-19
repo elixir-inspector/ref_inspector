@@ -39,7 +39,7 @@ defmodule RefInspector.Mixfile do
 
       { :hackney, "~> 1.0" },
       { :poolboy, "~> 1.0" },
-      { :yamerl,  "~> 0.3" } ]
+      { :yamerl,  "~> 0.4" } ]
   end
 
   defp docs do
