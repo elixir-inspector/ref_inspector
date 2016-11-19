@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.13.0-dev
+## v0.13.0 (2016-11-19)
 
 - Enhancements
     - Downloaded files can be automatically stored under a custom filename
