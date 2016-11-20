@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.14.0-dev
+
+- Backwards incompatible changes
+    - Support for single `:remote_url` download configuration has been removed
+
 ## v0.13.0 (2016-11-19)
 
 - Enhancements

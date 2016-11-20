@@ -48,20 +48,7 @@ defmodule RefInspector.Config do
     case get(:remote_urls) do
       files when is_list(files) and 0 < length(files) -> files
 
-      _ -> maybe_fetch_legacy_urls || @default_urls
-    end
-  end
-
-
-  defp maybe_fetch_legacy_urls() do
-    case get(:remote_url) do
-      nil -> nil
-      url ->
-        IO.write :stderr, "You are using a deprecated ':remote_url'" <>
-		          " configuration for downloading database files." <>
-                          " Please update your configuration to the new format."
-
-        [ url ]
+      _ -> @default_urls
     end
   end
 
