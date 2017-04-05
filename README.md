@@ -99,7 +99,7 @@ for a complete list of available options.
 iex(1)> RefInspector.parse("http://www.google.com/search?q=ref_inspector")
 %RefInspector.Result{
   referer: "http://www.google.com/search?q=ref_inspector",
-  medium:  "search",
+  medium:  :search,
   source:  "google",
   term:    "ref_inspector"
 }
