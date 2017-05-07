@@ -60,6 +60,10 @@ defmodule RefInspector.Config do
     end
   end
 
+  defp maybe_fetch_system({ :system, var, default }) do
+    System.get_env(var) || default
+  end
+
   defp maybe_fetch_system({ :system, var }), do: System.get_env(var)
   defp maybe_fetch_system(config),           do: config
 end

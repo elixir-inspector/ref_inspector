@@ -2,6 +2,10 @@
 
 ## v0.14.0-dev
 
+- Enhancements
+    - System environment configuration can set an optional default value
+      to be used if the environment variable is unset
+
 - Backwards incompatible changes
     - Support for single `:remote_url` download configuration has been removed
 
