@@ -4,6 +4,7 @@ defmodule RefInspector.ParserTest do
   alias RefInspector.Result
 
   test "empty referer" do
+    assert %Result{} == RefInspector.parse(nil)
     assert %Result{} == RefInspector.parse("")
   end
 

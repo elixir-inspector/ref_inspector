@@ -3,6 +3,9 @@ defmodule RefInspector.Pool do
   Connects the plain RefInspector interface with the underlying pool.
   """
 
+  alias RefInspector.Result
+
+
   @pool_name    :ref_inspector_pool
   @pool_options [
     name:          { :local, @pool_name },
@@ -27,6 +30,8 @@ defmodule RefInspector.Pool do
   Sends a parse request to a pool worker.
   """
   @spec parse(String.t) :: map
+  def parse(nil), do: %Result{}
+  def parse(""),  do: %Result{}
   def parse(ref) do
     :poolboy.transaction(
       @pool_name,
