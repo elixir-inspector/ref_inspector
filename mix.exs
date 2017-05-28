@@ -27,7 +27,7 @@ defmodule RefInspector.Mixfile do
 
   def application do
     [ applications: [ :hackney, :logger, :poolboy, :yamerl ],
-      mod:          { RefInspector.Application, [] } ]
+      mod:          { RefInspector.App, [] } ]
   end
 
   defp deps do

@@ -1,7 +1,5 @@
-defmodule RefInspector.Application do
-  @moduledoc """
-  RefInspector Application
-  """
+defmodule RefInspector.App do
+  @moduledoc false
 
   use Application
 
