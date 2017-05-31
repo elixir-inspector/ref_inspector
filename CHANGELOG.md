@@ -8,8 +8,10 @@
     - System environment configuration can set an optional default value
       to be used if the environment variable is unset
 
-- Backwards incompatible changes
+- Bug fixes
     - Properly handles `nil` values passed to the lookup
+
+- Backwards incompatible changes
     - Support for single `:remote_url` download configuration has been removed
 
 ## v0.13.0 (2016-11-19)
