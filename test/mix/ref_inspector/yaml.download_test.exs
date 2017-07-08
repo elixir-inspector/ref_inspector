@@ -10,10 +10,10 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
 
   # compatibility hack for elixir 1.2.x
   if Version.match?(System.version, "~> 1.2.0") do
-    def to_charlist(string), do: Kernel.to_char_list(string)
+    def to_charlist(string), do: String.to_char_list(string)
   else
     @doc false
-    def to_charlist(string), do: Kernel.to_charlist(string)
+    def to_charlist(string), do: String.to_charlist(string)
   end
 
 
