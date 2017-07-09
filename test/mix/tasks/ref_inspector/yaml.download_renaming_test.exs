@@ -1,12 +1,12 @@
-defmodule Mix.RefInspector.Yaml.DownloadRenamingTest do
+defmodule Mix.Tasks.RefInspector.Yaml.DownloadRenamingTest do
   use ExUnit.Case, async: false
 
   import ExUnit.CaptureIO
 
   @fixture_file "empty.yml"
-  @fixture_path Path.join([ __DIR__, "../../fixtures" ]) |> Path.expand()
+  @fixture_path Path.join([ __DIR__, "../../../fixtures" ]) |> Path.expand()
   @test_file    "empty_renamed.yml"
-  @test_path    Path.join([ __DIR__, "../../downloads" ]) |> Path.expand()
+  @test_path    Path.join([ __DIR__, "../../../downloads" ]) |> Path.expand()
 
 
   # compatibility hack for elixir 1.2.x
@@ -55,7 +55,7 @@ defmodule Mix.RefInspector.Yaml.DownloadRenamingTest do
 
     console = capture_io fn ->
       Application.put_env(:ref_inspector, :database_path, @test_path)
-      Mix.RefInspector.Yaml.Download.run(["--force"])
+      Mix.Tasks.RefInspector.Yaml.Download.run(["--force"])
       Application.put_env(:ref_inspector, :database_path, orig_path)
     end
 

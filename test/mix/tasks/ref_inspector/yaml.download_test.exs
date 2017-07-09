@@ -1,11 +1,11 @@
-defmodule Mix.RefInspector.Yaml.DownloadTest do
+defmodule Mix.Tasks.RefInspector.Yaml.DownloadTest do
   use ExUnit.Case, async: false
 
   import ExUnit.CaptureIO
 
-  @fixture_path Path.join([ __DIR__, "../../fixtures" ]) |> Path.expand()
+  @fixture_path Path.join([ __DIR__, "../../../fixtures" ]) |> Path.expand()
   @test_files   [ "referers_search.yml", "referers_social.yml" ]
-  @test_path    Path.join([ __DIR__, "../../downloads" ]) |> Path.expand()
+  @test_path    Path.join([ __DIR__, "../../../downloads" ]) |> Path.expand()
 
 
   # compatibility hack for elixir 1.2.x
@@ -46,7 +46,7 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
     Mix.shell(Mix.Shell.IO)
 
     console = capture_io fn ->
-      Mix.RefInspector.Yaml.Download.run([])
+      Mix.Tasks.RefInspector.Yaml.Download.run([])
 
       IO.write "n"
     end
@@ -58,7 +58,7 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
     Mix.shell(Mix.Shell.IO)
 
     console = capture_io [capture_prompt: true], fn ->
-      Mix.RefInspector.Yaml.Download.run([])
+      Mix.Tasks.RefInspector.Yaml.Download.run([])
     end
 
     assert String.contains?(console, "Download referers.yml? [Yn]")
@@ -78,7 +78,7 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
 
     console = capture_io fn ->
       Application.put_env(:ref_inspector, :database_path, @test_path)
-      Mix.RefInspector.Yaml.Download.run(["--force"])
+      Mix.Tasks.RefInspector.Yaml.Download.run(["--force"])
       Application.put_env(:ref_inspector, :database_path, orig_path)
     end
 
@@ -98,7 +98,7 @@ defmodule Mix.RefInspector.Yaml.DownloadTest do
 
     console = capture_io :stderr, fn ->
       Application.put_env(:ref_inspector, :database_path, nil)
-      Mix.RefInspector.Yaml.Download.run([])
+      Mix.Tasks.RefInspector.Yaml.Download.run([])
       Application.put_env(:ref_inspector, :database_path, orig_path)
     end
 
