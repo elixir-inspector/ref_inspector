@@ -1,10 +1,8 @@
 defmodule Mix.RefInspector.Yaml.Download do
   @moduledoc """
-  Fetches a copy of referers.yml from the
-  [snowplow referer-parser](https://github.com/snowplow/referer-parser)
-  project.
+  Fetches copies of each configured database file.
 
-  The copy will be stored inside your configured path.
+  The copies will be stored inside the configured path.
 
   `mix ref_inspector.yaml.download`
   """

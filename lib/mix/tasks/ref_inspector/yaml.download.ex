@@ -1,6 +1,6 @@
 defmodule Mix.Tasks.RefInspector.Yaml.Download do
   @moduledoc false
-  @shortdoc  "Downloads referers.yml"
+  @shortdoc  "Downloads database files"
 
   use Mix.Task
 
