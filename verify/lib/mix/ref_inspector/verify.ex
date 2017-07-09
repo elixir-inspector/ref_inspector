@@ -4,6 +4,7 @@ defmodule Mix.RefInspector.Verify do
   """
 
   alias Mix.RefInspector.Verify
+  alias RefInspector.Downloader
 
 
   @behaviour Mix.Task
@@ -30,8 +31,9 @@ defmodule Mix.RefInspector.Verify do
 
   defp maybe_download([ quick: true ]), do: :ok
   defp maybe_download(_)                do
-    :ok = Mix.RefInspector.Yaml.Download.run(["--force"])
-    :ok = Verify.Fixture.download()
+    { :ok, _ } = Application.ensure_all_started(:hackney)
+    :ok        = Downloader.download()
+    :ok        = Verify.Fixture.download()
 
     Mix.shell.info "=== Skip download using '--quick' ==="
 

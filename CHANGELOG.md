@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.15.0-dev
+
+- Enhancements
+    - The database downloader has been promoted to a directly usable module
+
 ## v0.14.0 (2017-05-31)
 
 - Enhancements

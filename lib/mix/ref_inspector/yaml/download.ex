@@ -7,8 +7,8 @@ defmodule Mix.RefInspector.Yaml.Download do
   `mix ref_inspector.yaml.download`
   """
 
-  alias Mix.RefInspector.Download
   alias RefInspector.Config
+  alias RefInspector.Downloader
 
 
   @behaviour Mix.Task
@@ -24,7 +24,11 @@ defmodule Mix.RefInspector.Yaml.Download do
 
   defp do_run(args) do
     Mix.shell.info "Download paths:"
-    Enum.each Config.yaml_urls, &( Mix.shell.info "- #{ local_path(&1) }" )
+
+    Enum.each Config.yaml_urls, fn (yaml) ->
+      Mix.shell.info "- #{ Downloader.path_local(yaml) }"
+    end
+
     Mix.shell.info "This command will replace any already existing copy!"
 
     { opts, _argv, _errors } = OptionParser.parse(args, aliases: [ f: :force ])
@@ -47,7 +51,8 @@ defmodule Mix.RefInspector.Yaml.Download do
   end
 
   defp run_confirmed(true) do
-    download_yaml()
+    { :ok, _ } = Application.ensure_all_started(:hackney)
+    :ok        = Downloader.download()
 
     Mix.shell.info "Download complete!"
 
@@ -59,29 +64,4 @@ defmodule Mix.RefInspector.Yaml.Download do
     |> Mix.shell.yes?()
     |> run_confirmed()
   end
-
-
-  defp download_yaml() do
-    File.mkdir_p! Config.database_path
-
-    Enum.each Config.yaml_urls, fn (config) ->
-      local  = local_path(config)
-      remote = remote_path(config)
-
-      { :ok, content } = Download.read_remote(remote)
-
-      File.write(local, content)
-    end
-  end
-
-  defp local_path({ local, _remote }) do
-    Path.join([ Config.database_path, local ])
-  end
-
-  defp local_path(remote) do
-    Path.join([ Config.database_path, Path.basename(remote) ])
-  end
-
-  defp remote_path({ _local, remote }), do: remote
-  defp remote_path(remote),             do: remote
 end

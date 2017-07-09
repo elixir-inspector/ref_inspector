@@ -56,6 +56,9 @@ regexes database in the configured path. This database is taken from the
 The local path of the downloaded file will be shown to you upon command
 invocation.
 
+If you want to download the database files using your application you can
+directly call `RefInspector.Downloader.download/0`.
+
 ### Configuration
 
 Add the referer database you want to use to your project configuration:

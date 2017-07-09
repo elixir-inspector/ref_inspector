@@ -3,7 +3,7 @@ defmodule Mix.RefInspector.Verify.Fixture do
   Utility module to bundle/download the verification fixture.
   """
 
-  alias Mix.RefInspector.Download
+  alias RefInspector.Downloader
 
 
   @local  "referer-tests.json"
@@ -23,7 +23,7 @@ defmodule Mix.RefInspector.Verify.Fixture do
   def download_fixture() do
     Mix.shell.info ".. downloading: #{ @local }"
 
-    { :ok, content } = Download.read_remote(@remote)
+    { :ok, content } = Downloader.read_remote(@remote)
 
     File.write! local_file(), content
   end
