@@ -16,12 +16,35 @@ defp deps do
 end
 ```
 
-You should also update your applications to include all necessary projects:
+### Application/Supervisor Setup
+
+Probably the easiest way to manage startup is by simply
+adding `:ref_inspector` to the list of applications:
 
 ```elixir
 def application do
   [ applications: [ :ref_inspector ]]
 end
+```
+
+A second possible approach is to take care of supervision yourself. This
+means you should add `:ref_inspector` to your included applications instead:
+
+```elixir
+def application do
+  [ included_applications: [ :ref_inspector ]]
+end
+```
+
+And also add the appropriate `RefInspector.Supervisor` to your hierarchy:
+
+```elixir
+# in your application/supervisor
+children = [
+  # ...
+  supervisor(RefInspector.Supervisor, [])
+  # ..
+]
 ```
 
 ### Referer Database
