@@ -3,6 +3,9 @@ defmodule Mix.Tasks.RefInspector.Yaml.DownloadRenamingTest do
 
   import ExUnit.CaptureIO
 
+  alias Mix.Tasks.RefInspector.Yaml.Download
+
+
   @fixture_file "empty.yml"
   @fixture_path Path.join([ __DIR__, "../../../fixtures" ]) |> Path.expand()
   @test_file    "empty_renamed.yml"
@@ -55,7 +58,7 @@ defmodule Mix.Tasks.RefInspector.Yaml.DownloadRenamingTest do
 
     console = capture_io fn ->
       Application.put_env(:ref_inspector, :database_path, @test_path)
-      Mix.Tasks.RefInspector.Yaml.Download.run(["--force"])
+      Download.run(["--force"])
       Application.put_env(:ref_inspector, :database_path, orig_path)
     end
 

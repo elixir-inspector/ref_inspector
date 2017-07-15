@@ -3,6 +3,9 @@ defmodule Mix.Tasks.RefInspector.Yaml.DownloadTest do
 
   import ExUnit.CaptureIO
 
+  alias Mix.Tasks.RefInspector.Yaml.Download
+
+
   @fixture_path Path.join([ __DIR__, "../../../fixtures" ]) |> Path.expand()
   @test_files   [ "referers_search.yml", "referers_social.yml" ]
   @test_path    Path.join([ __DIR__, "../../../downloads" ]) |> Path.expand()
@@ -46,9 +49,8 @@ defmodule Mix.Tasks.RefInspector.Yaml.DownloadTest do
     Mix.shell(Mix.Shell.IO)
 
     console = capture_io fn ->
-      Mix.Tasks.RefInspector.Yaml.Download.run([])
-
-      IO.write "n"
+      Download.run([])
+      IO.write("n")
     end
 
     assert String.contains?(console, "Download aborted")
@@ -58,7 +60,7 @@ defmodule Mix.Tasks.RefInspector.Yaml.DownloadTest do
     Mix.shell(Mix.Shell.IO)
 
     console = capture_io [capture_prompt: true], fn ->
-      Mix.Tasks.RefInspector.Yaml.Download.run([])
+      Download.run([])
     end
 
     assert String.contains?(console, "Download referers.yml? [Yn]")
@@ -78,7 +80,7 @@ defmodule Mix.Tasks.RefInspector.Yaml.DownloadTest do
 
     console = capture_io fn ->
       Application.put_env(:ref_inspector, :database_path, @test_path)
-      Mix.Tasks.RefInspector.Yaml.Download.run(["--force"])
+      Download.run(["--force"])
       Application.put_env(:ref_inspector, :database_path, orig_path)
     end
 
@@ -98,7 +100,7 @@ defmodule Mix.Tasks.RefInspector.Yaml.DownloadTest do
 
     console = capture_io :stderr, fn ->
       Application.put_env(:ref_inspector, :database_path, nil)
-      Mix.Tasks.RefInspector.Yaml.Download.run([])
+      Download.run([])
       Application.put_env(:ref_inspector, :database_path, orig_path)
     end
 
