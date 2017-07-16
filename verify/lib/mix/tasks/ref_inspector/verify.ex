@@ -69,11 +69,18 @@ defmodule Mix.Tasks.RefInspector.Verify do
   end
 
   defp verify_all(fixture) do
-    testcases =
-         fixture
-      |> :yamerl_constr.file([ :str_node_as_binary ])
-      |> unravel_list()
+    case File.exists?(fixture) do
+      false ->
+        Mix.shell.error "Fixture file #{fixture} is missing."
+        Mix.shell.error "Please run without '--quick' param to download it!"
 
-    verify(testcases)
+      true ->
+        testcases =
+           fixture
+        |> :yamerl_constr.file([ :str_node_as_binary ])
+        |> unravel_list()
+
+        verify(testcases)
+    end
   end
 end
