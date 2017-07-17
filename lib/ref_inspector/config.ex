@@ -3,7 +3,7 @@ defmodule RefInspector.Config do
   Utility module to simplify access to configuration values.
   """
 
-  @upstream_remote "https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referers.yml"
+  @upstream_remote "https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yml"
 
   @default_files [ "referers.yml" ]
   @default_urls  [{ "referers.yml", @upstream_remote }]

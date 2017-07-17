@@ -90,9 +90,10 @@ The remote urls of your database file are configurable:
 ```elixir
 # default configuration
 config :ref_inspector,
-  remote_urls: [
-    "https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referers.yml"
-  ]
+  remote_urls: [{
+    "referers.yml",
+    "https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yml"
+  }]
 
 # custom configuration
 config :ref_inspector,
