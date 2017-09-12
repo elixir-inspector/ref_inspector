@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.15.0-dev
+## v0.15.0 (2017-09-12)
 
 - Enhancements
     - Supervision can now be done without starting the application
