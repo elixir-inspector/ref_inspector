@@ -11,23 +11,14 @@ defmodule Mix.Tasks.RefInspector.Yaml.DownloadTest do
   @test_path    Path.join([ __DIR__, "../../../downloads" ]) |> Path.expand()
 
 
-  # compatibility hack for elixir 1.2.x
-  if Version.match?(System.version, "~> 1.2.0") do
-    def to_charlist(string), do: String.to_char_list(string)
-  else
-    @doc false
-    def to_charlist(string), do: String.to_charlist(string)
-  end
-
-
   setup_all do
     # setup internal testing webserver
     Application.ensure_all_started(:inets)
 
     httpd_opts         = [ port:          0,
                            server_name:   'ref_inspector_test',
-                           server_root:   __MODULE__.to_charlist(@fixture_path),
-                           document_root: __MODULE__.to_charlist(@fixture_path) ]
+                           server_root:   String.to_charlist(@fixture_path),
+                           document_root: String.to_charlist(@fixture_path) ]
     { :ok, httpd_pid } = :inets.start(:httpd, httpd_opts)
 
     # configure app to use testing webserver

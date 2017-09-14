@@ -4,7 +4,7 @@ defmodule RefInspector.Verification.Mixfile do
   def project do
     [ app:       :ref_inspector_verification,
       version:   "0.0.1",
-      elixir:    "~> 1.2",
+      elixir:    "~> 1.3",
       deps:      deps(),
       deps_path: "../deps",
       lockfile:  "../mix.lock" ]
