@@ -71,6 +71,12 @@ config :ref_inspector,
   database_files: [ "referers_search.yml", "referers_social.yml" ],
   database_path:  Path.join(Mix.Utils.mix_home, "ref_inspector") ]
 
+# dynamic configuration
+# { mod, fun } tuple without arguments
+# called upon supervisor (re-) start
+config :ref_inspector
+  init: { MyInitModule, :my_init_fun }
+
 # system environment configuration
 config :ref_inspector,
   database_files: [{ :system, "SOME_SYSTEM_ENV_VARIABLE" }],
