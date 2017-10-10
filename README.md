@@ -76,17 +76,6 @@ config :ref_inspector,
 # called upon supervisor (re-) start
 config :ref_inspector
   init: { MyInitModule, :my_init_fun }
-
-# system environment configuration
-config :ref_inspector,
-  database_files: [{ :system, "SOME_SYSTEM_ENV_VARIABLE" }],
-  database_path:  { :system, "SOME_SYSTEM_ENV_VARIABLE" }
-
-# system environment configuration with default
-# (default will only be used if environment variable is UNSET)
-config :ref_inspector,
-  database_files: [{ :system, "SOME_SYSTEM_ENV_VARIABLE", "default.yml" }],
-  database_path:  { :system, "SOME_SYSTEM_ENV_VARIABLE", "/custom/default" }
 ```
 
 #### Configuration (Database Files)
@@ -123,10 +112,6 @@ values to hackney you can use the key `:http_opts` in your config:
 config :ref_inspector,
   http_opts: [ proxy: "http://mycompanyproxy.com" ]
 ```
-
-These values are expanded if using aforementioned `{ :system, "SOME_VAR" }`
-(or `{ :system, "SOME_VAR", "default" }`) rule and then passed unmodified
-to the client process.
 
 Please see
 [`:hackney.request/5`](https://hexdocs.pm/hackney/hackney.html#request-5)
