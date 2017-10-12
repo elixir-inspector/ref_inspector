@@ -10,31 +10,32 @@ defmodule RefInspector.ParserTest do
 
   test "completely unknown" do
     referer = "http://i.will.not.be.found/"
-    parsed  = %Result{ referer: referer }
+    parsed = %Result{referer: referer}
 
     assert parsed == RefInspector.parse(referer)
   end
 
   test "internal referer" do
     referer = "http://www.example.com/sub-page"
-    parsed  = %Result{ referer: referer, medium: :internal }
+    parsed = %Result{referer: referer, medium: :internal}
 
     assert parsed == RefInspector.parse(referer)
   end
 
   test "internal referer (subdomain)" do
     referer = "http://some.subdomain.from.www.example.org/"
-    parsed  = %Result{ referer: referer, medium: :internal }
+    parsed = %Result{referer: referer, medium: :internal}
 
     assert parsed == RefInspector.parse(referer)
   end
 
   test "no query" do
     referer = "http://www.google.fr/imgres?ignored=parameters"
-    parsed  = %Result{
+
+    parsed = %Result{
       referer: referer,
-      medium:  :search,
-      source:  "Google Images"
+      medium: :search,
+      source: "Google Images"
     }
 
     assert parsed == RefInspector.parse(referer)
@@ -42,11 +43,12 @@ defmodule RefInspector.ParserTest do
 
   test "google search" do
     referer = "http://www.google.com/search?q=snowplow+referer+parser&hl=en&client=chrome"
+
     parsed = %Result{
       referer: referer,
-      medium:  :search,
-      source:  "Google",
-      term:    "snowplow referer parser"
+      medium: :search,
+      source: "Google",
+      term: "snowplow referer parser"
     }
 
     assert parsed == RefInspector.parse(referer)
@@ -54,11 +56,12 @@ defmodule RefInspector.ParserTest do
 
   test "google empty search" do
     referer = "http://www.google.com/search?q=&hl=en&client=chrome"
-    parsed  = %Result{
+
+    parsed = %Result{
       referer: referer,
-      medium:  :search,
-      source:  "Google",
-      term:    ""
+      medium: :search,
+      source: "Google",
+      term: ""
     }
 
     assert parsed == RefInspector.parse(referer)
@@ -66,10 +69,11 @@ defmodule RefInspector.ParserTest do
 
   test "referer without parameters" do
     referer = "https://twitter.com/elixirlang"
-    parsed  = %Result{
+
+    parsed = %Result{
       referer: referer,
-      medium:  :social,
-      source:  "Twitter"
+      medium: :social,
+      source: "Twitter"
     }
 
     assert parsed == RefInspector.parse(referer)
@@ -77,10 +81,11 @@ defmodule RefInspector.ParserTest do
 
   test "referer without defined parameters" do
     referer = "https://twitter.com/elixirlang?nothing=defined"
-    parsed  = %Result{
+
+    parsed = %Result{
       referer: referer,
-      medium:  :social,
-      source:  "Twitter"
+      medium: :social,
+      source: "Twitter"
     }
 
     assert parsed == RefInspector.parse(referer)

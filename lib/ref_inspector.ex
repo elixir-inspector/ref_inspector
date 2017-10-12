@@ -6,6 +6,6 @@ defmodule RefInspector do
   @doc """
   Parses a referer.
   """
-  @spec parse(String.t) :: map
+  @spec parse(String.t()) :: map
   defdelegate parse(ref), to: RefInspector.Pool
 end

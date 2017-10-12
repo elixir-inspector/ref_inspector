@@ -5,8 +5,8 @@ defmodule RefInspector.Config do
 
   @upstream_remote "https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yml"
 
-  @default_files [ "referers.yml" ]
-  @default_urls  [{ "referers.yml", @upstream_remote }]
+  @default_files ["referers.yml"]
+  @default_urls [{"referers.yml", @upstream_remote}]
 
   @doc """
   Provides access to configuration values with optional environment lookup.
@@ -32,10 +32,10 @@ defmodule RefInspector.Config do
   @doc """
   Returns the configured database path or `nil`.
   """
-  @spec database_path :: String.t | nil
+  @spec database_path :: String.t() | nil
   def database_path do
     case get(:database_path) do
-      nil  -> nil
+      nil -> nil
       path -> Path.expand(path)
     end
   end
@@ -43,27 +43,25 @@ defmodule RefInspector.Config do
   @doc """
   Returns the remote urls of the database file.
   """
-  @spec yaml_urls :: [String.t | { String.t, String.t }]
+  @spec yaml_urls :: [String.t() | {String.t(), String.t()}]
   def yaml_urls do
     case get(:remote_urls) do
       files when is_list(files) and 0 < length(files) -> files
-
       _ -> @default_urls
     end
   end
 
-
   defp maybe_fetch_system(config) when is_list(config) do
-    Enum.map config, fn
-      { k, v } -> { k, maybe_fetch_system(v) }
-      other    -> other
-    end
+    Enum.map(config, fn
+      {k, v} -> {k, maybe_fetch_system(v)}
+      other -> other
+    end)
   end
 
-  defp maybe_fetch_system({ :system, var, default }) do
+  defp maybe_fetch_system({:system, var, default}) do
     System.get_env(var) || default
   end
 
-  defp maybe_fetch_system({ :system, var }), do: System.get_env(var)
-  defp maybe_fetch_system(config),           do: config
+  defp maybe_fetch_system({:system, var}), do: System.get_env(var)
+  defp maybe_fetch_system(config), do: config
 end

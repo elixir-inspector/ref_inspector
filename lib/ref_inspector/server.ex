@@ -11,7 +11,7 @@ defmodule RefInspector.Server do
     GenServer.start_link(__MODULE__, default)
   end
 
-  def handle_call({ :parse, ref }, _from, state) do
-    { :reply, RefInspector.Parser.parse(ref), state }
+  def handle_call({:parse, ref}, _from, state) do
+    {:reply, RefInspector.Parser.parse(ref), state}
   end
 end

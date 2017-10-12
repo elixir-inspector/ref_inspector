@@ -14,23 +14,23 @@ defmodule Mix.RefInspector.Verify.Cleanup do
     |> cleanup_term()
   end
 
-
-  defp cleanup_medium(%{ medium: :null } = testcase) do
-    %{ testcase | medium: :unknown }
-  end
-  defp cleanup_medium(%{ medium: medium } = testcase) do
-    %{ testcase | medium: String.to_atom(medium) }
+  defp cleanup_medium(%{medium: :null} = testcase) do
+    %{testcase | medium: :unknown}
   end
 
-
-  defp cleanup_source(%{ source: :null } = testcase) do
-    %{ testcase | source: :unknown }
+  defp cleanup_medium(%{medium: medium} = testcase) do
+    %{testcase | medium: String.to_atom(medium)}
   end
+
+  defp cleanup_source(%{source: :null} = testcase) do
+    %{testcase | source: :unknown}
+  end
+
   defp cleanup_source(testcase), do: testcase
 
-
-  defp cleanup_term(%{ term: :null } = testcase) do
-    %{ testcase | term: :none }
+  defp cleanup_term(%{term: :null} = testcase) do
+    %{testcase | term: :none}
   end
+
   defp cleanup_term(testcase), do: testcase
 end

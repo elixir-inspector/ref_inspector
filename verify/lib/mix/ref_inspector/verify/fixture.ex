@@ -5,33 +5,31 @@ defmodule Mix.RefInspector.Verify.Fixture do
 
   alias RefInspector.Downloader
 
-
-  @local  "referer-tests.json"
+  @local "referer-tests.json"
   @remote "https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referer-tests.json"
 
-
   def download() do
-    Mix.shell.info "Download path: #{ download_path() }"
+    Mix.shell().info("Download path: #{download_path()}")
 
     setup()
     download_fixture()
 
-    Mix.shell.info "Download complete!"
+    Mix.shell().info("Download complete!")
     :ok
   end
 
   def download_fixture() do
-    Mix.shell.info ".. downloading: #{ @local }"
+    Mix.shell().info(".. downloading: #{@local}")
 
-    { :ok, content } = Downloader.read_remote(@remote)
+    {:ok, content} = Downloader.read_remote(@remote)
 
-    File.write! local_file(), content
+    File.write!(local_file(), content)
   end
 
   def download_path, do: Path.join(__DIR__, "../../../../database") |> Path.expand()
-  def local_file,    do: Path.join([ download_path(), @local ])
+  def local_file, do: Path.join([download_path(), @local])
 
   def setup() do
-    File.mkdir_p! download_path()
+    File.mkdir_p!(download_path())
   end
 end

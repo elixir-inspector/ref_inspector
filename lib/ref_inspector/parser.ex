@@ -9,18 +9,18 @@ defmodule RefInspector.Parser do
   @doc """
   Parses a given referer string.
   """
-  @spec parse(String.t) :: map
+  @spec parse(String.t()) :: map
   def parse(ref) do
     uri = ref |> URI.parse()
 
-    result = case is_internal?(uri.host || "") do
-      true  -> %Result{ medium: :internal }
-      false -> uri |> parse_ref()
-    end
+    result =
+      case is_internal?(uri.host || "") do
+        true -> %Result{medium: :internal}
+        false -> uri |> parse_ref()
+      end
 
-    %{ result | referer: ref }
+    %{result | referer: ref}
   end
-
 
   # Internal methods
 
@@ -30,23 +30,24 @@ defmodule RefInspector.Parser do
     host |> String.ends_with?(sources)
   end
 
+  defp maybe_parse_query(nil, _, result), do: result
+  defp maybe_parse_query(_, [], result), do: result
 
-  defp maybe_parse_query(  nil,      _, result), do: result
-  defp maybe_parse_query(    _,     [], result), do: result
-  defp maybe_parse_query(query, params, result)  do
+  defp maybe_parse_query(query, params, result) do
     term =
-         query
+      query
       |> URI.decode_query()
       |> parse_query(params)
 
-    %{ result | term: term }
+    %{result | term: term}
   end
 
-
-  defp match_medium(ref, { index, medium, [ source | sources ]}) do
+  defp match_medium(ref, {index, medium, [source | sources]}) do
     case matches_source?(ref, source) do
-      false -> match_medium(ref, { index, medium, sources })
-      true  ->
+      false ->
+        match_medium(ref, {index, medium, sources})
+
+      true ->
         result = %Result{
           medium: medium,
           source: source.name
@@ -55,28 +56,29 @@ defmodule RefInspector.Parser do
         maybe_parse_query(ref.query, source[:parameters], result)
     end
   end
-  defp match_medium(_, { _, _, [] }), do: nil
+
+  defp match_medium(_, {_, _, []}), do: nil
 
   defp matches_source?(ref, source) do
-    String.ends_with?((ref.host || ""), source[:host])
-    && String.starts_with?((ref.path || "/"), source[:path])
+    String.ends_with?(ref.host || "", source[:host]) &&
+      String.starts_with?(ref.path || "/", source[:path])
   end
 
+  defp parse_query(_, []), do: :none
 
-  defp parse_query(    _, []),                 do: :none
-  defp parse_query(query, [ param | params ])  do
+  defp parse_query(query, [param | params]) do
     Map.get(query, param, parse_query(query, params))
   end
 
-
   defp parse_ref(ref) do
-    ref |> parse_ref(Database.list)
+    ref |> parse_ref(Database.list())
   end
 
-  defp parse_ref(  _, []),                   do: %Result{}
-  defp parse_ref(ref, [ medium | referers ]) do
+  defp parse_ref(_, []), do: %Result{}
+
+  defp parse_ref(ref, [medium | referers]) do
     case match_medium(ref, medium) do
-      nil   -> parse_ref(ref, referers)
+      nil -> parse_ref(ref, referers)
       match -> match
     end
   end
