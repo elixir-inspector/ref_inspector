@@ -21,10 +21,24 @@ defmodule RefInspector.Database do
   end
 
   def init(_) do
+    :ok = GenServer.cast(__MODULE__, :reload_databases)
+
+    {:ok, %State{}}
+  end
+
+  # GenServer callbacks
+
+  def handle_call(:ets_tid, _from, state) do
+    {:reply, state.ets_tid, state}
+  end
+
+  def handle_cast(:reload_databases, _state) do
+    ets_opts = [:protected, :ordered_set, read_concurrency: true]
+    ets_tid = :ets.new(:ref_inspector, ets_opts)
+    state = %State{ets_tid: ets_tid}
+
     database_files = Config.database_files()
     database_path = Config.database_path()
-
-    state = setup_storage()
 
     state =
       Enum.reduce(database_files, state, fn database_file, acc_state ->
@@ -40,13 +54,7 @@ defmodule RefInspector.Database do
         new_state
       end)
 
-    {:ok, state}
-  end
-
-  # GenServer callbacks
-
-  def handle_call(:ets_tid, _from, state) do
-    {:reply, state.ets_tid, state}
+    {:noreply, state}
   end
 
   # Convenience methods
@@ -55,7 +63,12 @@ defmodule RefInspector.Database do
   Returns all referer definitions.
   """
   @spec list() :: [tuple]
-  def list(), do: GenServer.call(__MODULE__, :ets_tid) |> :ets.tab2list()
+  def list() do
+    case GenServer.call(__MODULE__, :ets_tid) do
+      nil -> []
+      ets_tid -> :ets.tab2list(ets_tid)
+    end
+  end
 
   # Internal methods
 
@@ -94,13 +107,6 @@ defmodule RefInspector.Database do
       |> sort_sources()
 
     parse_entries([{medium, sources}] ++ acc, entries)
-  end
-
-  defp setup_storage() do
-    ets_opts = [:protected, :ordered_set, read_concurrency: true]
-    ets_tid = :ets.new(:ref_inspector, ets_opts)
-
-    %State{ets_tid: ets_tid}
   end
 
   defp store_refs([], state), do: state

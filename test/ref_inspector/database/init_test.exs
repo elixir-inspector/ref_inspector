@@ -19,6 +19,8 @@ defmodule RefInspector.Database.InitTest do
     log =
       capture_io(:user, fn ->
         RefInspector.Database.init(:ignored)
+
+        :timer.sleep(100)
         Logger.flush()
       end)
 
