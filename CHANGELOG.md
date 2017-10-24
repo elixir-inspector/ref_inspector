@@ -3,6 +3,8 @@
 ## v0.17.0-dev
 
 - Enhancements
+    - All databases can be reloaded (asynchronously) using
+      `RefInspector.reload_databases/0`
     - Configuration can be done on supervisor (re-) start by setting a
       `{ mod, fun }` tuple for the config key `:init`. This method will be
       called without arguments

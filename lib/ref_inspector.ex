@@ -8,4 +8,10 @@ defmodule RefInspector do
   """
   @spec parse(String.t()) :: map
   defdelegate parse(ref), to: RefInspector.Pool
+
+  @doc """
+  Reloads all databases.
+  """
+  @spec reload_databases() :: :ok
+  defdelegate reload_databases(), to: RefInspector.Database
 end

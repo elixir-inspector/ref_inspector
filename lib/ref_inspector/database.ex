@@ -70,6 +70,12 @@ defmodule RefInspector.Database do
     end
   end
 
+  @doc """
+  Reloads all databases.
+  """
+  @spec reload_databases() :: :ok
+  def reload_databases(), do: GenServer.cast(__MODULE__, :reload_databases)
+
   # Internal methods
 
   def do_load(file, state) do
