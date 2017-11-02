@@ -117,7 +117,7 @@ Please see
 [`:hackney.request/5`](https://hexdocs.pm/hackney/hackney.html#request-5)
 for a complete list of available options.
 
-### Configuration (Worker Pool)
+#### Configuration (Worker Pool)
 
 All parsing requests are internally done using a `:poolboy` worker pool. The
 behaviour of this pool can be configured:
