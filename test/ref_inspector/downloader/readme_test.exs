@@ -25,6 +25,12 @@ defmodule RefInspector.Downloader.READMETest do
     refute File.exists?(README.path())
 
     :ok = Application.delete_env(:ref_inspector, :remote_urls)
+    :ok = Application.put_env(:ref_inspector, :skip_download_readme, true)
+    :ok = README.write()
+
+    refute File.exists?(README.path())
+
+    :ok = Application.delete_env(:ref_inspector, :skip_download_readme)
     :ok = README.write()
 
     assert File.exists?(README.path())

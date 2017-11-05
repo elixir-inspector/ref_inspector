@@ -60,7 +60,13 @@ If you want to download the database files using your application you can
 directly call `RefInspector.Downloader.download/0`.
 
 When using both the mix task and a default remote configuration an informational
-README is placed next to the downloaded file(s).
+README is placed next to the downloaded file(s). This behaviour can be
+deactivated by configuration:
+
+```elixir
+config :ref_inspector,
+  skip_download_readme: true
+```
 
 ### Configuration
 
