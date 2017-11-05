@@ -51,6 +51,7 @@ defmodule Mix.Tasks.RefInspector.Yaml.Download do
   defp run_confirmed(true) do
     {:ok, _} = Application.ensure_all_started(:hackney)
     :ok = Downloader.download()
+    :ok = Downloader.README.write()
 
     Mix.shell().info("Download complete!")
 

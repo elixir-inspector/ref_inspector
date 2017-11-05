@@ -41,6 +41,12 @@ defmodule RefInspector.Config do
   end
 
   @doc """
+  Returns whether the remote database matches the default.
+  """
+  @spec default_remote_database? :: boolean
+  def default_remote_database?, do: yaml_urls() == @default_urls
+
+  @doc """
   Returns the remote urls of the database file.
   """
   @spec yaml_urls :: [String.t() | {String.t(), String.t()}]

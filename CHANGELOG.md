@@ -8,6 +8,8 @@
     - Configuration can be done on supervisor (re-) start by setting a
       `{ mod, fun }` tuple for the config key `:init`. This method will be
       called without arguments
+    - When using the mix download task with a default remote configuration an
+      information README file is placed next to the downloaded file(s)
 
 - Soft deprecations (no warnings)
     - Support for `{ :system, "ENV_VARIABLE" }` configuration has been

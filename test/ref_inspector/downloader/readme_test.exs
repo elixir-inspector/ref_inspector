@@ -1,0 +1,32 @@
+defmodule RefInspector.Downloader.READMETest do
+  use ExUnit.Case, async: false
+
+  alias RefInspector.Downloader.README
+
+  @test_path Path.join([__DIR__, "../../downloads"]) |> Path.expand()
+
+  setup_all do
+    database_path = Application.get_env(:ref_inspector, :database_path)
+    remote_urls = Application.get_env(:ref_inspector, :remote_urls)
+
+    :ok = Application.put_env(:ref_inspector, :database_path, @test_path)
+    _ = File.rm(README.path())
+
+    on_exit(fn ->
+      :ok = Application.put_env(:ref_inspector, :database_path, database_path)
+      :ok = Application.put_env(:ref_inspector, :remote_urls, remote_urls)
+    end)
+  end
+
+  test "README creation for default remote" do
+    :ok = Application.put_env(:ref_inspector, :remote_urls, ["non-default-remote.yml"])
+    :ok = README.write()
+
+    refute File.exists?(README.path())
+
+    :ok = Application.delete_env(:ref_inspector, :remote_urls)
+    :ok = README.write()
+
+    assert File.exists?(README.path())
+  end
+end
