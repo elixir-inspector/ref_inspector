@@ -9,6 +9,7 @@ defmodule RefInspector.Database do
 
   alias RefInspector.Config
   alias RefInspector.Database.Loader
+  alias RefInspector.Database.Parser
   alias RefInspector.Database.State
 
   # GenServer lifecycle
@@ -51,7 +52,7 @@ defmodule RefInspector.Database do
 
           entries when is_list(entries) ->
             entries
-            |> parse_entries()
+            |> Parser.parse()
             |> store_refs(acc_state)
         end
       end)
@@ -80,19 +81,6 @@ defmodule RefInspector.Database do
 
   # Internal methods
 
-  defp parse_entries(entries), do: parse_entries([], entries)
-
-  defp parse_entries(acc, []), do: Enum.reverse(acc)
-
-  defp parse_entries(acc, [{medium, sources} | entries]) do
-    sources =
-      sources
-      |> parse_sources([])
-      |> sort_sources()
-
-    parse_entries([{medium, sources}] ++ acc, entries)
-  end
-
   defp store_refs([], state), do: state
 
   defp store_refs([{medium, sources} | refs], state) do
@@ -102,41 +90,5 @@ defmodule RefInspector.Database do
 
     :ets.insert_new(state.ets_tid, dataset)
     store_refs(refs, %{state | ets_index: index})
-  end
-
-  # Parsing and sorting methods
-
-  defp parse_domains(_, [], acc), do: acc
-
-  defp parse_domains(source, [domain | domains], acc) do
-    uri = URI.parse("http://#{domain}")
-
-    data =
-      source
-      |> Map.put(:host, uri.host)
-      |> Map.put(:path, uri.path || "/")
-
-    parse_domains(source, domains, acc ++ [data])
-  end
-
-  defp parse_sources([], acc), do: acc
-
-  defp parse_sources([{name, details} | sources], acc) do
-    details = details |> Enum.into(%{})
-    domains = Map.get(details, "domains", [])
-    parameters = Map.get(details, "parameters", [])
-
-    source = %{name: name, parameters: parameters}
-    acc = acc ++ parse_domains(source, domains, [])
-
-    parse_sources(sources, acc)
-  end
-
-  defp sort_sources(sources) do
-    sources
-    |> Enum.map(&Map.put(&1, :sort, "#{&1.host}#{&1.path}"))
-    |> Enum.sort(&(String.length(&1[:sort]) > String.length(&2[:sort])))
-    |> Enum.uniq_by(& &1[:sort])
-    |> Enum.map(&Map.delete(&1, :sort))
   end
 end
