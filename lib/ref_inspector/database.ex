@@ -8,6 +8,7 @@ defmodule RefInspector.Database do
   require Logger
 
   alias RefInspector.Config
+  alias RefInspector.Database.Loader
   alias RefInspector.Database.State
 
   # GenServer lifecycle
@@ -44,14 +45,15 @@ defmodule RefInspector.Database do
       Enum.reduce(database_files, state, fn database_file, acc_state ->
         database = Path.join([database_path, database_file])
 
-        {res, new_state} = do_load(database, acc_state)
+        case Loader.load(database) do
+          {:error, reason} ->
+            Logger.info(reason)
 
-        case res do
-          {:error, reason} -> Logger.info(reason)
-          _ -> nil
+          entries when is_list(entries) ->
+            entries
+            |> parse_entries()
+            |> store_refs(acc_state)
         end
-
-        new_state
       end)
 
     {:noreply, state}
@@ -77,30 +79,6 @@ defmodule RefInspector.Database do
   def reload_databases(), do: GenServer.cast(__MODULE__, :reload_databases)
 
   # Internal methods
-
-  def do_load(file, state) do
-    case load_file(file) do
-      {:error, _} = error -> {error, state}
-      entries when is_list(entries) -> {:ok, store_refs(entries, state)}
-    end
-  end
-
-  defp load_file(file) do
-    if File.regular?(file) do
-      file |> parse_file()
-    else
-      {:error, "invalid file given: '#{file}'"}
-    end
-  end
-
-  defp maybe_hd([]), do: []
-  defp maybe_hd(data), do: hd(data)
-
-  defp parse_file(file) do
-    :yamerl_constr.file(file, [:str_node_as_binary])
-    |> maybe_hd()
-    |> parse_entries()
-  end
 
   defp parse_entries(entries), do: parse_entries([], entries)
 
