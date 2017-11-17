@@ -1,9 +1,9 @@
-defmodule Mix.Tasks.RefInspector.Yaml.DownloadTest do
+defmodule Mix.Tasks.RefInspector.DownloadTest do
   use ExUnit.Case, async: false
 
   import ExUnit.CaptureIO
 
-  alias Mix.Tasks.RefInspector.Yaml.Download
+  alias Mix.Tasks.RefInspector.Download
 
   @fixture_path Path.join([__DIR__, "../../../fixtures"]) |> Path.expand()
   @test_files ["referers_search.yml", "referers_social.yml"]

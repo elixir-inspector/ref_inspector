@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.18.0-dev
+
+- Enhancements
+    - Download task name has been shortened to `ref_inspector.download`
+
+- Deprecations
+    - The mix task `ref_inspector.yaml.download` has been renamed. The
+      alias in place will be removed in a future version
+
 ## v0.17.0 (2017-11-15)
 
 - Enhancements

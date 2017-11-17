@@ -49,7 +49,7 @@ children = [
 
 ### Referer Database
 
-Using `mix ref_inspector.yaml.download` you can store a local copy of the
+Using `mix ref_inspector.download` you can store a local copy of the
 regexes database in the configured path. This database is taken from the
 [referer-parser](https://github.com/snowplow/referer-parser) project.
 
