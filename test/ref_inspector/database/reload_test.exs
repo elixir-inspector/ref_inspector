@@ -16,14 +16,14 @@ defmodule RefInspector.Database.ReloadTest do
 
   test "reloading databases" do
     Application.put_env(:ref_inspector, :database_files, [@fixture_search])
-    RefInspector.reload_databases()
+    RefInspector.reload()
     :timer.sleep(100)
 
     assert RefInspector.parse("http://www.google.com/test").source == "Google"
     assert RefInspector.parse("http://twitter.com/test").source == :unknown
 
     Application.put_env(:ref_inspector, :database_files, [@fixture_social])
-    RefInspector.reload_databases()
+    RefInspector.reload()
     :timer.sleep(100)
 
     assert RefInspector.parse("http://www.google.com/test").source == :unknown

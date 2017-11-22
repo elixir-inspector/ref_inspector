@@ -23,7 +23,7 @@ defmodule RefInspector.Database do
   end
 
   def init(_) do
-    :ok = GenServer.cast(__MODULE__, :reload_databases)
+    :ok = GenServer.cast(__MODULE__, :reload)
 
     {:ok, %State{}}
   end
@@ -34,7 +34,7 @@ defmodule RefInspector.Database do
     {:reply, state.ets_tid, state}
   end
 
-  def handle_cast(:reload_databases, _state) do
+  def handle_cast(:reload, _state) do
     ets_opts = [:protected, :ordered_set, read_concurrency: true]
     ets_tid = :ets.new(:ref_inspector, ets_opts)
     state = %State{ets_tid: ets_tid}
@@ -76,8 +76,8 @@ defmodule RefInspector.Database do
   @doc """
   Reloads all databases.
   """
-  @spec reload_databases() :: :ok
-  def reload_databases(), do: GenServer.cast(__MODULE__, :reload_databases)
+  @spec reload() :: :ok
+  def reload(), do: GenServer.cast(__MODULE__, :reload)
 
   # Internal methods
 

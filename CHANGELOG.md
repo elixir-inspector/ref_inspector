@@ -6,6 +6,8 @@
     - Download task name has been shortened to `ref_inspector.download`
 
 - Deprecations
+    - The reload method `RefInspector.reload_databases/0` has been renamed
+      to `RefInspector.reload/0`
     - The mix task `ref_inspector.yaml.download` has been renamed. The
       alias in place will be removed in a future version
 
