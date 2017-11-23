@@ -35,9 +35,7 @@ defmodule RefInspector.Database do
   end
 
   def handle_cast(:reload, _state) do
-    ets_opts = [:protected, :ordered_set, read_concurrency: true]
-    ets_tid = :ets.new(:ref_inspector, ets_opts)
-    state = %State{ets_tid: ets_tid}
+    state = %State{ets_tid: create_ets_table()}
 
     database_files = Config.database_files()
     database_path = Config.database_path()
@@ -80,6 +78,13 @@ defmodule RefInspector.Database do
   def reload(), do: GenServer.cast(__MODULE__, :reload)
 
   # Internal methods
+
+  defp create_ets_table() do
+    ets_name = :ref_inspector
+    ets_opts = [:protected, :ordered_set, read_concurrency: true]
+
+    :ets.new(ets_name, ets_opts)
+  end
 
   defp store_refs([], state), do: state
 
