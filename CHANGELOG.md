@@ -11,6 +11,9 @@
     - The mix task `ref_inspector.yaml.download` has been renamed. The
       alias in place will be removed in a future version
 
+- Bug fixes
+    - ETS tables are now properly cleaned after reload
+
 ## v0.17.0 (2017-11-15)
 
 - Enhancements
