@@ -1,7 +1,7 @@
 defmodule RefInspector.SupervisorTest do
   use ExUnit.Case, async: false
 
-  import ExUnit.CaptureIO
+  import ExUnit.CaptureLog
 
   defmodule Initializer do
     def start_link, do: Agent.start_link(fn -> nil end, name: __MODULE__)
@@ -22,7 +22,7 @@ defmodule RefInspector.SupervisorTest do
   end
 
   test "init function called upon supervisor (re-) start" do
-    capture_io(:user, fn ->
+    capture_log(fn ->
       Supervisor.stop(RefInspector.Supervisor, :normal)
 
       :ok = :timer.sleep(100)
