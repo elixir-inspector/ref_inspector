@@ -40,21 +40,7 @@ defmodule RefInspector.Database do
     database_files = Config.database_files()
     database_path = Config.database_path()
 
-    state =
-      Enum.reduce(database_files, state, fn database_file, acc_state ->
-        database = Path.join([database_path, database_file])
-
-        case Loader.load(database) do
-          {:error, reason} ->
-            Logger.info(reason)
-
-          entries when is_list(entries) ->
-            entries
-            |> Parser.parse()
-            |> store_refs(acc_state)
-        end
-      end)
-
+    state = do_reload(database_files, database_path, state)
     :ok = drop_ets_table(old_ets_tid)
 
     {:noreply, state}
@@ -86,6 +72,22 @@ defmodule RefInspector.Database do
     ets_opts = [:protected, :ordered_set, read_concurrency: true]
 
     :ets.new(ets_name, ets_opts)
+  end
+
+  defp do_reload(files, path, state) do
+    Enum.reduce(files, state, fn file, acc_state ->
+      database = Path.join([path, file])
+
+      case Loader.load(database) do
+        {:error, reason} ->
+          Logger.info(reason)
+
+        entries when is_list(entries) ->
+          entries
+          |> Parser.parse()
+          |> store_refs(acc_state)
+      end
+    end)
   end
 
   defp drop_ets_table(ets_tid) do
