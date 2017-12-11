@@ -25,7 +25,7 @@ defmodule RefInspector.Config do
   def database_files do
     case get(:database_files) do
       nil -> @default_files
-      files when is_list(files) and 0 < length(files) -> files
+      files when is_list(files) -> files
     end
   end
 

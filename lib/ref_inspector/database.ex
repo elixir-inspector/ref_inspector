@@ -74,6 +74,16 @@ defmodule RefInspector.Database do
     :ets.new(ets_name, ets_opts)
   end
 
+  defp do_reload([], _, state) do
+    Logger.warn("Reload error: no database files configured!")
+    state
+  end
+
+  defp do_reload(_, nil, state) do
+    Logger.warn("Reload error: no database path configured!")
+    state
+  end
+
   defp do_reload(files, path, state) do
     Enum.reduce(files, state, fn file, acc_state ->
       database = Path.join([path, file])
@@ -81,6 +91,7 @@ defmodule RefInspector.Database do
       case Loader.load(database) do
         {:error, reason} ->
           Logger.info(reason)
+          acc_state
 
         entries when is_list(entries) ->
           entries

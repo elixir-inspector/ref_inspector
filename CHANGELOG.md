@@ -4,6 +4,9 @@
 
 - Enhancements
     - Download task name has been shortened to `ref_inspector.download`
+    - Reloading the database if part of the configuration is missing or broken
+      (database path / database files) will issue a warning while resuming
+      operation with an empty database
 
 - Deprecations
     - The reload method `RefInspector.reload_databases/0` has been renamed
