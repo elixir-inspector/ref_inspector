@@ -34,10 +34,10 @@ defmodule RefInspector.Mixfile do
   defp deps do
     [
       {:ex_doc, ">= 0.0.0", only: :dev},
-      {:excoveralls, "~> 0.7", only: :test},
+      {:excoveralls, "~> 0.8", only: :test},
       {:hackney, "~> 1.0"},
       {:poolboy, "~> 1.0"},
-      {:yamerl, "~> 0.4"}
+      {:yamerl, "~> 0.6"}
     ]
   end
 
