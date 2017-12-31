@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.18.0-dev
+## v0.18.0 (2017-12-31)
 
 - Enhancements
     - Download task name has been shortened to `ref_inspector.download`
