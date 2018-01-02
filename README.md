@@ -154,7 +154,7 @@ iex(1)> RefInspector.parse("http://www.google.com/search?q=ref_inspector")
 }
 ```
 
-_Medium_ will be one of `:unknown`, `:email`, `:search` or `:social`
+_Medium_ will be one of `:unknown`, `:email`, `:paid`, `:search` or `:social`
 (always an atom). If configured to do so it might also be `:internal`.
 
 _Source_ will be `:unknown` (as atom) if nothing was matched, otherwise a string
