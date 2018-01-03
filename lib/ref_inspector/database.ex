@@ -10,7 +10,6 @@ defmodule RefInspector.Database do
   alias RefInspector.Config
   alias RefInspector.Database.Loader
   alias RefInspector.Database.Parser
-  alias RefInspector.Database.State
 
   @drop_delay 30_000
   @lookup_table :ref_inspector
@@ -25,24 +24,25 @@ defmodule RefInspector.Database do
     GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
   end
 
-  def init(_) do
+  def init(state) do
     :ok = GenServer.cast(__MODULE__, :reload)
 
-    {:ok, %State{}}
+    {:ok, state}
   end
 
   # GenServer callbacks
 
-  def handle_cast(:reload, %State{ets_tid: old_ets_tid}) do
+  def handle_cast(:reload, state) do
     :ok = create_lookup_table()
-    state = %State{ets_tid: create_data_table()}
+    old_ets_tid = fetch_data_table()
+    new_ets_tid = create_data_table()
 
     database_files = Config.database_files()
     database_path = Config.database_path()
 
-    :ok = do_reload(database_files, database_path, state.ets_tid)
+    :ok = do_reload(database_files, database_path, new_ets_tid)
     _ = Process.send_after(self(), {:drop_data_table, old_ets_tid}, @drop_delay)
-    true = :ets.insert(@lookup_table, {@lookup_table, state.ets_tid})
+    true = :ets.insert(@lookup_table, {@lookup_table, new_ets_tid})
 
     {:noreply, state}
   end
@@ -50,15 +50,8 @@ defmodule RefInspector.Database do
   def handle_info({:drop_data_table, nil}, state), do: {:noreply, state}
 
   def handle_info({:drop_data_table, ets_tid}, state) do
-    case state.ets_tid == ets_tid do
-      true ->
-        # ignore call!
-        {:noreply, state}
-
-      false ->
-        :ok = drop_data_table(ets_tid)
-        {:noreply, state}
-    end
+    :ok = drop_data_table(ets_tid)
+    {:noreply, state}
   end
 
   # Convenience methods
@@ -68,18 +61,9 @@ defmodule RefInspector.Database do
   """
   @spec list() :: [tuple]
   def list() do
-    case :ets.info(@lookup_table) do
-      :undefined ->
-        []
-
-      _ ->
-        case :ets.lookup(@lookup_table, @lookup_table) do
-          [{@lookup_table, ets_tid}] ->
-            :ets.tab2list(ets_tid)
-
-          _ ->
-            []
-        end
+    case fetch_data_table() do
+      nil -> []
+      ets_tid -> :ets.tab2list(ets_tid)
     end
   end
 
@@ -150,6 +134,19 @@ defmodule RefInspector.Database do
       end
 
     :ok
+  end
+
+  defp fetch_data_table() do
+    case :ets.info(@lookup_table) do
+      :undefined ->
+        nil
+
+      _ ->
+        case :ets.lookup(@lookup_table, @lookup_table) do
+          [{@lookup_table, ets_tid}] -> ets_tid
+          _ -> nil
+        end
+    end
   end
 
   defp store_refs([], _ets_tid, index), do: index
