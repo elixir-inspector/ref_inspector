@@ -35,13 +35,13 @@ defmodule RefInspector.Database do
   end
 
   def handle_cast(:reload, %State{ets_tid: old_ets_tid}) do
-    state = %State{ets_tid: create_ets_table()}
+    state = %State{ets_tid: create_data_table()}
 
     database_files = Config.database_files()
     database_path = Config.database_path()
 
     :ok = do_reload(database_files, database_path, state.ets_tid)
-    :ok = drop_ets_table(old_ets_tid)
+    :ok = drop_data_table(old_ets_tid)
 
     {:noreply, state}
   end
@@ -67,7 +67,7 @@ defmodule RefInspector.Database do
 
   # Internal methods
 
-  defp create_ets_table() do
+  defp create_data_table() do
     ets_name = :ref_inspector
     ets_opts = [:protected, :ordered_set, read_concurrency: true]
 
@@ -103,7 +103,7 @@ defmodule RefInspector.Database do
     :ok
   end
 
-  defp drop_ets_table(ets_tid) do
+  defp drop_data_table(ets_tid) do
     true =
       case :ets.info(ets_tid) do
         :undefined -> true
