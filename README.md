@@ -111,6 +111,16 @@ All files configured will be saved as under the configured database path.
 If you have not configure a custom file path the filename extracted from the
 url will be taken.
 
+#### Configuration (ETS Cleanup)
+
+When reloading the old database is deleted with a configurable delay. The delay
+is defined in milliseconds with a default of `30_000`.
+
+```elixir
+config :ref_inspector,
+  ets_cleanup_delay: 30_000
+```
+
 #### Configuration (HTTP client)
 
 The database is downloaded using

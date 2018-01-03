@@ -11,7 +11,7 @@ defmodule RefInspector.Database do
   alias RefInspector.Database.Loader
   alias RefInspector.Database.Parser
 
-  @drop_delay 30_000
+  @ets_cleanup_delay_default 30_000
   @lookup_table :ref_inspector
 
   # GenServer lifecycle
@@ -41,7 +41,7 @@ defmodule RefInspector.Database do
     database_path = Config.database_path()
 
     :ok = do_reload(database_files, database_path, new_ets_tid)
-    _ = Process.send_after(self(), {:drop_data_table, old_ets_tid}, @drop_delay)
+    :ok = schedule_data_cleanup(old_ets_tid)
     true = :ets.insert(@lookup_table, {@lookup_table, new_ets_tid})
 
     {:noreply, state}
@@ -147,6 +147,16 @@ defmodule RefInspector.Database do
           _ -> nil
         end
     end
+  end
+
+  defp schedule_data_cleanup(ets_tid) do
+    Process.send_after(
+      self(),
+      {:drop_data_table, ets_tid},
+      Config.get(:ets_cleanup_delay, @ets_cleanup_delay_default)
+    )
+
+    :ok
   end
 
   defp store_refs([], _ets_tid, index), do: index
