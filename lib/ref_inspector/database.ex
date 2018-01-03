@@ -40,7 +40,7 @@ defmodule RefInspector.Database do
     database_files = Config.database_files()
     database_path = Config.database_path()
 
-    state = do_reload(database_files, database_path, state)
+    :ok = do_reload(database_files, database_path, state.ets_tid)
     :ok = drop_ets_table(old_ets_tid)
 
     {:noreply, state}
@@ -74,31 +74,33 @@ defmodule RefInspector.Database do
     :ets.new(ets_name, ets_opts)
   end
 
-  defp do_reload([], _, state) do
+  defp do_reload([], _, _ets_tid) do
     Logger.warn("Reload error: no database files configured!")
-    state
+    :ok
   end
 
-  defp do_reload(_, nil, state) do
+  defp do_reload(_, nil, _ets_tid) do
     Logger.warn("Reload error: no database path configured!")
-    state
+    :ok
   end
 
-  defp do_reload(files, path, state) do
-    Enum.reduce(files, state, fn file, acc_state ->
+  defp do_reload(files, path, ets_tid) do
+    _ = Enum.reduce(files, 0, fn file, acc_index ->
       database = Path.join([path, file])
 
       case Loader.load(database) do
         {:error, reason} ->
           Logger.info(reason)
-          acc_state
+          acc_index
 
         entries when is_list(entries) ->
           entries
           |> Parser.parse()
-          |> store_refs(acc_state)
+          |> store_refs(ets_tid, acc_index)
       end
     end)
+
+    :ok
   end
 
   defp drop_ets_table(ets_tid) do
@@ -111,14 +113,13 @@ defmodule RefInspector.Database do
     :ok
   end
 
-  defp store_refs([], state), do: state
+  defp store_refs([], _ets_tid, index), do: index
 
-  defp store_refs([{medium, sources} | refs], state) do
-    index = state.ets_index + 1
+  defp store_refs([{medium, sources} | refs], ets_tid, index) do
     medium = String.to_atom(medium)
     dataset = {index, medium, sources}
 
-    :ets.insert_new(state.ets_tid, dataset)
-    store_refs(refs, %{state | ets_index: index})
+    :ets.insert_new(ets_tid, dataset)
+    store_refs(refs, ets_tid, index + 1)
   end
 end
