@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.19.0-dev
+
+- Enhancements
+    - Old data tables are deleted with a 30 second delay after reloading
+      to avoid race conditions (and the resulting empty lookup responses)
+
 ## v0.18.0 (2017-12-31)
 
 - Enhancements

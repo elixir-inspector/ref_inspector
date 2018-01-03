@@ -12,6 +12,8 @@ defmodule RefInspector.Database do
   alias RefInspector.Database.Parser
   alias RefInspector.Database.State
 
+  @drop_delay 30_000
+
   # GenServer lifecycle
 
   @doc """
@@ -41,9 +43,23 @@ defmodule RefInspector.Database do
     database_path = Config.database_path()
 
     :ok = do_reload(database_files, database_path, state.ets_tid)
-    :ok = drop_data_table(old_ets_tid)
+    _ = Process.send_after(self(), {:drop_data_table, old_ets_tid}, @drop_delay)
 
     {:noreply, state}
+  end
+
+  def handle_info({:drop_data_table, nil}, state), do: {:noreply, state}
+
+  def handle_info({:drop_data_table, ets_tid}, state) do
+    case state.ets_tid == ets_tid do
+      true ->
+        # ignore call!
+        {:noreply, state}
+
+      false ->
+        :ok = drop_data_table(ets_tid)
+        {:noreply, state}
+    end
   end
 
   # Convenience methods
@@ -85,20 +101,21 @@ defmodule RefInspector.Database do
   end
 
   defp do_reload(files, path, ets_tid) do
-    _ = Enum.reduce(files, 0, fn file, acc_index ->
-      database = Path.join([path, file])
+    _ =
+      Enum.reduce(files, 0, fn file, acc_index ->
+        database = Path.join([path, file])
 
-      case Loader.load(database) do
-        {:error, reason} ->
-          Logger.info(reason)
-          acc_index
+        case Loader.load(database) do
+          {:error, reason} ->
+            Logger.info(reason)
+            acc_index
 
-        entries when is_list(entries) ->
-          entries
-          |> Parser.parse()
-          |> store_refs(ets_tid, acc_index)
-      end
-    end)
+          entries when is_list(entries) ->
+            entries
+            |> Parser.parse()
+            |> store_refs(ets_tid, acc_index)
+        end
+      end)
 
     :ok
   end
