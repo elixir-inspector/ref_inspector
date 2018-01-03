@@ -3,6 +3,8 @@
 ## v0.19.0-dev
 
 - Enhancements
+    - Looking of the data table is now done via a named lookup table instead
+      of calling the database state server
     - Old data tables are deleted with a 30 second delay after reloading
       to avoid race conditions (and the resulting empty lookup responses)
 

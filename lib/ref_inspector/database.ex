@@ -13,6 +13,7 @@ defmodule RefInspector.Database do
   alias RefInspector.Database.State
 
   @drop_delay 30_000
+  @lookup_table :ref_inspector
 
   # GenServer lifecycle
 
@@ -32,11 +33,8 @@ defmodule RefInspector.Database do
 
   # GenServer callbacks
 
-  def handle_call(:ets_tid, _from, state) do
-    {:reply, state.ets_tid, state}
-  end
-
   def handle_cast(:reload, %State{ets_tid: old_ets_tid}) do
+    :ok = create_lookup_table()
     state = %State{ets_tid: create_data_table()}
 
     database_files = Config.database_files()
@@ -44,6 +42,7 @@ defmodule RefInspector.Database do
 
     :ok = do_reload(database_files, database_path, state.ets_tid)
     _ = Process.send_after(self(), {:drop_data_table, old_ets_tid}, @drop_delay)
+    true = :ets.insert(@lookup_table, {@lookup_table, state.ets_tid})
 
     {:noreply, state}
   end
@@ -69,9 +68,18 @@ defmodule RefInspector.Database do
   """
   @spec list() :: [tuple]
   def list() do
-    case GenServer.call(__MODULE__, :ets_tid) do
-      nil -> []
-      ets_tid -> :ets.tab2list(ets_tid)
+    case :ets.info(@lookup_table) do
+      :undefined ->
+        []
+
+      _ ->
+        case :ets.lookup(@lookup_table, @lookup_table) do
+          [{@lookup_table, ets_tid}] ->
+            :ets.tab2list(ets_tid)
+
+          _ ->
+            []
+        end
     end
   end
 
@@ -84,10 +92,24 @@ defmodule RefInspector.Database do
   # Internal methods
 
   defp create_data_table() do
-    ets_name = :ref_inspector
+    ets_name = :ref_inspector_data
     ets_opts = [:protected, :ordered_set, read_concurrency: true]
 
     :ets.new(ets_name, ets_opts)
+  end
+
+  defp create_lookup_table() do
+    ets_name = :ref_inspector
+    ets_opts = [:named_table, :protected, :set, read_concurrency: true]
+
+    case :ets.info(ets_name) do
+      :undefined ->
+        _ = :ets.new(ets_name, ets_opts)
+        :ok
+
+      _ ->
+        :ok
+    end
   end
 
   defp do_reload([], _, _ets_tid) do
