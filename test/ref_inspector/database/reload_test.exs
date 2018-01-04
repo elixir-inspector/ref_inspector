@@ -21,6 +21,7 @@ defmodule RefInspector.Database.ReloadTest do
     RefInspector.reload()
     :timer.sleep(100)
 
+    assert RefInspector.ready?()
     assert RefInspector.parse("http://www.google.com/test").source == "Google"
     assert RefInspector.parse("http://twitter.com/test").source == :unknown
 
@@ -28,6 +29,7 @@ defmodule RefInspector.Database.ReloadTest do
     RefInspector.reload()
     :timer.sleep(100)
 
+    assert RefInspector.ready?()
     assert RefInspector.parse("http://www.google.com/test").source == :unknown
     assert RefInspector.parse("http://twitter.com/test").source == "Twitter"
   end
@@ -42,7 +44,7 @@ defmodule RefInspector.Database.ReloadTest do
       end)
 
     assert log =~ ~r/no database files/i
-    assert [] == RefInspector.Database.list()
+    refute RefInspector.ready?()
   end
 
   test "warns about missing path configuration" do
@@ -55,6 +57,6 @@ defmodule RefInspector.Database.ReloadTest do
       end)
 
     assert log =~ ~r/no database path.*/i
-    assert [] == RefInspector.Database.list()
+    refute RefInspector.ready?()
   end
 end

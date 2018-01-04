@@ -6,6 +6,12 @@ defmodule RefInspector do
   require Logger
 
   @doc """
+  Checks if there is data to use in lookups.
+  """
+  @spec ready?() :: boolean
+  defdelegate ready?(), to: RefInspector.Database
+
+  @doc """
   Parses a referer.
   """
   @spec parse(String.t()) :: map

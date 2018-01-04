@@ -73,6 +73,16 @@ defmodule RefInspector.Database do
   end
 
   @doc """
+  Checks if the database is ready (== loaded) for lookups.
+
+  An empty database is defined as "not ready".
+
+  The check is done against the using currently active data table.
+  """
+  @spec ready?() :: boolean
+  def ready?(), do: [] != list()
+
+  @doc """
   Reloads all databases.
   """
   @spec reload() :: :ok
