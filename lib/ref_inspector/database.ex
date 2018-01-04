@@ -12,7 +12,10 @@ defmodule RefInspector.Database do
   alias RefInspector.Database.Parser
 
   @ets_cleanup_delay_default 30_000
-  @lookup_table :ref_inspector
+  @ets_data_table_name :ref_inspector_data
+  @ets_data_table_opts [:protected, :ordered_set, read_concurrency: true]
+  @ets_lookup_table_name :ref_inspector_lookup
+  @ets_lookup_table_opts [:named_table, :protected, :set, read_concurrency: true]
 
   # GenServer lifecycle
 
@@ -41,8 +44,9 @@ defmodule RefInspector.Database do
     database_path = Config.database_path()
 
     :ok = do_reload(database_files, database_path, new_ets_tid)
+
     :ok = schedule_data_cleanup(old_ets_tid)
-    true = :ets.insert(@lookup_table, {@lookup_table, new_ets_tid})
+    true = :ets.insert(@ets_lookup_table_name, {@ets_data_table_name, new_ets_tid})
 
     {:noreply, state}
   end
@@ -51,6 +55,7 @@ defmodule RefInspector.Database do
 
   def handle_info({:drop_data_table, ets_tid}, state) do
     :ok = drop_data_table(ets_tid)
+
     {:noreply, state}
   end
 
@@ -76,19 +81,13 @@ defmodule RefInspector.Database do
   # Internal methods
 
   defp create_data_table() do
-    ets_name = :ref_inspector_data
-    ets_opts = [:protected, :ordered_set, read_concurrency: true]
-
-    :ets.new(ets_name, ets_opts)
+    :ets.new(@ets_data_table_name, @ets_data_table_opts)
   end
 
   defp create_lookup_table() do
-    ets_name = :ref_inspector
-    ets_opts = [:named_table, :protected, :set, read_concurrency: true]
-
-    case :ets.info(ets_name) do
+    case :ets.info(@ets_lookup_table_name) do
       :undefined ->
-        _ = :ets.new(ets_name, ets_opts)
+        _ = :ets.new(@ets_lookup_table_name, @ets_lookup_table_opts)
         :ok
 
       _ ->
@@ -137,13 +136,13 @@ defmodule RefInspector.Database do
   end
 
   defp fetch_data_table() do
-    case :ets.info(@lookup_table) do
+    case :ets.info(@ets_lookup_table_name) do
       :undefined ->
         nil
 
       _ ->
-        case :ets.lookup(@lookup_table, @lookup_table) do
-          [{@lookup_table, ets_tid}] -> ets_tid
+        case :ets.lookup(@ets_lookup_table_name, @ets_data_table_name) do
+          [{@ets_data_table_name, ets_tid}] -> ets_tid
           _ -> nil
         end
     end
