@@ -160,7 +160,7 @@ reload the internal database. This can be done asynchronously:
 RefInspector.reload()
 ```
 
-This process is handle in the background, so for some time the old data will
+This process is handled in the background, so for some time the old data will
 be used for lookups.
 
 If you need to check if the database is still empty or (at least partially!)
