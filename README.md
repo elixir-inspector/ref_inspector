@@ -151,6 +151,18 @@ As these options are passed unmodified please look at the official
 
 Defaults are defined in the module `RefInspector.Pool`.
 
+### Reloading
+
+Sometimes (for example after downloading a new database set) it is required to
+reload the internal database. This can be done asynchronously:
+
+```elixir
+RefInspector.reload()
+```
+
+This process is handle in the background, so for some time the old data will
+be used for lookups.
+
 
 ## Usage
 
