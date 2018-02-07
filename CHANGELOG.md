@@ -3,7 +3,7 @@
 ## v0.19.0-dev
 
 - Enhancements
-    - Looking of the data table is now done via a named lookup table instead
+    - Finding the data table is now done via a named lookup table instead
       of calling the database state server
     - Old data tables are deleted with a configurable delay after reloading
       to avoid race conditions (and the resulting empty lookup responses)
