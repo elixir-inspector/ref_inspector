@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.19.0-dev
+## v0.19.0 (2018-02-13)
 
 - Enhancements
     - Finding the data table is now done via a named lookup table instead
