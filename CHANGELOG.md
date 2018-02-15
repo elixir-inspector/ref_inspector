@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.20.0-dev
+
+- Backwards incompatible changes
+    - The mix task alias `ref_inspector.yaml.download` has been removed
+
 ## v0.19.0 (2018-02-13)
 
 - Enhancements
