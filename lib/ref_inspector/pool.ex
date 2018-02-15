@@ -8,7 +8,7 @@ defmodule RefInspector.Pool do
   @pool_name :ref_inspector_pool
   @pool_options [
     name: {:local, @pool_name},
-    worker_module: RefInspector.Server,
+    worker_module: RefInspector.Pool.Worker,
     size: 5,
     max_overflow: 10
   ]

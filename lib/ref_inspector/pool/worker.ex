@@ -1,6 +1,6 @@
-defmodule RefInspector.Server do
+defmodule RefInspector.Pool.Worker do
   @moduledoc """
-  RefInspector poolboy worker (server).
+  RefInspector poolboy worker.
   """
 
   use GenServer
