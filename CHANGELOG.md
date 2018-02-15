@@ -4,6 +4,7 @@
 
 - Backwards incompatible changes
     - The mix task alias `ref_inspector.yaml.download` has been removed
+    - The reload alias `RefInspector.reload_databases/0` has been removed
 
 ## v0.19.0 (2018-02-13)
 
