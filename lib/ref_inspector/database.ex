@@ -116,23 +116,19 @@ defmodule RefInspector.Database do
   end
 
   defp do_reload(files, path, ets_tid) do
-    _ =
-      Enum.reduce(files, 0, fn file, acc_index ->
-        database = Path.join([path, file])
+    Enum.each(files, fn file ->
+      database = Path.join([path, file])
 
-        case Loader.load(database) do
-          {:error, reason} ->
-            Logger.info(reason)
-            acc_index
+      case Loader.load(database) do
+        {:error, reason} ->
+          Logger.info(reason)
 
-          entries when is_list(entries) ->
-            entries
-            |> Parser.parse()
-            |> store_refs(ets_tid, acc_index)
-        end
-      end)
-
-    :ok
+        entries when is_list(entries) ->
+          entries
+          |> Parser.parse()
+          |> store_refs(ets_tid)
+      end
+    end)
   end
 
   defp drop_data_table(ets_tid) do
@@ -168,13 +164,13 @@ defmodule RefInspector.Database do
     :ok
   end
 
-  defp store_refs([], _ets_tid, index), do: index
+  defp store_refs([], _ets_tid), do: :ok
 
-  defp store_refs([{medium, sources} | refs], ets_tid, index) do
+  defp store_refs([{medium, sources} | refs], ets_tid) do
     medium = String.to_atom(medium)
-    dataset = {index, medium, sources}
+    dataset = {medium, sources}
 
     :ets.insert_new(ets_tid, dataset)
-    store_refs(refs, ets_tid, index + 1)
+    store_refs(refs, ets_tid)
   end
 end

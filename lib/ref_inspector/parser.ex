@@ -42,10 +42,10 @@ defmodule RefInspector.Parser do
     %{result | term: term}
   end
 
-  defp match_medium(ref, {index, medium, [source | sources]}) do
+  defp match_medium(ref, {medium, [source | sources]}) do
     case matches_source?(ref, source) do
       false ->
-        match_medium(ref, {index, medium, sources})
+        match_medium(ref, {medium, sources})
 
       true ->
         result = %Result{
@@ -57,7 +57,7 @@ defmodule RefInspector.Parser do
     end
   end
 
-  defp match_medium(_, {_, _, []}), do: nil
+  defp match_medium(_, {_, []}), do: nil
 
   defp matches_source?(ref, source) do
     String.ends_with?(ref.host || "", source[:host]) &&
