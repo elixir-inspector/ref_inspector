@@ -15,6 +15,8 @@ defmodule Mix.Tasks.RefInspector.Download do
   use Mix.Task
 
   def run(args) do
+    :ok = Config.init_env()
+
     case Config.database_path() do
       nil -> exit_unconfigured()
       _ -> do_run(args)

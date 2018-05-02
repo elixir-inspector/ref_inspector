@@ -47,6 +47,17 @@ defmodule RefInspector.Config do
   def default_remote_database?, do: yaml_urls() == @default_urls
 
   @doc """
+  Calls the optionally configured init method.
+  """
+  @spec init_env() :: :ok
+  def init_env() do
+    case get(:init) do
+      nil -> :ok
+      {mod, fun} -> apply(mod, fun, [])
+    end
+  end
+
+  @doc """
   Returns the remote urls of the database file.
   """
   @spec yaml_urls :: [String.t() | {String.t(), String.t()}]

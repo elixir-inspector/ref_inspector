@@ -2,6 +2,11 @@
 
 ## v0.20.0-dev
 
+- Enhancements
+    - The configurable `:init` method will now be automatically executed when
+      running the mix download task without manually ensuring the application
+      is started
+
 - Backwards incompatible changes
     - The mix task alias `ref_inspector.yaml.download` has been removed
     - The reload alias `RefInspector.reload_databases/0` has been removed
