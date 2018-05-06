@@ -32,7 +32,8 @@ defmodule Mix.Tasks.RefInspector.Download do
 
     Mix.shell().info("This command will replace any already existing copy!")
 
-    {opts, _argv, _errors} = OptionParser.parse(args, aliases: [f: :force])
+    {opts, _argv, _errors} =
+      OptionParser.parse(args, strict: [force: :boolean], aliases: [f: :force])
 
     run_confirmed(opts)
   end
