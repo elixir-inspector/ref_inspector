@@ -84,6 +84,8 @@ config :ref_inspector,
 # { mod, fun } tuple without arguments
 # called upon supervisor (re-) start
 # and when running the mix download task
+#
+# This method is expected to always return `:ok`
 config :ref_inspector
   init: { MyInitModule, :my_init_fun }
 ```
