@@ -2,7 +2,6 @@
 
 Referer parser library.
 
-
 ## Package Setup
 
 To use Ref Inspector with your projects, edit your `mix.exs` file and add the
@@ -58,7 +57,6 @@ children = [
   # ..
 ]
 ```
-
 
 ## Application Configuration
 
@@ -187,7 +185,6 @@ config :ref_inspector,
   skip_download_readme: true
 ```
 
-
 ## Usage
 
 ```elixir
@@ -244,11 +241,9 @@ loaded, you can use `RefInspector.ready?/0`. Please be aware that this method
 checks the current state and not what will happen after an (potentially running)
 reload is finished.
 
-
 ## Resources
 
 - [referer-parser](https://github.com/snowplow/referer-parser)
-
 
 ## License
 
