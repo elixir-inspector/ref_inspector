@@ -62,7 +62,7 @@ children = [
 
 ## Application Configuration
 
-To start using RefInspector you need to at least configure a `:database_path`.
+To start using Ref Inspector you need to at least configure a `:database_path`.
 
 If you are using the default database you can omit the `:database_files`
 configuration value.
