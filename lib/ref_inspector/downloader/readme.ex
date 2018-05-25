@@ -18,7 +18,7 @@ defmodule RefInspector.Downloader.README do
   Returns the path of the README file distributed in priv_dir.
   """
   @spec path_priv :: Path.t()
-  def path_priv(), do: Path.join(:code.priv_dir(:ref_inspector), @readme)
+  def path_priv(), do: Application.app_dir(:ref_inspector, ["priv", @readme])
 
   @doc """
   Writes the informational README file if remote database is the default.
