@@ -3,8 +3,6 @@ defmodule RefInspector do
   Ref Inspector - Referer parser library
   """
 
-  require Logger
-
   @doc """
   Checks if there is data to use in lookups.
   """
