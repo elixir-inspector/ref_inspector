@@ -6,7 +6,7 @@ defmodule Mix.RefInspector.Verify.Fixture do
   alias RefInspector.Downloader
 
   @local "referer-tests.json"
-  @remote "https://raw.githubusercontent.com/snowplow/referer-parser/master/resources/referer-tests.json"
+  @remote "https://raw.githubusercontent.com/snowplow-referer-parser/referer-parser/master/resources/referer-tests.json"
 
   def download() do
     Mix.shell().info("Download path: #{download_path()}")

@@ -168,7 +168,8 @@ Defaults are defined in the module `RefInspector.Pool`.
 
 Using `mix ref_inspector.download` you can store a local copy of the
 regexes database in the configured path. This database is taken from the
-[referer-parser](https://github.com/snowplow/referer-parser) project.
+[snowplow-referer-parser](https://github.com/snowplow-referer-parser/referer-parser)
+project.
 
 The local path of the downloaded file will be shown to you upon command
 invocation.
@@ -243,11 +244,12 @@ reload is finished.
 
 ## Resources
 
-- [referer-parser](https://github.com/snowplow/referer-parser)
+- [snowplow-referer-parser](https://github.com/snowplow-referer-parser/referer-parser)
 
 ## License
 
 [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
-_Referers.yml_ taken from the [referer-parser](https://github.com/snowplow/referer-parser)
+_Referers.yml_ taken from the
+[snowplow-referer-parser](https://github.com/snowplow-referer-parser/referer-parser)
 project. See there for detailed license information about the data contained.
