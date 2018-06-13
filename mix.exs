@@ -9,11 +9,13 @@ defmodule RefInspector.Mixfile do
       name: "RefInspector",
       version: "0.20.0-dev",
       elixir: "~> 1.3",
+      aliases: aliases(),
       deps: deps(),
       description: "Referer parser library",
       docs: docs(),
       package: package(),
       preferred_cli_env: [
+        "bench.parse": :bench,
         coveralls: :test,
         "coveralls.detail": :test,
         "coveralls.travis": :test
@@ -26,6 +28,12 @@ defmodule RefInspector.Mixfile do
     [
       applications: [:hackney, :logger, :poolboy, :yamerl],
       mod: {RefInspector.App, []}
+    ]
+  end
+
+  defp aliases() do
+    [
+      "bench.parse": ["run bench/parse.exs"]
     ]
   end
 
