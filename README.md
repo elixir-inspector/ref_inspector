@@ -242,6 +242,14 @@ loaded, you can use `RefInspector.ready?/0`. Please be aware that this method
 checks the current state and not what will happen after an (potentially running)
 reload is finished.
 
+## Benchmark
+
+A (minimal) benchmark script is included:
+
+```shell
+mix bench.parse
+```
+
 ## Resources
 
 - [snowplow-referer-parser](https://github.com/snowplow-referer-parser/referer-parser)
