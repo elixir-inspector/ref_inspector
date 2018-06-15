@@ -14,6 +14,11 @@ defmodule Mix.Tasks.RefInspector.Download do
 
   use Mix.Task
 
+  @cli_options [
+    aliases: [f: :force],
+    strict: [force: :boolean]
+  ]
+
   def run(args) do
     :ok = Config.init_env()
 
@@ -32,10 +37,11 @@ defmodule Mix.Tasks.RefInspector.Download do
 
     Mix.shell().info("This command will replace any already existing copy!")
 
-    {opts, _argv, _errors} =
-      OptionParser.parse(args, strict: [force: :boolean], aliases: [f: :force])
-
-    run_confirmed(opts)
+    if request_confirmation(args) do
+      perform_download()
+    else
+      exit_unconfirmed()
+    end
   end
 
   defp exit_unconfigured() do
@@ -43,27 +49,26 @@ defmodule Mix.Tasks.RefInspector.Download do
     Mix.shell().error("See README.md for details.")
   end
 
-  defp run_confirmed(force: true), do: run_confirmed(true)
-
-  defp run_confirmed(false) do
+  defp exit_unconfirmed() do
     Mix.shell().info("Download aborted!")
-
     :ok
   end
 
-  defp run_confirmed(true) do
+  defp perform_download() do
     {:ok, _} = Application.ensure_all_started(:hackney)
     :ok = Downloader.download()
     :ok = Downloader.README.write()
 
     Mix.shell().info("Download complete!")
-
     :ok
   end
 
-  defp run_confirmed(_) do
-    "Download databases?"
-    |> Mix.shell().yes?()
-    |> run_confirmed()
+  defp request_confirmation(args) do
+    {opts, _argv, _errors} = OptionParser.parse(args, @cli_options)
+
+    case opts[:force] do
+      true -> true
+      _ -> Mix.shell().yes?("Download databases?")
+    end
   end
 end
