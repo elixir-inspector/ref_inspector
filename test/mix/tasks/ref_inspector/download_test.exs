@@ -58,7 +58,7 @@ defmodule Mix.Tasks.RefInspector.DownloadTest do
         Download.run([])
       end)
 
-    assert String.contains?(console, "Download referers.yml? [Yn]")
+    assert String.contains?(console, "Download databases? [Yn]")
   end
 
   test "forceable download" do

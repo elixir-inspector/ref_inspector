@@ -62,7 +62,7 @@ defmodule Mix.Tasks.RefInspector.Download do
   end
 
   defp run_confirmed(_) do
-    "Download referers.yml?"
+    "Download databases?"
     |> Mix.shell().yes?()
     |> run_confirmed()
   end
