@@ -1,35 +1,19 @@
 defmodule RefInspector.Benchmark.Parse do
+  @uri_email "http://co106w.col106.mail.live.com/default.aspx?rru=inbox"
+  @uri_search "http://www.google.com/search?q=gateway+oracle+cards+denise+linn&hl=en&client=safari"
+  @uri_social "http://www.facebook.com/l.php?u=http%3A%2F%2Fwww.psychicbazaar.com&h=yAQHZtXxS&s=1"
+
   def run() do
-    [__DIR__, "urls.txt"]
-    |> Path.join()
-    |> File.read!()
-    |> Code.eval_string([], file: "urls.txt")
-    |> case do
-      {urllist, _} when is_list(urllist) -> urllist
-      _ -> []
-    end
-    |> Stream.cycle()
-    |> run_benchmark()
-  end
-
-  defp run_benchmark(urlstream) do
-    Enum.each([2, 4, 8, 16, 32, 64, 128], fn parallel ->
-      IO.puts("Starting parallel: #{parallel}")
-
-      {us, _} =
-        :timer.tc(fn ->
-          for _ <- 1..parallel do
-            Task.async(fn ->
-              urlstream
-              |> Enum.take(1000)
-              |> Enum.each(&RefInspector.parse/1)
-            end)
-          end
-          |> Enum.map(&Task.await(&1, :infinity))
-        end)
-
-      IO.puts("done in #{us} microseconds")
-    end)
+    Benchee.run(
+      %{
+        "Parse: email" => fn -> RefInspector.parse(@uri_email) end,
+        "Parse: search" => fn -> RefInspector.parse(@uri_search) end,
+        "Parse: social" => fn -> RefInspector.parse(@uri_social) end
+      },
+      formatter_options: %{console: %{comparison: false}},
+      warmup: 2,
+      time: 10
+    )
   end
 end
 
