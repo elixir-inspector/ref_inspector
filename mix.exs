@@ -33,10 +33,7 @@ defmodule RefInspector.Mixfile do
 
   defp aliases() do
     [
-      "bench.parse": [
-        "ref_inspector.download --force",
-        "run bench/parse.exs"
-      ]
+      "bench.parse": "run bench/parse.exs"
     ]
   end
 
