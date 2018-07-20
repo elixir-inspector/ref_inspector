@@ -19,6 +19,6 @@ defmodule RefInspector.Database.Loader do
     end
   end
 
-  defp maybe_hd(data) when is_list(data) and length(data) > 0, do: hd(data)
+  defp maybe_hd([data | _]), do: data
   defp maybe_hd(_), do: []
 end
