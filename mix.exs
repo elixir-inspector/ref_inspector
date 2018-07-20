@@ -15,6 +15,7 @@ defmodule RefInspector.Mixfile do
       docs: docs(),
       package: package(),
       preferred_cli_env: [
+        "bench.database": :bench,
         "bench.parse": :bench,
         coveralls: :test,
         "coveralls.detail": :test,
@@ -33,6 +34,7 @@ defmodule RefInspector.Mixfile do
 
   defp aliases() do
     [
+      "bench.database": "run bench/database.exs",
       "bench.parse": "run bench/parse.exs"
     ]
   end

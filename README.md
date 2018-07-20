@@ -244,11 +244,8 @@ reload is finished.
 
 ## Benchmark
 
-A (minimal) benchmark script is included:
-
-```shell
-mix bench.parse
-```
+Several (minimal) benchmark scripts are included. Please refer to the
+Mixfile or `mix help` output for their names.
 
 ## Resources
 
