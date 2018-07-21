@@ -53,12 +53,12 @@ defmodule RefInspector.Parser do
     %{result | term: term}
   end
 
-  defp match_database(_, {_, []}), do: nil
+  defp match_sources(_, []), do: nil
 
-  defp match_database(ref, {database, [source | sources]}) do
+  defp match_sources(ref, [source | sources]) do
     case matches_source?(ref, source) do
       false ->
-        match_database(ref, {database, sources})
+        match_sources(ref, sources)
 
       true ->
         result = %Result{
@@ -71,8 +71,8 @@ defmodule RefInspector.Parser do
   end
 
   defp matches_source?(
-         %{host: ref_host, host_parts: [first | _], path: ref_path},
-         %{host: src_host, host_parts: [first | _], path: src_path}
+         %{host: ref_host, path: ref_path},
+         %{host: src_host, path: src_path}
        ) do
     String.ends_with?(ref_host, src_host) && String.starts_with?(ref_path, src_path)
   end
@@ -87,10 +87,16 @@ defmodule RefInspector.Parser do
 
   defp parse_ref(_, []), do: %Result{}
 
-  defp parse_ref(ref, [database | referers]) do
-    case match_database(ref, database) do
-      nil -> parse_ref(ref, referers)
-      match -> match
+  defp parse_ref(%{host_parts: [first | _]} = ref, [{_database, entries} | referers]) do
+    case Map.get(entries, first) do
+      nil ->
+        parse_ref(ref, referers)
+
+      sources ->
+        case match_sources(ref, sources) do
+          nil -> parse_ref(ref, referers)
+          match -> match
+        end
     end
   end
 end

@@ -9,7 +9,14 @@ defmodule RefInspector.Database.Parser do
   @spec parse(list) :: list
   def parse(entries), do: parse([], entries)
 
-  defp parse(acc, []), do: sort_sources(acc)
+  defp parse(acc, []) do
+    Enum.reduce(acc, %{}, fn source, red_acc ->
+      last_part = List.first(source[:host_parts])
+      part_acc = red_acc[last_part] || []
+
+      Map.put(red_acc, last_part, [source | part_acc])
+    end)
+  end
 
   defp parse(acc, [{medium, sources} | entries]) do
     sources =
@@ -45,13 +52,5 @@ defmodule RefInspector.Database.Parser do
     acc = acc ++ parse_domains(source, domains, [])
 
     parse_sources(sources, acc)
-  end
-
-  defp sort_sources(sources) do
-    sources
-    |> Enum.map(&Map.put(&1, :sort, "#{&1.host}#{&1.path}"))
-    |> Enum.sort(&(String.length(&1[:sort]) > String.length(&2[:sort])))
-    |> Enum.uniq_by(& &1[:sort])
-    |> Enum.map(&Map.delete(&1, :sort))
   end
 end
