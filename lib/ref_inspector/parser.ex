@@ -28,7 +28,9 @@ defmodule RefInspector.Parser do
 
       false ->
         uri
-        |> Map.update!(:path, &(&1 || "/"))
+        |> Map.from_struct()
+        |> Map.put(:host_parts, uri.host |> String.split(".") |> Enum.reverse())
+        |> Map.put(:path, uri.path || "/")
         |> parse_ref(Database.list())
     end
   end
@@ -68,9 +70,14 @@ defmodule RefInspector.Parser do
     end
   end
 
-  defp matches_source?(%{host: ref_host, path: ref_path}, %{host: src_host, path: src_path}) do
+  defp matches_source?(
+         %{host: ref_host, host_parts: [first | _], path: ref_path},
+         %{host: src_host, host_parts: [first | _], path: src_path}
+       ) do
     String.ends_with?(ref_host, src_host) && String.starts_with?(ref_path, src_path)
   end
+
+  defp matches_source?(_, _), do: false
 
   defp parse_query(_, []), do: :none
 

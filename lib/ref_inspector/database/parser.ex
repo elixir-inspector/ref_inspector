@@ -28,6 +28,7 @@ defmodule RefInspector.Database.Parser do
     data =
       source
       |> Map.put(:host, uri.host)
+      |> Map.put(:host_parts, uri.host |> String.split(".") |> Enum.reverse())
       |> Map.put(:path, uri.path || "/")
 
     parse_domains(source, domains, acc ++ [data])
