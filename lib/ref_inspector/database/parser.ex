@@ -9,15 +9,15 @@ defmodule RefInspector.Database.Parser do
   @spec parse(list) :: list
   def parse(entries), do: parse([], entries)
 
-  defp parse(acc, []), do: Enum.reverse(acc)
+  defp parse(acc, []), do: sort_sources(acc)
 
   defp parse(acc, [{medium, sources} | entries]) do
     sources =
       sources
       |> parse_sources([])
-      |> sort_sources()
+      |> Enum.map(&Map.put(&1, :medium, String.to_atom(medium)))
 
-    parse([{medium, sources}] ++ acc, entries)
+    parse(sources ++ acc, entries)
   end
 
   defp parse_domains(_, [], acc), do: acc

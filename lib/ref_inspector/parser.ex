@@ -53,16 +53,16 @@ defmodule RefInspector.Parser do
     %{result | term: term}
   end
 
-  defp match_medium(_, {_, []}), do: nil
+  defp match_database(_, {_, []}), do: nil
 
-  defp match_medium(ref, {medium, [source | sources]}) do
+  defp match_database(ref, {database, [source | sources]}) do
     case matches_source?(ref, source) do
       false ->
-        match_medium(ref, {medium, sources})
+        match_database(ref, {database, sources})
 
       true ->
         result = %Result{
-          medium: medium,
+          medium: source.medium,
           source: source.name
         }
 
@@ -87,8 +87,8 @@ defmodule RefInspector.Parser do
 
   defp parse_ref(_, []), do: %Result{}
 
-  defp parse_ref(ref, [medium | referers]) do
-    case match_medium(ref, medium) do
+  defp parse_ref(ref, [database | referers]) do
+    case match_database(ref, database) do
       nil -> parse_ref(ref, referers)
       match -> match
     end

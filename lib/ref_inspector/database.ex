@@ -124,9 +124,8 @@ defmodule RefInspector.Database do
           Logger.info(reason)
 
         entries when is_list(entries) ->
-          entries
-          |> Parser.parse()
-          |> store_refs(ets_tid)
+          dataset = {database, Parser.parse(entries)}
+          true = :ets.insert_new(ets_tid, dataset)
       end
     end)
   end
@@ -162,15 +161,5 @@ defmodule RefInspector.Database do
     )
 
     :ok
-  end
-
-  defp store_refs([], _ets_tid), do: :ok
-
-  defp store_refs([{medium, sources} | refs], ets_tid) do
-    medium = String.to_atom(medium)
-    dataset = {medium, sources}
-
-    :ets.insert_new(ets_tid, dataset)
-    store_refs(refs, ets_tid)
   end
 end
