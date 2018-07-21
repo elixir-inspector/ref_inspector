@@ -55,29 +55,21 @@ defmodule RefInspector.Parser do
 
   defp match_sources(_, []), do: nil
 
-  defp match_sources(ref, [source | sources]) do
-    case matches_source?(ref, source) do
-      false ->
-        match_sources(ref, sources)
+  defp match_sources(
+         %{host: ref_host, path: ref_path} = ref,
+         [%{host: src_host, path: src_path} = source | sources]
+       ) do
+    if String.ends_with?(ref_host, src_host) && String.starts_with?(ref_path, src_path) do
+      result = %Result{
+        medium: source.medium,
+        source: source.name
+      }
 
-      true ->
-        result = %Result{
-          medium: source.medium,
-          source: source.name
-        }
-
-        maybe_parse_query(ref.query, source[:parameters], result)
+      maybe_parse_query(ref.query, source[:parameters], result)
+    else
+      match_sources(ref, sources)
     end
   end
-
-  defp matches_source?(
-         %{host: ref_host, path: ref_path},
-         %{host: src_host, path: src_path}
-       ) do
-    String.ends_with?(ref_host, src_host) && String.starts_with?(ref_path, src_path)
-  end
-
-  defp matches_source?(_, _), do: false
 
   defp parse_query(_, []), do: :none
 
@@ -88,15 +80,11 @@ defmodule RefInspector.Parser do
   defp parse_ref(_, []), do: %Result{}
 
   defp parse_ref(%{host_parts: [first | _]} = ref, [{_database, entries} | referers]) do
-    case Map.get(entries, first) do
-      nil ->
-        parse_ref(ref, referers)
+    sources = Map.get(entries, first, [])
 
-      sources ->
-        case match_sources(ref, sources) do
-          nil -> parse_ref(ref, referers)
-          match -> match
-        end
+    case match_sources(ref, sources) do
+      nil -> parse_ref(ref, referers)
+      match -> match
     end
   end
 end
