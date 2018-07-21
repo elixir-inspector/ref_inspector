@@ -11,19 +11,27 @@ defmodule RefInspector.Parser do
   """
   @spec parse(String.t()) :: map
   def parse(ref) do
-    uri = URI.parse(ref)
-    uri = %{uri | host: uri.host || "", path: uri.path || ""}
-
-    result =
-      case is_internal?(uri.host) do
-        true -> %Result{medium: :internal}
-        false -> parse_ref(uri, Database.list())
-      end
-
-    %{result | referer: ref}
+    ref
+    |> URI.parse()
+    |> do_parse()
+    |> Map.put(:referer, ref)
   end
 
   # Internal methods
+
+  defp do_parse(%{host: nil}), do: %Result{}
+
+  defp do_parse(%{host: host} = uri) do
+    case is_internal?(host) do
+      true ->
+        %Result{medium: :internal}
+
+      false ->
+        uri
+        |> Map.update!(:path, &(&1 || "/"))
+        |> parse_ref(Database.list())
+    end
+  end
 
   defp is_internal?(host) do
     sources = Application.get_env(:ref_inspector, :internal, [])
