@@ -3,6 +3,7 @@
 ## v0.20.0-dev
 
 - Enhancements
+    - Parsing speed has been improved and made more independent of database size
     - The configurable `:init` method will now be automatically executed when
       running the mix download task without manually ensuring the application
       is started
