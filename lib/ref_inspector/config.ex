@@ -3,6 +3,8 @@ defmodule RefInspector.Config do
   Utility module to simplify access to configuration values.
   """
 
+  require Logger
+
   @upstream_remote "https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yml"
 
   @default_files ["referers.yml"]
@@ -68,6 +70,14 @@ defmodule RefInspector.Config do
     end
   end
 
+  defp log_system_config_deprecation() do
+    Logger.info(
+      "Accessing the system environment for configuration via" <>
+        " {:system, \"var\"} has been deprecated. Please switch" <>
+        " to an initializer function to avoid future problems."
+    )
+  end
+
   defp maybe_fetch_system(config) when is_list(config) do
     Enum.map(config, fn
       {k, v} -> {k, maybe_fetch_system(v)}
@@ -76,9 +86,15 @@ defmodule RefInspector.Config do
   end
 
   defp maybe_fetch_system({:system, var, default}) do
+    log_system_config_deprecation()
+
     System.get_env(var) || default
   end
 
-  defp maybe_fetch_system({:system, var}), do: System.get_env(var)
+  defp maybe_fetch_system({:system, var}) do
+    log_system_config_deprecation()
+    System.get_env(var)
+  end
+
   defp maybe_fetch_system(config), do: config
 end

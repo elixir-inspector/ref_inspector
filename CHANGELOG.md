@@ -12,6 +12,11 @@
     - The mix task alias `ref_inspector.yaml.download` has been removed
     - The reload alias `RefInspector.reload_databases/0` has been removed
 
+- Deprecations
+    - Accessing the system environment by configuring `{:system, var}` or
+      `{:system, var, default}` will now result in a `Logger.info/1` message
+      and will stop working in a future release
+
 ## v0.19.0 (2018-02-13)
 
 - Enhancements
