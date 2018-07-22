@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.20.0-dev
+## v0.20.0 (2018-07-22)
 
 - Enhancements
     - Parsing speed has been improved and made more independent of database size
