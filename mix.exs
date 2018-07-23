@@ -7,7 +7,7 @@ defmodule RefInspector.Mixfile do
     [
       app: :ref_inspector,
       name: "RefInspector",
-      version: "0.21.0-dev",
+      version: "1.0.0-dev",
       elixir: "~> 1.3",
       aliases: aliases(),
       deps: deps(),
