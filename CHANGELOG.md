@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.0-dev
+
+- Backwards incompatible changes
+    - Support for `{:system, var}` configuration has been removed
+
 ## v0.20.0 (2018-07-22)
 
 - Enhancements

@@ -15,9 +15,7 @@ defmodule RefInspector.Config do
   """
   @spec get(atom, term) :: term
   def get(key, default \\ nil) do
-    :ref_inspector
-    |> Application.get_env(key, default)
-    |> maybe_fetch_system()
+    Application.get_env(:ref_inspector, key, default)
   end
 
   @doc """
@@ -69,32 +67,4 @@ defmodule RefInspector.Config do
       _ -> @default_urls
     end
   end
-
-  defp log_system_config_deprecation() do
-    Logger.info(
-      "Accessing the system environment for configuration via" <>
-        " {:system, \"var\"} has been deprecated. Please switch" <>
-        " to an initializer function to avoid future problems."
-    )
-  end
-
-  defp maybe_fetch_system(config) when is_list(config) do
-    Enum.map(config, fn
-      {k, v} -> {k, maybe_fetch_system(v)}
-      other -> other
-    end)
-  end
-
-  defp maybe_fetch_system({:system, var, default}) do
-    log_system_config_deprecation()
-
-    System.get_env(var) || default
-  end
-
-  defp maybe_fetch_system({:system, var}) do
-    log_system_config_deprecation()
-    System.get_env(var)
-  end
-
-  defp maybe_fetch_system(config), do: config
 end
