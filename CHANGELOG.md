@@ -3,6 +3,8 @@
 ## v1.0.0-dev
 
 - Backwards incompatible changes
+    - Internal parser process pooling has been removed. If you require pooling
+      you need to manually wrap `RefInspector.parse/1`
     - Support for `{:system, var}` configuration has been removed
 
 ## v0.20.0 (2018-07-22)

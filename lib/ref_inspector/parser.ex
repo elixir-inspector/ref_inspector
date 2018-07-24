@@ -10,6 +10,9 @@ defmodule RefInspector.Parser do
   Parses a given referer string.
   """
   @spec parse(String.t()) :: map
+  def parse(nil), do: %Result{}
+  def parse(""), do: %Result{}
+
   def parse(ref) do
     ref
     |> URI.parse()

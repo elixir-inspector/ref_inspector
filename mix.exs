@@ -27,7 +27,7 @@ defmodule RefInspector.Mixfile do
 
   def application do
     [
-      applications: [:hackney, :logger, :poolboy, :yamerl],
+      applications: [:hackney, :logger, :yamerl],
       mod: {RefInspector.App, []}
     ]
   end
@@ -45,7 +45,6 @@ defmodule RefInspector.Mixfile do
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:excoveralls, "~> 0.9", only: :test, runtime: false},
       {:hackney, "~> 1.0"},
-      {:poolboy, "~> 1.0"},
       {:yamerl, "~> 0.7"}
     ]
   end

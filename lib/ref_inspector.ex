@@ -13,7 +13,7 @@ defmodule RefInspector do
   Parses a referer.
   """
   @spec parse(String.t()) :: map
-  defdelegate parse(ref), to: RefInspector.Pool
+  defdelegate parse(ref), to: RefInspector.Parser
 
   @doc """
   Reloads all databases.

@@ -20,11 +20,7 @@ defmodule RefInspector.Supervisor do
     :ok = Config.init_env()
 
     options = [strategy: :one_for_one, name: __MODULE__]
-
-    children = [
-      RefInspector.Pool.child_spec(),
-      worker(RefInspector.Database, [])
-    ]
+    children = [worker(RefInspector.Database, [])]
 
     supervise(children, options)
   end
