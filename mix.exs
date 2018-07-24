@@ -8,7 +8,7 @@ defmodule RefInspector.Mixfile do
       app: :ref_inspector,
       name: "RefInspector",
       version: "1.0.0-dev",
-      elixir: "~> 1.3",
+      elixir: "~> 1.5",
       aliases: aliases(),
       deps: deps(),
       description: "Referer parser library",

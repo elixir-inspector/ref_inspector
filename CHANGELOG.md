@@ -5,6 +5,7 @@
 - Backwards incompatible changes
     - Internal parser process pooling has been removed. If you require pooling
       you need to manually wrap `RefInspector.parse/1`
+    - Minimum required elixir version is now "~> 1.5"
     - Support for `{:system, var}` configuration has been removed
 
 ## v0.20.0 (2018-07-22)
