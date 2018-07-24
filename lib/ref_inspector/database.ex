@@ -22,9 +22,9 @@ defmodule RefInspector.Database do
   @doc """
   Starts the database server.
   """
-  @spec start_link() :: GenServer.on_start()
-  def start_link() do
-    GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
+  @spec start_link(term) :: GenServer.on_start()
+  def start_link(default \\ nil) do
+    GenServer.start_link(__MODULE__, default, name: __MODULE__)
   end
 
   def init(state) do

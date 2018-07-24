@@ -53,7 +53,7 @@ And also add the appropriate `RefInspector.Supervisor` to your hierarchy:
 # in your application/supervisor
 children = [
   # ...
-  supervisor(RefInspector.Supervisor, [])
+  RefInspector.Supervisor,
   # ..
 ]
 ```
