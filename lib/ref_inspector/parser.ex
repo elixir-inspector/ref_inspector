@@ -9,7 +9,7 @@ defmodule RefInspector.Parser do
   @doc """
   Parses a given referer string.
   """
-  @spec parse(String.t()) :: map
+  @spec parse(String.t() | nil) :: Result.t()
   def parse(nil), do: %Result{}
   def parse(""), do: %Result{}
 

@@ -12,7 +12,7 @@ defmodule RefInspector do
   @doc """
   Parses a referer.
   """
-  @spec parse(String.t()) :: map
+  @spec parse(String.t() | nil) :: RefInspector.Result.t()
   defdelegate parse(ref), to: RefInspector.Parser
 
   @doc """
