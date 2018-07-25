@@ -8,6 +8,13 @@ defmodule RefInspector.ParserTest do
     assert %Result{} == RefInspector.parse("")
   end
 
+  test "URI struct referer" do
+    referer = "http://does.not/matter"
+    uri = URI.parse(referer)
+
+    assert %Result{referer: referer} == RefInspector.parse(uri)
+  end
+
   test "completely unknown" do
     referer = "http://i.will.not.be.found/"
     parsed = %Result{referer: referer}

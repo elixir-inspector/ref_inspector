@@ -2,6 +2,9 @@
 
 ## v1.0.0-dev
 
+- Enhancements
+    - Parsing can now be performed on `URI.t()` referers
+
 - Backwards incompatible changes
     - Internal parser process pooling has been removed. If you require pooling
       you need to manually wrap `RefInspector.parse/1`

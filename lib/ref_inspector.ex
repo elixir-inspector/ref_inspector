@@ -15,11 +15,17 @@ defmodule RefInspector do
   @doc """
   Parses a referer.
   """
-  @spec parse(String.t() | nil) :: Result.t()
+  @spec parse(URI.t() | String.t() | nil) :: Result.t()
   def parse(nil), do: %Result{}
   def parse(""), do: %Result{}
 
-  def parse(ref) do
+  def parse(%URI{} = uri) do
+    uri
+    |> Parser.parse()
+    |> Map.put(:referer, URI.to_string(uri))
+  end
+
+  def parse(ref) when is_binary(ref) do
     ref
     |> URI.parse()
     |> Parser.parse()
