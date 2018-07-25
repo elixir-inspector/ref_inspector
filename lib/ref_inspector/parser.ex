@@ -7,24 +7,12 @@ defmodule RefInspector.Parser do
   alias RefInspector.Result
 
   @doc """
-  Parses a given referer string.
+  Checks if a given URI struct is a known referer.
   """
-  @spec parse(String.t() | nil) :: Result.t()
-  def parse(nil), do: %Result{}
-  def parse(""), do: %Result{}
+  @spec parse(URI.t()) :: Result.t()
+  def parse(%URI{host: nil}), do: %Result{}
 
-  def parse(ref) do
-    ref
-    |> URI.parse()
-    |> do_parse()
-    |> Map.put(:referer, ref)
-  end
-
-  # Internal methods
-
-  defp do_parse(%{host: nil}), do: %Result{}
-
-  defp do_parse(%{host: host} = uri) do
+  def parse(%URI{host: host} = uri) do
     case is_internal?(host) do
       true ->
         %Result{medium: :internal}

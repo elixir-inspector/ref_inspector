@@ -3,6 +3,9 @@ defmodule RefInspector do
   Ref Inspector - Referer parser library
   """
 
+  alias RefInspector.Parser
+  alias RefInspector.Result
+
   @doc """
   Checks if there is data to use in lookups.
   """
@@ -12,8 +15,16 @@ defmodule RefInspector do
   @doc """
   Parses a referer.
   """
-  @spec parse(String.t() | nil) :: RefInspector.Result.t()
-  defdelegate parse(ref), to: RefInspector.Parser
+  @spec parse(String.t() | nil) :: Result.t()
+  def parse(nil), do: %Result{}
+  def parse(""), do: %Result{}
+
+  def parse(ref) do
+    ref
+    |> URI.parse()
+    |> Parser.parse()
+    |> Map.put(:referer, ref)
+  end
 
   @doc """
   Reloads all databases.
