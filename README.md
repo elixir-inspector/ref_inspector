@@ -9,7 +9,11 @@ required dependencies:
 
 ```elixir
 defp deps do
-  [{ :ref_inspector, "~> 0.20" }]
+  [
+    # ...
+    {:ref_inspector, "~> 0.20"},
+    # ...
+  ]
 end
 ```
 
@@ -23,7 +27,7 @@ def application do
   [
     applications: [
       # ...
-      :ref_inspector
+      :ref_inspector,
       # ...
     ]
   ]
@@ -40,7 +44,7 @@ def application do
   [
     included_applications: [
       # ...
-      :ref_inspector
+      :ref_inspector,
       # ...
     ]
   ]
