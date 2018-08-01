@@ -3,14 +3,19 @@ defmodule RefInspector do
   Ref Inspector - Referer parser library
   """
 
+  alias RefInspector.Database
   alias RefInspector.Parser
   alias RefInspector.Result
 
   @doc """
   Checks if there is data to use in lookups.
+
+  The check is done against the currently active internal data table.
+
+  An empty database is considered to be "not ready".
   """
   @spec ready?() :: boolean
-  defdelegate ready?(), to: RefInspector.Database
+  def ready?(), do: [] != Database.list()
 
   @doc """
   Parses a referer.
@@ -36,5 +41,5 @@ defmodule RefInspector do
   Reloads all databases.
   """
   @spec reload() :: :ok
-  defdelegate reload(), to: RefInspector.Database
+  def reload(), do: GenServer.cast(Database, :reload)
 end
