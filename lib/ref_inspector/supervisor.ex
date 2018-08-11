@@ -3,6 +3,8 @@ defmodule RefInspector.Supervisor do
   RefInspector Supervisor.
   """
 
+  use Supervisor
+
   alias RefInspector.Config
 
   @doc """
@@ -17,9 +19,6 @@ defmodule RefInspector.Supervisor do
   def init(_state) do
     :ok = Config.init_env()
 
-    options = [strategy: :one_for_one, name: __MODULE__]
-    children = [RefInspector.Database]
-
-    Supervisor.init(children, options)
+    Supervisor.init([RefInspector.Database], strategy: :one_for_one)
   end
 end
