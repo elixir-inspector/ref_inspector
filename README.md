@@ -228,7 +228,7 @@ be used for lookups.
 
 If you need to check if the database is still empty or (at least partially!)
 loaded, you can use `RefInspector.ready?/0`. Please be aware that this method
-checks the current state and not what will happen after an (potentially running)
+checks the current state and not what will happen after a (potentially running)
 reload is finished.
 
 ## Benchmark
