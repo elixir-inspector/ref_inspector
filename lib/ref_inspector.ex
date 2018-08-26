@@ -1,6 +1,6 @@
 defmodule RefInspector do
   @moduledoc """
-  Ref Inspector - Referer parser library
+  RefInspector - Referer parser library
   """
 
   alias RefInspector.Database
