@@ -1,7 +1,7 @@
 defmodule RefInspector.Mixfile do
   use Mix.Project
 
-  @url_github "https://github.com/elixytics/ref_inspector"
+  @url_github "https://github.com/elixir-inspector/ref_inspector"
 
   def project do
     [

@@ -2,6 +2,9 @@
 
 ## v1.0.0-dev
 
+- Ownership has been transferred to the
+  [`elixir-inspector`](https://github.com/elixir-inspector) organisation
+
 - Enhancements
     - Parsing can now be performed on `URI.t()` referers
 
