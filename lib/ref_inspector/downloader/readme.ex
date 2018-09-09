@@ -1,8 +1,5 @@
 defmodule RefInspector.Downloader.README do
-  @moduledoc """
-  README writer for generic (license) information when using the default
-  remote database configuration.
-  """
+  @moduledoc false
 
   alias RefInspector.Config
 

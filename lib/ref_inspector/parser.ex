@@ -1,7 +1,5 @@
 defmodule RefInspector.Parser do
-  @moduledoc """
-  Parser module.
-  """
+  @moduledoc false
 
   alias RefInspector.Database
   alias RefInspector.Result

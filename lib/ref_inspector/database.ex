@@ -1,7 +1,5 @@
 defmodule RefInspector.Database do
-  @moduledoc """
-  Referer database.
-  """
+  @moduledoc false
 
   use GenServer
 

@@ -1,7 +1,5 @@
 defmodule RefInspector.Database.Loader do
-  @moduledoc """
-  Locates a database file and reads the (yaml) contents.
-  """
+  @moduledoc false
 
   @doc """
   Returns the yaml contents of a database file.

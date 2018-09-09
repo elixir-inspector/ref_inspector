@@ -1,7 +1,5 @@
 defmodule RefInspector.Database.Parser do
-  @moduledoc """
-  YAML database entry parser.
-  """
+  @moduledoc false
 
   @doc """
   Parses a list of database entries and modifies them to be usable.
