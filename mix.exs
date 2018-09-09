@@ -43,7 +43,7 @@ defmodule RefInspector.Mixfile do
     [
       {:benchee, "~> 0.13.0", only: :bench, runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.9", only: :test, runtime: false},
+      {:excoveralls, "~> 0.10", only: :test, runtime: false},
       {:hackney, "~> 1.0"},
       {:yamerl, "~> 0.7"}
     ]
