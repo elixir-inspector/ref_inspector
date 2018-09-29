@@ -7,6 +7,8 @@
 
 - Enhancements
     - Parsing can now be performed on `URI.t()` referers
+    - The download mix task will now exit with code `1`
+      if it aborts due to missing configuration
 
 - Backwards incompatible changes
     - Internal parser process pooling has been removed. If you require pooling

@@ -45,8 +45,7 @@ defmodule Mix.Tasks.RefInspector.Download do
   end
 
   defp exit_unconfigured() do
-    Mix.shell().error("Local path not configured.")
-    Mix.shell().error("See README.md for details.")
+    Mix.raise("Local path not configured.")
   end
 
   defp exit_unconfirmed() do

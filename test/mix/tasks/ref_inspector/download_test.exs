@@ -90,17 +90,13 @@ defmodule Mix.Tasks.RefInspector.DownloadTest do
   end
 
   test "missing configuration" do
-    Mix.shell(Mix.Shell.IO)
-
     orig_path = Application.get_env(:ref_inspector, :database_path)
 
-    console =
-      capture_io(:stderr, fn ->
-        Application.put_env(:ref_inspector, :database_path, nil)
-        Download.run([])
-        Application.put_env(:ref_inspector, :database_path, orig_path)
-      end)
+    assert_raise Mix.Error, ~r/not configured/, fn ->
+      Application.put_env(:ref_inspector, :database_path, nil)
+      Download.run([])
+    end
 
-    assert String.contains?(console, "not configured")
+    Application.put_env(:ref_inspector, :database_path, orig_path)
   end
 end
