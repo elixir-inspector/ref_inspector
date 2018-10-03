@@ -12,9 +12,7 @@ defmodule RefInspector.Verification.Mixfile do
     ]
   end
 
-  def application do
-    [applications: [:ref_inspector]]
-  end
+  def application, do: []
 
   defp deps do
     [{:ref_inspector, path: "../"}]
