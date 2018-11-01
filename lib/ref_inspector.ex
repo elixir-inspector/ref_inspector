@@ -28,6 +28,16 @@ defmodule RefInspector do
     has no configured term parameters in the database (mostly relevant for
     social or email referers). If a configured term parameter was found it will
     be an unencoded string (possibly empty).
+
+  #### Note about Result Medium Atoms/Binaries
+
+  The medium atoms `:unknown` and `:internal` are specially treated to reflect
+  two special cases. One being reserved for completely unknown referers and
+  one being for configured domains to not be parsed.
+
+  Your database can still include `"unknown"` and `"internal"` sections. These
+  will be parsed fully and returned using a binary as the medium instead of
+  the aforementions atoms.
   """
 
   alias RefInspector.Database
