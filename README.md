@@ -4,8 +4,7 @@ Referer parser library.
 
 ## Package Setup
 
-To use RefInspector with your projects, edit your `mix.exs` file and add the
-required dependencies:
+To use RefInspector with your projects, edit your `mix.exs` file and add the required dependencies:
 
 ```elixir
 defp deps do
@@ -19,10 +18,7 @@ end
 
 ### Package Startup (manual supervision)
 
-If you do not want to automatically start the application you need to
-adapt your configuration for manual supervision yourself. This means
-you should add `:ref_inspector` to your `:included_applications` instead
-of `:applications` (or automatic discovery):
+If you do not want to automatically start the application you need to adapt your configuration for manual supervision yourself. This means you should add `:ref_inspector` to your `:included_applications` instead of `:applications` (or automatic discovery):
 
 ```elixir
 def application do
@@ -51,8 +47,7 @@ children = [
 
 To start using RefInspector you need to at least configure a `:database_path`.
 
-If you are using the default database you can omit the `:database_files`
-configuration value.
+If you are using the default database you can omit the `:database_files` configuration value.
 
 ### Configuration (static)
 
@@ -66,12 +61,9 @@ config :ref_inspector,
 
 ### Configuration (dynamic)
 
-If there are any reasons you cannot use a pre-defined configuration you
-can also configure an initializer module to be called before starting
-the application supervisor. This function is expected to always return `:ok`.
+If there are any reasons you cannot use a pre-defined configuration you can also configure an initializer module to be called before starting the application supervisor. This function is expected to always return `:ok`.
 
-This may be the most suitable configuration if you have the databases located
-in the `:priv_dir` of your application.
+This may be the most suitable configuration if you have the databases located in the `:priv_dir` of your application.
 
 ```elixir
 config :ref_inspector,
@@ -109,14 +101,11 @@ config :ref_inspector,
   ]
 ```
 
-All files configured will be saved as under the configured database path.
-If you have not configure a custom file path the filename extracted from the
-url will be taken.
+All files configured will be saved as under the configured database path. If you have not configure a custom file path the filename extracted from the url will be taken.
 
 ### Configuration (ETS Cleanup)
 
-When reloading the old database is deleted with a configurable delay. The delay
-is defined in milliseconds with a default of `30_000`.
+When reloading the old database is deleted with a configurable delay. The delay is defined in milliseconds with a default of `30_000`.
 
 ```elixir
 config :ref_inspector,
@@ -125,35 +114,24 @@ config :ref_inspector,
 
 ### Configuration (HTTP client)
 
-The database is downloaded using
-[`:hackney`](https://github.com/benoitc/hackney). To pass custom configuration
-values to hackney you can use the key `:http_opts` in your config:
+The database is downloaded using [`:hackney`](https://github.com/benoitc/hackney). To pass custom configuration values to hackney you can use the key `:http_opts` in your config:
 
 ```elixir
 config :ref_inspector,
   http_opts: [proxy: "http://mycompanyproxy.com"]
 ```
 
-Please see
-[`:hackney.request/5`](https://hexdocs.pm/hackney/hackney.html#request-5)
-for a complete list of available options.
+Please see [`:hackney.request/5`](https://hexdocs.pm/hackney/hackney.html#request-5) for a complete list of available options.
 
 ## Referer Database
 
-Using `mix ref_inspector.download` you can store a local copy of the
-regexes database in the configured path. This database is taken from the
-[snowplow-referer-parser](https://github.com/snowplow-referer-parser/referer-parser)
-project.
+Using `mix ref_inspector.download` you can store a local copy of the regexes database in the configured path. This database is taken from the [snowplow-referer-parser](https://github.com/snowplow-referer-parser/referer-parser) project.
 
-The local path of the downloaded file will be shown to you upon command
-invocation.
+The local path of the downloaded file will be shown to you upon command invocation.
 
-If you want to download the database files using your application you can
-directly call `RefInspector.Downloader.download/0`.
+If you want to download the database files using your application you can directly call `RefInspector.Downloader.download/0`.
 
-When using both the mix task and a default remote configuration an informational
-README is placed next to the downloaded file(s). This behaviour can be
-deactivated by configuration:
+When using both the mix task and a default remote configuration an informational README is placed next to the downloaded file(s). This behaviour can be deactivated by configuration:
 
 ```elixir
 config :ref_inspector,
@@ -169,10 +147,7 @@ config :ref_inspector,
   internal: ["www.example.com", "www.example.org"]
 ```
 
-If a referer matches at least one of the configured domains (== ends with,
-paths ignored!), it will return a result with the medium `:internal`.
-Both `:source` and `:term` will be left at the initial/unknown state not
-intended for further processing.
+If a referer matches at least one of the configured domains (== ends with, paths ignored!), it will return a result with the medium `:internal`. Both `:source` and `:term` will be left at the initial/unknown state not intended for further processing.
 
 ## Basic Usage
 
@@ -190,8 +165,7 @@ Full documentation is available inline in the `RefInspector` module and at [http
 
 ## Benchmark
 
-Several (minimal) benchmark scripts are included. Please refer to the
-Mixfile or `mix help` output for their names.
+Several (minimal) benchmark scripts are included. Please refer to the Mixfile or `mix help` output for their names.
 
 ## Resources
 
@@ -201,6 +175,4 @@ Mixfile or `mix help` output for their names.
 
 [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
-_Referers.yml_ taken from the
-[snowplow-referer-parser](https://github.com/snowplow-referer-parser/referer-parser)
-project. See there for detailed license information about the data contained.
+_Referers.yml_ taken from the [snowplow-referer-parser](https://github.com/snowplow-referer-parser/referer-parser) project. See there for detailed license information about the data contained.
