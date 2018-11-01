@@ -17,27 +17,12 @@ defp deps do
 end
 ```
 
-### Package Startup (application)
-
-Probably the easiest way to manage startup is by simply
-adding `:ref_inspector` to the list of applications:
-
-```elixir
-def application do
-  [
-    applications: [
-      # ...
-      :ref_inspector,
-      # ...
-    ]
-  ]
-end
-```
-
 ### Package Startup (manual supervision)
 
-A second possible approach is to take care of supervision yourself. This
-means you should add `:ref_inspector` to your included applications instead:
+If you do not want to automatically start the application you need to
+adapt your configuration for manual supervision yourself. This means
+you should add `:ref_inspector` to your `:included_applications` instead
+of `:applications` (or automatic discovery):
 
 ```elixir
 def application do
