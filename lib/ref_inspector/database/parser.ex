@@ -20,7 +20,7 @@ defmodule RefInspector.Database.Parser do
     sources =
       sources
       |> parse_sources([])
-      |> Enum.map(&Map.put(&1, :medium, String.to_atom(medium)))
+      |> Enum.map(&Map.put(&1, :medium, medium))
 
     parse(sources ++ acc, entries)
   end

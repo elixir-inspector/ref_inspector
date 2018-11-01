@@ -177,8 +177,7 @@ config :ref_inspector,
 
 ### Internal Domains
 
-To exclude some domains from parsing you can mark them as `:internal` using
-your configuration:
+To exclude some domains from parsing you can mark them as internal using your configuration:
 
 ```elixir
 config :ref_inspector,
@@ -196,7 +195,7 @@ intended for further processing.
 iex(1)> RefInspector.parse("http://www.google.com/search?q=ref_inspector")
 %RefInspector.Result{
   referer: "http://www.google.com/search?q=ref_inspector",
-  medium: :search,
+  medium: "search",
   source: "google",
   term: "ref_inspector"
 }

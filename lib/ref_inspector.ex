@@ -7,7 +7,7 @@ defmodule RefInspector do
       iex> RefInspector.parse("http://www.google.com/search?q=ref_inspector")
       %RefInspector.Result{
         referer: "http://www.google.com/search?q=ref_inspector",
-        medium: :search,
+        medium: "search",
         source: "google",
         term: "ref_inspector"
       }
@@ -17,9 +17,9 @@ defmodule RefInspector do
 
   - `:referer` will contain the unmodified referer passed to the parser.
 
-  - `:medium` will be one of `:unknown`, `:email`, `:paid`, `:search`, `:social`
-    or `:internal`. The detection as an internal referer requires additional
-    configuration.
+  - `:medium` will be `:unknown` if no matching database entry could be found
+    `:internal`, or a string matching the entry in the database. Detecting a
+    referer as internal requires additional configuration.
 
   - `:source` will be `:unknown` if no known source could be detected.
     Otherwise it will contain a string with the provider's name.

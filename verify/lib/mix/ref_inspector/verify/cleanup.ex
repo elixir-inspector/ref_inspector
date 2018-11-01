@@ -18,9 +18,11 @@ defmodule Mix.RefInspector.Verify.Cleanup do
     %{testcase | medium: :unknown}
   end
 
-  defp cleanup_medium(%{medium: medium} = testcase) do
-    %{testcase | medium: String.to_atom(medium)}
+  defp cleanup_medium(%{medium: "internal"} = testcase) do
+    %{testcase | medium: :internal}
   end
+
+  defp cleanup_medium(testcase), do: testcase
 
   defp cleanup_source(%{source: :null} = testcase) do
     %{testcase | source: :unknown}

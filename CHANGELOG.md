@@ -13,6 +13,9 @@
 - Backwards incompatible changes
     - Internal parser process pooling has been removed. If you require pooling
       you need to manually wrap `RefInspector.parse/1`
+    - Medium information in the result struct is now returned as a `String.t()`
+      instead of an `atom`. The only exceptions are `:unknown` and `:internal`
+      referers
     - Minimum required elixir version is now "~> 1.5"
     - Support for `{:system, var}` configuration has been removed
 
