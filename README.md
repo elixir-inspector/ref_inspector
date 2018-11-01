@@ -175,7 +175,22 @@ config :ref_inspector,
   skip_download_readme: true
 ```
 
-## Usage
+### Internal Domains
+
+To exclude some domains from parsing you can mark them as `:internal` using
+your configuration:
+
+```elixir
+config :ref_inspector,
+  internal: ["www.example.com", "www.example.org"]
+```
+
+If a referer matches at least one of the configured domains (== ends with,
+paths ignored!), it will return a result with the medium `:internal`.
+Both `:source` and `:term` will be left at the initial/unknown state not
+intended for further processing.
+
+## Basic Usage
 
 ```elixir
 iex(1)> RefInspector.parse("http://www.google.com/search?q=ref_inspector")
@@ -187,49 +202,7 @@ iex(1)> RefInspector.parse("http://www.google.com/search?q=ref_inspector")
 }
 ```
 
-_Medium_ will be one of `:unknown`, `:email`, `:paid`, `:search` or `:social`
-(always an atom). If configured to do so it might also be `:internal`.
-
-_Source_ will be `:unknown` (as atom) if nothing was matched, otherwise a string
-with the detected provider.
-
-_Term_ will be `:none` (as atom) if no query parameters were given to parse or the
-provider does not send any terms to detect (mostly social or email referers).
-Otherwise it will be an unencoded string will the term passed (can be empty).
-
-_Referer_ will return the passed referer unmodified.
-
-### Internal Domains
-
-To exclude some domains from parsing you can mark them as `:internal` using
-your configuration:
-
-```elixir
-config :ref_inspector,
-  internal: ["www.example.com", "www.example.org"]
-```
-
-If a referer matches (== ends with) at least one of the configured domains
-(paths ignored!), it will return a result with the medium `:internal`.
-Both `:source` and `:term` will be left at the initial/unknown state not
-intended for further processing.
-
-### Reloading
-
-Sometimes (for example after downloading a new database set) it is required to
-reload the internal database. This can be done asynchronously:
-
-```elixir
-RefInspector.reload()
-```
-
-This process is handled in the background, so for some time the old data will
-be used for lookups.
-
-If you need to check if the database is still empty or (at least partially!)
-loaded, you can use `RefInspector.ready?/0`. Please be aware that this method
-checks the current state and not what will happen after a (potentially running)
-reload is finished.
+Full documentation is available inline in the `RefInspector` module and at [https://hexdocs.pm/ref_inspector](https://hexdocs.pm/ref_inspector).
 
 ## Benchmark
 
