@@ -6,6 +6,7 @@
 
 - Enhancements
     - Parsing can now be performed on `URI.t()` referers
+    - The default database path has been set to `Application.app_dir(:ref_inspector, "priv")`
     - The download mix task will now exit with code `1` if it aborts due to missing configuration
 
 - Backwards incompatible changes

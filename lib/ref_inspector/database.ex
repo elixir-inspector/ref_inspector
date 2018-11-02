@@ -92,11 +92,6 @@ defmodule RefInspector.Database do
     :ok
   end
 
-  defp do_reload(_, nil, _ets_tid) do
-    Logger.warn("Reload error: no database path configured!")
-    :ok
-  end
-
   defp do_reload(files, path, ets_tid) do
     Enum.each(files, fn file ->
       database = Path.join([path, file])

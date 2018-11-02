@@ -45,9 +45,7 @@ children = [
 
 ## Application Configuration
 
-To start using RefInspector you need to at least configure a `:database_path`.
-
-If you are using the default database you can omit the `:database_files` configuration value.
+Out of the box the default database will be stored in the `:priv_dir` of `:ref_inspector`. Both the database(s) and path used can be changed.
 
 ### Configuration (static)
 
@@ -128,6 +126,8 @@ Please see [`:hackney.request/5`](https://hexdocs.pm/hackney/hackney.html#reques
 Using `mix ref_inspector.download` you can store a local copy of the regexes database in the configured path. This database is taken from the [snowplow-referer-parser](https://github.com/snowplow-referer-parser/referer-parser) project.
 
 The local path of the downloaded file will be shown to you upon command invocation.
+
+As a default database path (if not configured otherwise) the result of `Application.app_dir(:ref_inspector, "priv")` will be used.
 
 If you want to download the database files using your application you can directly call `RefInspector.Downloader.download/0`.
 

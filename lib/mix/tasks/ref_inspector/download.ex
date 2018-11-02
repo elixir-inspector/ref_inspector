@@ -22,13 +22,6 @@ defmodule Mix.Tasks.RefInspector.Download do
   def run(args) do
     :ok = Config.init_env()
 
-    case Config.database_path() do
-      nil -> exit_unconfigured()
-      _ -> do_run(args)
-    end
-  end
-
-  defp do_run(args) do
     Mix.shell().info("Download paths:")
 
     Enum.each(Config.yaml_urls(), fn yaml ->
@@ -42,10 +35,6 @@ defmodule Mix.Tasks.RefInspector.Download do
     else
       exit_unconfirmed()
     end
-  end
-
-  defp exit_unconfigured() do
-    Mix.raise("Local path not configured.")
   end
 
   defp exit_unconfirmed() do

@@ -30,13 +30,16 @@ defmodule RefInspector.Config do
   end
 
   @doc """
-  Returns the configured database path or `nil`.
+  Returns the configured database path.
+
+  If the path is not defined the `priv` dir of `:ref_inspector`
+  as returned by `Application.app_dir(:ref_inspector, "priv")` will be used.
   """
-  @spec database_path :: String.t() | nil
+  @spec database_path :: String.t()
   def database_path do
     case get(:database_path) do
-      nil -> nil
-      path -> Path.expand(path)
+      nil -> Application.app_dir(:ref_inspector, "priv")
+      path -> path
     end
   end
 

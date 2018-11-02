@@ -22,9 +22,9 @@ defmodule RefInspector.ConfigTest do
     assert urls == Config.yaml_urls()
   end
 
-  test "missing configuration" do
+  test "priv dir fallback for misconfiguration" do
     Application.put_env(:ref_inspector, :database_path, nil)
 
-    assert nil == Config.database_path()
+    refute nil == Config.database_path()
   end
 end

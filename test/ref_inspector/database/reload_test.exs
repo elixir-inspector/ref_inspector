@@ -46,17 +46,4 @@ defmodule RefInspector.Database.ReloadTest do
     assert log =~ ~r/no database files/i
     refute RefInspector.ready?()
   end
-
-  test "warns about missing path configuration" do
-    Application.delete_env(:ref_inspector, :database_path)
-
-    log =
-      capture_log(fn ->
-        RefInspector.reload()
-        :timer.sleep(100)
-      end)
-
-    assert log =~ ~r/no database path.*/i
-    refute RefInspector.ready?()
-  end
 end

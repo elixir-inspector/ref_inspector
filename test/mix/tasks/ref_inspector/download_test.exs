@@ -88,15 +88,4 @@ defmodule Mix.Tasks.RefInspector.DownloadTest do
       assert File.stat!(test_file).size == File.stat!(fixture_file).size
     end)
   end
-
-  test "missing configuration" do
-    orig_path = Application.get_env(:ref_inspector, :database_path)
-
-    assert_raise Mix.Error, ~r/not configured/, fn ->
-      Application.put_env(:ref_inspector, :database_path, nil)
-      Download.run([])
-    end
-
-    Application.put_env(:ref_inspector, :database_path, orig_path)
-  end
 end
