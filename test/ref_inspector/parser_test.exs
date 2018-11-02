@@ -6,6 +6,7 @@ defmodule RefInspector.ParserTest do
   test "empty referer" do
     assert %Result{} == RefInspector.parse(nil)
     assert %Result{} == RefInspector.parse("")
+    assert %Result{} == RefInspector.parse(URI.parse(""))
   end
 
   test "URI struct referer" do
