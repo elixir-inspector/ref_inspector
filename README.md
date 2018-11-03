@@ -16,32 +16,7 @@ defp deps do
 end
 ```
 
-### Package Startup (manual supervision)
-
-If you do not want to automatically start the application you need to adapt your configuration for manual supervision yourself. This means you should add `:ref_inspector` to your `:included_applications` instead of `:applications` (or automatic discovery):
-
-```elixir
-def application do
-  [
-    included_applications: [
-      # ...
-      :ref_inspector,
-      # ...
-    ]
-  ]
-end
-```
-
-And also add the appropriate `RefInspector.Supervisor` to your hierarchy:
-
-```elixir
-# in your application/supervisor
-children = [
-  # ...
-  RefInspector.Supervisor,
-  # ..
-]
-```
+If you want to use a manual supervision approach (without starting the application) please look at the inline documentation of `RefInspector.Supervisor`.
 
 ## Application Configuration
 
