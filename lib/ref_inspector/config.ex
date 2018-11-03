@@ -37,14 +37,22 @@ defmodule RefInspector.Config do
 
   This is done by defining an initializer module that will automatically be
   called by `RefInspector.Supervisor` upon startup/restart. The configuration
-  is expected to consist of a `{module, function}` tuple:
+  is expected to consist of a `{mod, fun}` or `{mod, fun, args}` tuple:
 
+      # {mod, fun}
       config :ref_inspector,
-        init: {MyInitModule, :my_init_fun}
+        init: {MyInitModule, :my_init_mf}
+
+      # {mod, fun, args}
+      config :ref_inspector,
+        init: {MyInitModule, :my_init_mfa, [:foo, :bar]}
 
       defmodule MyInitModule do
-        @spec my_init_fun() :: :ok
-        def my_init_fun() do
+        @spec my_init_mf() :: :ok
+        def my_init_mf(), do: my_init_mfa(:foo, :bar)
+
+        @spec my_init_mfa(atom, atom) :: :ok
+        def my_init_mfa(:foo, :bar) do
           priv_dir = Application.app_dir(:my_app, "priv")
 
           Application.put_env(:ref_inspector, :database_path, priv_dir)
@@ -161,6 +169,7 @@ defmodule RefInspector.Config do
     case get(:init) do
       nil -> :ok
       {mod, fun} -> apply(mod, fun, [])
+      {mod, fun, args} -> apply(mod, fun, args)
     end
   end
 
