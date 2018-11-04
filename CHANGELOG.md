@@ -34,7 +34,7 @@
 - Enhancements
     - Finding the data table is now done via a named lookup table instead of calling the database state server
     - Old data tables are deleted with a configurable delay after reloading to avoid race conditions (and the resulting empty lookup responses)
-    - If you need to check if the database is loaded (i.e. "no longer empty" you can use `RefInspector.ready?/0`
+    - If you need to check if the database is loaded (i.e. "no longer empty") you can use `RefInspector.ready?/0`
 
 ## v0.18.0 (2017-12-31)
 
