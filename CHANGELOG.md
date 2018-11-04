@@ -13,7 +13,7 @@
 - Backwards incompatible changes
     - Internal parser process pooling has been removed. If you require pooling you need to manually wrap `RefInspector.parse/1`
     - Medium information in the result struct is now returned as a `String.t()` instead of an `atom`. The only exceptions are `:unknown` and `:internal` referers
-    - Minimum required elixir version is now "~> 1.5"
+    - Minimum required elixir version is now `~> 1.5`
     - Support for `{:system, var}` configuration has been removed
 
 ## v0.20.0 (2018-07-22)
@@ -62,7 +62,7 @@
 ## v0.16.0 (2017-09-24)
 
 - Backwards incompatible changes
-    - Minimum required elixir version is now "~> 1.3"
+    - Minimum required elixir version is now `~> 1.3`
 
 ## v0.15.0 (2017-09-12)
 
@@ -119,8 +119,8 @@
 
 - Backwards incompatible changes
     - Downloads are now done using `:hackney` instead of `mix`. This may force you to manually reconfigure the client
-    - Minimum required elixir version is now "~> 1.2"
-    - Minimum required erlang version is now "~> 18.0"
+    - Minimum required elixir version is now `~> 1.2`
+    - Minimum required erlang version is now `~> 18.0`
 
 ## v0.9.0 (2016-03-30)
 
