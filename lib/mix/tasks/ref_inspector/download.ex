@@ -43,7 +43,6 @@ defmodule Mix.Tasks.RefInspector.Download do
   end
 
   defp perform_download() do
-    {:ok, _} = Application.ensure_all_started(:hackney)
     :ok = Downloader.download()
     :ok = Downloader.README.write()
 
