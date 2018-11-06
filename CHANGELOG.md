@@ -5,6 +5,7 @@
 - Ownership has been transferred to the [`elixir-inspector`](https://github.com/elixir-inspector) organisation
 
 - Enhancements
+    - Downloading the databases ensures hackney is started to allow calling `mix run --no-start -e "RefInspector.Downloader.download()"`
     - Initializer modules can be defined with additional arguments by using `{mod, fun, args}`
     - Parsing can now be performed on `URI.t()` referers
     - The default database path has been set to `Application.app_dir(:ref_inspector, "priv")`
