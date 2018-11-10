@@ -12,7 +12,7 @@ defmodule RefInspector.SupervisorTest do
     def get_init, do: Agent.get(__MODULE__, & &1)
   end
 
-  setup do
+  setup_all do
     init = Application.get_env(:ref_inspector, :init)
     {:ok, _} = Initializer.start_link()
 
