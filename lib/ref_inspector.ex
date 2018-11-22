@@ -2,6 +2,14 @@ defmodule RefInspector do
   @moduledoc """
   Referer parser library.
 
+  ## Preparation
+
+  1. Verify your supervision setup according to `RefInspector.Supervisor`
+  2. Revise the default configuration values of `RefInspector.Config` and
+     adjust to your project/environment where necessary
+  3. Download a copy of the parser database file(s) as outlined in
+    `RefInspector.Downloader`
+
   ## Usage
 
       iex> RefInspector.parse("http://www.google.com/search?q=ref_inspector")
