@@ -26,20 +26,7 @@ For a detailed list of available configuration options please consult `RefInspec
 
 ## Referer Database
 
-Using `mix ref_inspector.download` you can store a local copy of the regexes database in the configured path. This database is taken from the [snowplow-referer-parser](https://github.com/snowplow-referer-parser/referer-parser) project.
-
-The local path of the downloaded file will be shown to you upon command invocation.
-
-As a default database path (if not configured otherwise) the result of `Application.app_dir(:ref_inspector, "priv")` will be used.
-
-If you want to download the database files using your application you can directly call `RefInspector.Downloader.download/0`.
-
-When using both the mix task and a default remote configuration an informational README is placed next to the downloaded file(s). This behaviour can be deactivated by configuration:
-
-```elixir
-config :ref_inspector,
-  skip_download_readme: true
-```
+The default database is taken from the [snowplow-referer-parser](https://github.com/snowplow-referer-parser/referer-parser) project.
 
 ### Internal Domains
 
@@ -53,6 +40,14 @@ config :ref_inspector,
 If a referer matches at least one of the configured domains (== ends with, paths ignored!), it will return a result with the medium `:internal`. Both `:source` and `:term` will be left at the initial/unknown state not intended for further processing.
 
 ## Basic Usage
+
+### Database Download
+
+You need to obtain a copy of the configured database by calling either `mix ref_inspector.download` from the command line or `RefInspector.Downloader.download/0` from within your application.
+
+Refer to `RefInspector.Downloader` for more details.
+
+### Referer Parsing
 
 ```elixir
 iex(1)> RefInspector.parse("http://www.google.com/search?q=ref_inspector")

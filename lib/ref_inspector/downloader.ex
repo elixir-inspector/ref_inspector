@@ -1,8 +1,32 @@
 defmodule RefInspector.Downloader do
   @moduledoc """
-  Fetches copies of each configured database file.
+  Fetches copies of the configured database file(s).
 
-  The copies will be stored inside the configured path.
+  All files will be stored in the configured database path with the default
+  setting being the result of `Application.app_dir(:ref_inspector, "priv")`.
+
+  Please consult `RefInspector.Config` for details on database configuration.
+
+  ## Informational README
+
+  If you are using the default databases from the default remote location an
+  informational README with the filename `ref_inspector.readme.md` will be
+  placed next to the downloaded file(s). Inside you will find a link to the
+  original database source.
+
+  The creation of this file can be deactivated by configuration:
+
+      config :ref_inspector,
+        skip_download_readme: true
+
+  ## Mix Task
+
+  You can call the downloader using `mix ref_inspector.download` from your
+  command line.
+
+  The task will display the target location upon invocation and will ask for
+  confirmation before downloading. If you want to force a download without
+  configuration you can use `mix ref_inspector.download --force`.
   """
 
   alias RefInspector.Config
