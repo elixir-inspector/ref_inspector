@@ -5,6 +5,18 @@ defmodule Mix.Tasks.RefInspector.Download do
   The task will display the target location upon invocation and will ask for
   confirmation before downloading. If you want to force a download you can
   use `mix ref_inspector.download --force`.
+
+  ## Informational README
+
+  If you are using the default databases from the default remote location an
+  informational README with the filename `ref_inspector.readme.md` will be
+  placed next to the downloaded file(s). Inside you will find a link to the
+  original database source.
+
+  The creation of this file can be deactivated by configuration:
+
+      config :ref_inspector,
+        skip_download_readme: true
   """
 
   @shortdoc "Downloads database files"

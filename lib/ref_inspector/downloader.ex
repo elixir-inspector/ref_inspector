@@ -7,18 +7,6 @@ defmodule RefInspector.Downloader do
 
   Please consult `RefInspector.Config` for details on database configuration.
 
-  ## Informational README
-
-  If you are using the default databases from the default remote location an
-  informational README with the filename `ref_inspector.readme.md` will be
-  placed next to the downloaded file(s). Inside you will find a link to the
-  original database source.
-
-  The creation of this file can be deactivated by configuration:
-
-      config :ref_inspector,
-        skip_download_readme: true
-
   ## Mix Task
 
   Please see `Mix.Tasks.RefInspector.Download` if you are interested in
