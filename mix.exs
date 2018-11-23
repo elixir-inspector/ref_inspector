@@ -51,8 +51,7 @@ defmodule RefInspector.Mixfile do
 
   defp docs do
     [
-      extras: ["CHANGELOG.md", "README.md"],
-      main: "readme",
+      main: "RefInspector",
       source_ref: "master",
       source_url: @url_github
     ]
