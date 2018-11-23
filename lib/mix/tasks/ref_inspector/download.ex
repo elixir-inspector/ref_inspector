@@ -1,10 +1,10 @@
 defmodule Mix.Tasks.RefInspector.Download do
   @moduledoc """
-  Fetches copies of each configured database file.
+  Mix task to download database file(s) from your command line.
 
-  The copies will be stored inside the configured path.
-
-  `mix ref_inspector.yaml.download`
+  The task will display the target location upon invocation and will ask for
+  confirmation before downloading. If you want to force a download you can
+  use `mix ref_inspector.download --force`.
   """
 
   @shortdoc "Downloads database files"

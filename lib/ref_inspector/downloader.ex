@@ -21,12 +21,8 @@ defmodule RefInspector.Downloader do
 
   ## Mix Task
 
-  You can call the downloader using `mix ref_inspector.download` from your
-  command line.
-
-  The task will display the target location upon invocation and will ask for
-  confirmation before downloading. If you want to force a download without
-  configuration you can use `mix ref_inspector.download --force`.
+  Please see `Mix.Tasks.RefInspector.Download` if you are interested in
+  using a mix task to obtain your database file(s).
   """
 
   alias RefInspector.Config
