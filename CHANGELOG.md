@@ -5,6 +5,7 @@
 - Ownership has been transferred to the [`elixir-inspector`](https://github.com/elixir-inspector) organisation
 
 - Enhancements
+    - Documentation is now available inline (`@moduledoc`, ...) with the `README.md` file targeting the repository (development) instead of releases
     - Downloading the databases ensures hackney is started to allow calling `mix run --no-start -e "RefInspector.Downloader.download()"`
     - Initializer modules can be defined with additional arguments by using `{mod, fun, args}`
     - Parsing can now be performed on `URI.t()` referers
