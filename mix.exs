@@ -7,7 +7,7 @@ defmodule RefInspector.Mixfile do
     [
       app: :ref_inspector,
       name: "RefInspector",
-      version: "1.0.0",
+      version: "1.1.0-dev",
       elixir: "~> 1.5",
       aliases: aliases(),
       deps: deps(),
@@ -52,7 +52,7 @@ defmodule RefInspector.Mixfile do
   defp docs do
     [
       main: "RefInspector",
-      source_ref: "v1.0.0",
+      source_ref: "master",
       source_url: @url_github
     ]
   end
