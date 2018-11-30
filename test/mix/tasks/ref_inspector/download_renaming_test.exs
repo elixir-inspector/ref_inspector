@@ -6,9 +6,9 @@ defmodule Mix.Tasks.RefInspector.DownloadRenamingTest do
   alias Mix.Tasks.RefInspector.Download
 
   @fixture_file "empty.yml"
-  @fixture_path Path.join([__DIR__, "../../../fixtures"]) |> Path.expand()
+  @fixture_path Path.expand("../../../fixtures", __DIR__)
   @test_file "empty_renamed.yml"
-  @test_path Path.join([__DIR__, "../../../downloads"]) |> Path.expand()
+  @test_path Path.expand("../../../downloads", __DIR__)
 
   setup_all do
     # setup internal testing webserver

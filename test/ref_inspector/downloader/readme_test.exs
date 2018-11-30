@@ -6,7 +6,7 @@ defmodule RefInspector.Downloader.READMETest do
   setup_all do
     database_path = Application.get_env(:ref_inspector, :database_path)
     remote_urls = Application.get_env(:ref_inspector, :remote_urls)
-    test_path = Path.join([__DIR__, "../../downloads"]) |> Path.expand()
+    test_path = Path.expand("../../downloads", __DIR__)
 
     :ok = Application.put_env(:ref_inspector, :database_path, test_path)
     _ = File.rm(README.path_local())

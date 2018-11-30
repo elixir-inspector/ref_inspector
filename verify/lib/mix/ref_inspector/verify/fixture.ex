@@ -26,7 +26,7 @@ defmodule Mix.RefInspector.Verify.Fixture do
     File.write!(local_file(), content)
   end
 
-  def download_path, do: Path.join(__DIR__, "../../../../database") |> Path.expand()
+  def download_path, do: Path.expand("../../../../database", __DIR__)
   def local_file, do: Path.join([download_path(), @local])
 
   def setup() do
