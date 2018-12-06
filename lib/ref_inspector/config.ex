@@ -10,7 +10,8 @@ defmodule RefInspector.Config do
         database_path: Application.app_dir(:ref_inspector, "priv"),
         ets_cleanup_delay: 30_000,
         http_opts: [],
-        remote_urls: [{"referers.yml", "https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yml"}]
+        remote_urls: [{"referers.yml", "https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yml"}],
+        yaml_file_reader: {:yamerl_constr, :file, [[:str_node_as_binary]]}
 
   The default `:database_path` is evaluated at runtime and not compiled into
   a release!
@@ -113,6 +114,21 @@ defmodule RefInspector.Config do
 
   You can manually configure this delay using the `:ets_cleanup_delay`
   configuration value.
+
+  ## YAML File Reader Configuration
+
+  By default the library [`:yamerl`](https://hex.pm/packages/yamerl) will
+  be used to read and decode the yaml database files. You can configure this
+  reader to be a custom module:
+
+      config :ref_inspector,
+        yaml_file_reader: {module, function}
+
+      config :ref_inspector,
+        yaml_file_reader: {module, function, extra_args}
+
+  The configured module will receive the file to read as the first argument with
+  any optionally configured extra arguments after that.
   """
 
   require Logger
@@ -121,6 +137,8 @@ defmodule RefInspector.Config do
 
   @default_files ["referers.yml"]
   @default_urls [{"referers.yml", @upstream_remote}]
+
+  @default_yaml_reader {:yamerl_constr, :file, [[:str_node_as_binary]]}
 
   @doc """
   Provides access to configuration values with optional environment lookup.
@@ -170,6 +188,18 @@ defmodule RefInspector.Config do
       nil -> :ok
       {mod, fun} -> apply(mod, fun, [])
       {mod, fun, args} -> apply(mod, fun, args)
+    end
+  end
+
+  @doc """
+  Returns the `{mod, fun, extra_args}` to be used when reading a yaml file.
+  """
+  @spec yaml_file_reader :: {module, atom, [term]}
+  def yaml_file_reader do
+    case get(:yaml_file_reader) do
+      {_, _, _} = mfa -> mfa
+      {mod, fun} -> {mod, fun, []}
+      _ -> @default_yaml_reader
     end
   end
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.0-dev
+
+- Enhancements
+    - The library used to read YAML files can be changed by using the `:yaml_file_reader` configuration
+
 ## v1.0.0 (2018-11-24)
 
 - Ownership has been transferred to the [`elixir-inspector`](https://github.com/elixir-inspector) organisation
