@@ -49,12 +49,12 @@ defmodule Mix.Tasks.RefInspector.Download do
     end
   end
 
-  defp exit_unconfirmed() do
+  defp exit_unconfirmed do
     Mix.shell().info("Download aborted!")
     :ok
   end
 
-  defp perform_download() do
+  defp perform_download do
     :ok = Downloader.download()
     :ok = Downloader.README.write()
 

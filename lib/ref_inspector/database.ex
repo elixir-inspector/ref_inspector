@@ -63,7 +63,7 @@ defmodule RefInspector.Database do
   Returns all referer definitions.
   """
   @spec list() :: [tuple]
-  def list() do
+  def list do
     case fetch_data_table() do
       nil -> []
       ets_tid -> :ets.tab2list(ets_tid)
@@ -72,11 +72,11 @@ defmodule RefInspector.Database do
 
   # Internal methods
 
-  defp create_data_table() do
+  defp create_data_table do
     :ets.new(@ets_data_table_name, @ets_data_table_opts)
   end
 
-  defp create_lookup_table() do
+  defp create_lookup_table do
     case :ets.info(@ets_lookup_table_name) do
       :undefined ->
         _ = :ets.new(@ets_lookup_table_name, @ets_lookup_table_opts)
@@ -117,7 +117,7 @@ defmodule RefInspector.Database do
     :ok
   end
 
-  defp fetch_data_table() do
+  defp fetch_data_table do
     case :ets.info(@ets_lookup_table_name) do
       :undefined ->
         nil

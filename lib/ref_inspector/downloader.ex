@@ -19,7 +19,7 @@ defmodule RefInspector.Downloader do
   Performs the download of the configured database files.
   """
   @spec download() :: :ok
-  def download() do
+  def download do
     Application.ensure_all_started(:hackney)
     File.mkdir_p!(Config.database_path())
 

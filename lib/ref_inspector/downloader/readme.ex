@@ -8,20 +8,20 @@ defmodule RefInspector.Downloader.README do
   @doc """
   Returns the path to the local copy of the README file.
   """
-  @spec path_local :: Path.t()
-  def path_local(), do: Path.join(Config.database_path(), @readme)
+  @spec path_local() :: Path.t()
+  def path_local, do: Path.join(Config.database_path(), @readme)
 
   @doc """
   Returns the path of the README file distributed in priv_dir.
   """
-  @spec path_priv :: Path.t()
-  def path_priv(), do: Application.app_dir(:ref_inspector, ["priv", @readme])
+  @spec path_priv() :: Path.t()
+  def path_priv, do: Application.app_dir(:ref_inspector, ["priv", @readme])
 
   @doc """
   Writes the informational README file if remote database is the default.
   """
-  @spec write :: :ok
-  def write() do
+  @spec write() :: :ok
+  def write do
     default? = Config.default_remote_database?()
     readme? = !Config.get(:skip_download_readme)
 
@@ -31,7 +31,7 @@ defmodule RefInspector.Downloader.README do
     end
   end
 
-  defp do_write() do
+  defp do_write do
     dirname_local = Path.dirname(path_local())
 
     unless File.dir?(dirname_local) do

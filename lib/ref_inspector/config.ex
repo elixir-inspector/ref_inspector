@@ -151,7 +151,7 @@ defmodule RefInspector.Config do
   @doc """
   Returns the list of configured database files.
   """
-  @spec database_files :: list
+  @spec database_files() :: list
   def database_files do
     case get(:database_files) do
       nil -> @default_files
@@ -165,7 +165,7 @@ defmodule RefInspector.Config do
   If the path is not defined the `priv` dir of `:ref_inspector`
   as returned by `Application.app_dir(:ref_inspector, "priv")` will be used.
   """
-  @spec database_path :: String.t()
+  @spec database_path() :: String.t()
   def database_path do
     case get(:database_path) do
       nil -> Application.app_dir(:ref_inspector, "priv")
@@ -176,14 +176,14 @@ defmodule RefInspector.Config do
   @doc """
   Returns whether the remote database matches the default.
   """
-  @spec default_remote_database? :: boolean
+  @spec default_remote_database?() :: boolean
   def default_remote_database?, do: yaml_urls() == @default_urls
 
   @doc """
   Calls the optionally configured init method.
   """
   @spec init_env() :: :ok
-  def init_env() do
+  def init_env do
     case get(:init) do
       nil -> :ok
       {mod, fun} -> apply(mod, fun, [])
@@ -194,7 +194,7 @@ defmodule RefInspector.Config do
   @doc """
   Returns the `{mod, fun, extra_args}` to be used when reading a yaml file.
   """
-  @spec yaml_file_reader :: {module, atom, [term]}
+  @spec yaml_file_reader() :: {module, atom, [term]}
   def yaml_file_reader do
     case get(:yaml_file_reader) do
       {_, _, _} = mfa -> mfa
@@ -206,7 +206,7 @@ defmodule RefInspector.Config do
   @doc """
   Returns the remote urls of the database file.
   """
-  @spec yaml_urls :: [String.t() | {String.t(), String.t()}]
+  @spec yaml_urls() :: [String.t() | {String.t(), String.t()}]
   def yaml_urls do
     case get(:remote_urls) do
       files when is_list(files) and 0 < length(files) -> files

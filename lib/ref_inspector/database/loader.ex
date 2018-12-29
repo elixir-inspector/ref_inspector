@@ -12,7 +12,8 @@ defmodule RefInspector.Database.Loader do
       true ->
         {reader_mod, reader_fun, reader_extra_args} = Config.yaml_file_reader()
 
-        apply(reader_mod, reader_fun, [file | reader_extra_args])
+        reader_mod
+        |> apply(reader_fun, [file | reader_extra_args])
         |> maybe_hd()
 
       false ->

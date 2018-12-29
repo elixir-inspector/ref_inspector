@@ -62,7 +62,7 @@ defmodule RefInspector do
   Any potentially concurrent reload requests are not considered.
   """
   @spec ready?() :: boolean
-  def ready?(), do: [] != Database.list()
+  def ready?, do: [] != Database.list()
 
   @doc """
   Parses a referer.
@@ -91,5 +91,5 @@ defmodule RefInspector do
   some time the old data will be used for lookups.
   """
   @spec reload() :: :ok
-  def reload(), do: GenServer.cast(Database, :reload)
+  def reload, do: GenServer.cast(Database, :reload)
 end
