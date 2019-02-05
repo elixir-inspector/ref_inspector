@@ -12,6 +12,7 @@ defmodule RefInspector.Mixfile do
       aliases: aliases(),
       deps: deps(),
       description: "Referer parser library",
+      dialyzer: dialyzer(),
       docs: docs(),
       package: package(),
       preferred_cli_env: [
@@ -48,6 +49,17 @@ defmodule RefInspector.Mixfile do
       {:excoveralls, "~> 0.10", only: :test, runtime: false},
       {:hackney, "~> 1.0"},
       {:yamerl, "~> 0.7"}
+    ]
+  end
+
+  defp dialyzer do
+    [
+      flags: [
+        :error_handling,
+        :race_conditions,
+        :underspecs,
+        :unmatched_returns
+      ]
     ]
   end
 
