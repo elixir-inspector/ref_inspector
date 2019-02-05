@@ -20,7 +20,8 @@ defmodule RefInspector.Downloader do
   """
   @spec download() :: :ok
   def download do
-    Application.ensure_all_started(:hackney)
+    _ = Application.ensure_all_started(:hackney)
+
     File.mkdir_p!(Config.database_path())
 
     Enum.each(Config.yaml_urls(), fn config ->

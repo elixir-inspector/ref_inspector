@@ -88,7 +88,7 @@ defmodule RefInspector.Database do
   end
 
   defp do_reload([], _, _ets_tid) do
-    Logger.warn("Reload error: no database files configured!")
+    _ = Logger.warn("Reload error: no database files configured!")
     :ok
   end
 
