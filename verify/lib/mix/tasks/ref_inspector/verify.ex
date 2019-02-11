@@ -41,7 +41,7 @@ defmodule Mix.Tasks.RefInspector.Verify do
   end
 
   defp parse(case_data) when is_list(case_data) do
-    Enum.map(case_data, %{}, fn {k, v} -> {String.to_atom(k), parse(v)} end)
+    Enum.into(case_data, %{}, fn {k, v} -> {String.to_atom(k), parse(v)} end)
   end
 
   defp parse(case_data), do: case_data
