@@ -42,7 +42,7 @@ defmodule RefInspector.Mixfile do
 
   defp deps do
     [
-      {:benchee, "~> 0.13.0", only: :bench, runtime: false},
+      {:benchee, "~> 0.14.0", only: :bench, runtime: false},
       {:credo, "~> 1.0", only: :dev, runtime: false},
       {:dialyxir, "~> 1.0.0-rc", only: :dev, runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
