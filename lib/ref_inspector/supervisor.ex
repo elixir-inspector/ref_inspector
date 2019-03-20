@@ -1,6 +1,6 @@
 defmodule RefInspector.Supervisor do
   @moduledoc """
-  This supervisor module takes care ofstartling the required database storage
+  This supervisor module takes care of starting the required database storage
   processes. It is automatically started with the `:ref_inspector` application.
 
   If you do not want to automatically start the application itself you can
