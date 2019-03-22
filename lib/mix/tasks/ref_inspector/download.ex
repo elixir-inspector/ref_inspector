@@ -2,9 +2,12 @@ defmodule Mix.Tasks.RefInspector.Download do
   @moduledoc """
   Mix task to download database file(s) from your command line.
 
-  The task will display the target location upon invocation and will ask for
-  confirmation before downloading. If you want to force a download you can
-  use `mix ref_inspector.download --force`.
+  ## Arguments
+
+  When run without arguments the task will display the target directory for the
+  downloaded files and will ask for confirmation before downloading.
+
+  - `--force`: skip confirmation before downloading
 
   ## Informational README
 
