@@ -5,9 +5,9 @@ defmodule RefInspector.Database.Parser do
   Parses a list of database entries and modifies them to be usable.
   """
   @spec parse(list) :: list
-  def parse(entries), do: parse([], entries)
+  def parse(entries), do: parse(entries, [])
 
-  defp parse(acc, []) do
+  defp parse([], acc) do
     Enum.reduce(acc, %{}, fn source, red_acc ->
       last_part = List.first(source[:host_parts])
       part_acc = red_acc[last_part] || []
@@ -16,13 +16,13 @@ defmodule RefInspector.Database.Parser do
     end)
   end
 
-  defp parse(acc, [{medium, sources} | entries]) do
+  defp parse([{medium, sources} | entries], acc) do
     sources =
       sources
       |> parse_sources([])
       |> Enum.map(&Map.put(&1, :medium, medium))
 
-    parse(sources ++ acc, entries)
+    parse(entries, sources ++ acc)
   end
 
   defp parse_domains(_, [], acc), do: acc
