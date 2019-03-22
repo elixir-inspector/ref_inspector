@@ -50,6 +50,18 @@ defmodule Mix.Tasks.RefInspector.DownloadTest do
     assert String.contains?(console, "Download aborted")
   end
 
+  test "aborted download (quiet)" do
+    Mix.shell(Mix.Shell.IO)
+
+    console =
+      capture_io(fn ->
+        Download.run(["--quiet"])
+        IO.write("n")
+      end)
+
+    assert console == "Download databases? [Yn] n"
+  end
+
   test "confirmed download" do
     Mix.shell(Mix.Shell.IO)
 
