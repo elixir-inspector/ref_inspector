@@ -60,6 +60,8 @@ defmodule RefInspector.Mixfile do
         :underspecs,
         :unmatched_returns
       ],
+      ignore_warnings: ".dialyzer_ignore.exs",
+      list_unused_filters: true,
       plt_add_apps: [:mix]
     ]
   end

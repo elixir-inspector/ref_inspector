@@ -1,6 +1,6 @@
 [
   inputs: [
     "{bench,config,lib,test,verify}/**/*.{ex,exs}",
-    "{.credo,.formatter,mix}.exs"
+    "{.credo,.dialyzer_ignore,.formatter,mix}.exs"
   ]
 ]

@@ -154,7 +154,7 @@ defmodule RefInspector.Config do
   @spec database_files() :: list
   def database_files do
     case get(:database_files) do
-      nil -> @default_files
+      nil -> default_files()
       files when is_list(files) -> files
     end
   end
@@ -174,10 +174,22 @@ defmodule RefInspector.Config do
   end
 
   @doc """
+  Returns the default list of database files.
+  """
+  @spec default_files() :: [binary]
+  def default_files, do: @default_files
+
+  @doc """
+  Returns the default list of database urls.
+  """
+  @spec default_urls() :: [{binary, binary}]
+  def default_urls, do: @default_urls
+
+  @doc """
   Returns whether the remote database matches the default.
   """
   @spec default_remote_database?() :: boolean
-  def default_remote_database?, do: yaml_urls() == @default_urls
+  def default_remote_database?, do: yaml_urls() == default_urls()
 
   @doc """
   Calls the optionally configured init method.
@@ -210,7 +222,7 @@ defmodule RefInspector.Config do
   def yaml_urls do
     case get(:remote_urls) do
       files when is_list(files) and 0 < length(files) -> files
-      _ -> @default_urls
+      _ -> default_urls()
     end
   end
 end
