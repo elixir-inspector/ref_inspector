@@ -56,7 +56,7 @@ defmodule RefInspector do
   Checks if RefInspector is ready to perform lookups.
 
   The `true == ready?` definition is made on the assumption that if there is
-  at least one referer in the database the work intenden can be performed.
+  at least one referer in the database then lookups can be performed.
 
   Checking the state is done using the currently active database.
   Any potentially concurrent reload requests are not considered.
@@ -66,6 +66,9 @@ defmodule RefInspector do
 
   @doc """
   Parses a referer.
+
+  Passing an empty referer (`""` or `nil`) will directly return an empty result
+  without accessing the database.
   """
   @spec parse(URI.t() | String.t() | nil) :: Result.t()
   def parse(nil), do: %Result{}
