@@ -64,7 +64,7 @@ defmodule RefInspector.Config do
 
   ## Database Configuration
 
-  Configuring the database to use can be done using two related values:
+  Configuring the database to use can be done using three related values:
 
   - `:database_files`
   - `:database_path`
