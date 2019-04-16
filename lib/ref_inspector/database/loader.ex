@@ -21,6 +21,6 @@ defmodule RefInspector.Database.Loader do
     end
   end
 
+  defp maybe_hd([]), do: []
   defp maybe_hd([data | _]), do: data
-  defp maybe_hd(_), do: []
 end

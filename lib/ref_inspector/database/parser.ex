@@ -42,7 +42,7 @@ defmodule RefInspector.Database.Parser do
   defp parse_sources([], acc), do: acc
 
   defp parse_sources([{name, details} | sources], acc) do
-    details = details |> Enum.into(%{})
+    details = Enum.into(details, %{})
     domains = Map.get(details, "domains", [])
     parameters = Map.get(details, "parameters", [])
 
