@@ -23,7 +23,7 @@ defmodule RefInspector.SupervisorTest do
   end
 
   test "init {mod, fun} called upon supervisor (re-) start" do
-    start_supervised(Initializer)
+    {:ok, _} = start_supervised(Initializer)
 
     capture_log(fn ->
       Supervisor.stop(RefInspector.Supervisor, :normal)
@@ -38,7 +38,7 @@ defmodule RefInspector.SupervisorTest do
   end
 
   test "init {mod, fun, args} called upon supervisor (re-) start" do
-    start_supervised(Initializer)
+    {:ok, _} = start_supervised(Initializer)
 
     capture_log(fn ->
       Supervisor.stop(RefInspector.Supervisor, :normal)
