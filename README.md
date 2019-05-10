@@ -52,9 +52,9 @@ Refer to `RefInspector.Downloader` for more details.
 ```elixir
 iex(1)> RefInspector.parse("http://www.google.com/search?q=ref_inspector")
 %RefInspector.Result{
-  referer: "http://www.google.com/search?q=ref_inspector",
   medium: "search",
-  source: "google",
+  referer: "http://www.google.com/search?q=ref_inspector",
+  source: "Google",
   term: "ref_inspector"
 }
 ```
