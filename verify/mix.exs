@@ -1,4 +1,4 @@
-defmodule RefInspector.Verification.Mixfile do
+defmodule RefInspector.Verification.MixProject do
   use Mix.Project
 
   def project do
