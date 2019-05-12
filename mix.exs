@@ -29,7 +29,7 @@ defmodule RefInspector.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {RefInspector.App, []}
+      mod: {RefInspector.Application, []}
     ]
   end
 

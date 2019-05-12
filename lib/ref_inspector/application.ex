@@ -1,4 +1,4 @@
-defmodule RefInspector.App do
+defmodule RefInspector.Application do
   @moduledoc false
 
   use Application
