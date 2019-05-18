@@ -11,7 +11,7 @@ defmodule RefInspector.Parser do
   def parse(%URI{host: nil}), do: %Result{}
 
   def parse(%URI{host: host} = uri) do
-    case is_internal?(host) do
+    case internal?(host) do
       true ->
         %Result{medium: :internal}
 
@@ -24,7 +24,7 @@ defmodule RefInspector.Parser do
     end
   end
 
-  defp is_internal?(host) do
+  defp internal?(host) do
     sources = Application.get_env(:ref_inspector, :internal, [])
 
     String.ends_with?(host, sources)
