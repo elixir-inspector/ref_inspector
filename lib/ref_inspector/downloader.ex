@@ -37,7 +37,7 @@ defmodule RefInspector.Downloader do
   @doc """
   Returns the local path to store a configured database at.
   """
-  @spec path_local({String.t(), String.t()} | String.t()) :: String.t()
+  @spec path_local({binary, binary} | binary) :: binary
   def path_local({local, _remote}) do
     Path.join([Config.database_path(), local])
   end
@@ -49,14 +49,14 @@ defmodule RefInspector.Downloader do
   @doc """
   Returns the remote path to download a configured database from.
   """
-  @spec path_remote({String.t(), String.t()} | String.t()) :: String.t()
+  @spec path_remote({binary, binary} | binary) :: binary
   def path_remote({_local, remote}), do: remote
   def path_remote(remote), do: remote
 
   @doc """
   Reads a remote file and returns it's contents.
   """
-  @spec read_remote(String.t()) :: term
+  @spec read_remote(binary) :: {:ok, binary} | {:error, term}
   def read_remote(path) do
     http_opts = Config.get(:http_opts, [])
     {:ok, _, _, client} = :hackney.get(path, [], [], http_opts)
