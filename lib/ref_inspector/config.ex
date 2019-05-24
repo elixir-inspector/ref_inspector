@@ -82,7 +82,7 @@ defmodule RefInspector.Config do
   `:remote_urls` is of utmost importance. It defines where each file is located.
 
       config :ref_inspector,
-        :remote_urls, [
+        remote_urls: [
           "http://example.com/database.yml"
           {"database_local.yml", "http://example.com/database_remote.yml"}
         ]
@@ -96,7 +96,7 @@ defmodule RefInspector.Config do
 
   ## Download Configuration
 
-  All download request for your database files are done using
+  All download requests for your database files are done using
   [`:hackney`](https://hex.pm/packages/hackney). To pass custom configuration
   values to hackney you can use the key `:http_opts`:
 
