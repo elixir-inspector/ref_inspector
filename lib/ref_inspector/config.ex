@@ -96,9 +96,9 @@ defmodule RefInspector.Config do
 
   ## Download Configuration
 
-  All download requests for your database files are done using
-  [`:hackney`](https://hex.pm/packages/hackney). To pass custom configuration
-  values to hackney you can use the key `:http_opts`:
+  Using the default configuration all download requests for your database files
+  are done using [`:hackney`](https://hex.pm/packages/hackney). To pass custom
+  configuration values to hackney you can use the key `:http_opts`:
 
       config :ref_inspector,
         http_opts: [proxy: "http://mycompanyproxy.com"]
@@ -106,6 +106,13 @@ defmodule RefInspector.Config do
   Please see
   [`:hackney.request/5`](https://hexdocs.pm/hackney/hackney.html#request-5)
   for a complete list of available options.
+
+  If you want to change the library used to download the databases you can
+  configure a module implementing the `RefInspector.Downloader.Adapter`
+  behaviour:
+
+      config :ref_inspector,
+        downloader_adapter: MyDownloaderAdapter
 
   ## Reload Configuration
 
@@ -138,6 +145,7 @@ defmodule RefInspector.Config do
   @default_files ["referers.yml"]
   @default_urls [{"referers.yml", @upstream_remote}]
 
+  @default_downloader_adapter RefInspector.Downloader.Adapter.Hackney
   @default_yaml_reader {:yamerl_constr, :file, [[:str_node_as_binary]]}
 
   @doc """
@@ -190,6 +198,15 @@ defmodule RefInspector.Config do
   """
   @spec default_remote_database?() :: boolean
   def default_remote_database?, do: yaml_urls() == default_urls()
+
+  @doc """
+  Returns the configured downloader adapter module.
+
+  The modules is expected to adhere to the behaviour defined in
+  `RefInspector.Downloadaer.Adapter`.
+  """
+  @spec downloader_adapter() :: module
+  def downloader_adapter, do: get(:downloader_adapter, @default_downloader_adapter)
 
   @doc """
   Calls the optionally configured init method.

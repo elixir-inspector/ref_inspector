@@ -20,8 +20,6 @@ defmodule RefInspector.Downloader do
   """
   @spec download() :: :ok
   def download do
-    _ = Application.ensure_all_started(:hackney)
-
     File.mkdir_p!(Config.database_path())
 
     Enum.each(Config.yaml_urls(), fn config ->
@@ -55,12 +53,9 @@ defmodule RefInspector.Downloader do
 
   @doc """
   Reads a remote file and returns it's contents.
+
+  Uses the module returned by `Config.downloader_adpater/0`.
   """
   @spec read_remote(binary) :: {:ok, binary} | {:error, term}
-  def read_remote(path) do
-    http_opts = Config.get(:http_opts, [])
-    {:ok, _, _, client} = :hackney.get(path, [], [], http_opts)
-
-    :hackney.body(client)
-  end
+  def read_remote(path), do: Config.downloader_adapter().read_remote(path)
 end
