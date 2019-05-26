@@ -13,8 +13,10 @@ defmodule RefInspector.Downloader.Adapter.Hackney do
     _ = Application.ensure_all_started(:hackney)
 
     http_opts = Config.get(:http_opts, [])
-    {:ok, _, _, client} = :hackney.get(path, [], [], http_opts)
 
-    :hackney.body(client)
+    case :hackney.get(path, [], [], http_opts) do
+      {:ok, _, _, client} -> :hackney.body(client)
+      {:error, _} = error -> error
+    end
   end
 end
