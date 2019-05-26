@@ -26,6 +26,7 @@ defmodule Mix.Tasks.RefInspector.Download do
   @shortdoc "Downloads database files"
 
   alias RefInspector.Config
+  alias RefInspector.Database.Location
   alias RefInspector.Downloader
 
   use Mix.Task
@@ -44,7 +45,7 @@ defmodule Mix.Tasks.RefInspector.Download do
       Mix.shell().info("Download paths:")
 
       Enum.each(Config.yaml_urls(), fn yaml ->
-        Mix.shell().info("- #{Downloader.path_local(yaml)}")
+        Mix.shell().info(["- ", Location.local(yaml)])
       end)
 
       Mix.shell().info("This command will replace any already existing copy!")

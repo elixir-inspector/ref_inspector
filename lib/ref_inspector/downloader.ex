@@ -14,6 +14,7 @@ defmodule RefInspector.Downloader do
   """
 
   alias RefInspector.Config
+  alias RefInspector.Database.Location
 
   @doc """
   Performs the download of the configured database files.
@@ -36,20 +37,13 @@ defmodule RefInspector.Downloader do
   Returns the local path to store a configured database at.
   """
   @spec path_local({binary, binary} | binary) :: binary
-  def path_local({local, _remote}) do
-    Path.join([Config.database_path(), local])
-  end
-
-  def path_local(remote) do
-    Path.join([Config.database_path(), Path.basename(remote)])
-  end
+  def path_local(local), do: Location.local(local)
 
   @doc """
   Returns the remote path to download a configured database from.
   """
   @spec path_remote({binary, binary} | binary) :: binary
-  def path_remote({_local, remote}), do: remote
-  def path_remote(remote), do: remote
+  def path_remote(remote), do: Location.remote(remote)
 
   @doc """
   Reads a remote file and returns it's contents.
