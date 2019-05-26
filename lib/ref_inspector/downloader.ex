@@ -13,6 +13,8 @@ defmodule RefInspector.Downloader do
   using a mix task to obtain your database file(s).
   """
 
+  require Logger
+
   alias RefInspector.Config
   alias RefInspector.Database.Location
 
@@ -24,32 +26,48 @@ defmodule RefInspector.Downloader do
     File.mkdir_p!(Config.database_path())
 
     Enum.each(Config.yaml_urls(), fn config ->
-      local = path_local(config)
-      remote = path_remote(config)
+      local = Location.local(config)
+      remote = Location.remote(config)
 
-      {:ok, content} = read_remote(remote)
+      {:ok, content} = Config.downloader_adapter().read_remote(remote)
 
       File.write(local, content)
     end)
   end
 
-  @doc """
-  Returns the local path to store a configured database at.
-  """
+  @doc false
   @spec path_local({binary, binary} | binary) :: binary
-  def path_local(local), do: Location.local(local)
+  def path_local(local) do
+    _ =
+      Logger.info(
+        "RefInspector.Downloader.path_local/1 has been" <>
+          " declared internal and will eventually be removed."
+      )
 
-  @doc """
-  Returns the remote path to download a configured database from.
-  """
+    Location.local(local)
+  end
+
+  @doc false
   @spec path_remote({binary, binary} | binary) :: binary
-  def path_remote(remote), do: Location.remote(remote)
+  def path_remote(remote) do
+    _ =
+      Logger.info(
+        "RefInspector.Downloader.path_remote/1 has been" <>
+          " declared internal and will eventually be removed."
+      )
 
-  @doc """
-  Reads a remote file and returns it's contents.
+    Location.remote(remote)
+  end
 
-  Uses the module returned by `Config.downloader_adpater/0`.
-  """
+  @doc false
   @spec read_remote(binary) :: {:ok, binary} | {:error, term}
-  def read_remote(path), do: Config.downloader_adapter().read_remote(path)
+  def read_remote(path) do
+    _ =
+      Logger.info(
+        "RefInspector.Downloader.read_remote/1 has been" <>
+          " declared internal and will eventually be removed."
+      )
+
+    Config.downloader_adapter().read_remote(path)
+  end
 end
