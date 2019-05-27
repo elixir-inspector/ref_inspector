@@ -203,7 +203,7 @@ defmodule RefInspector.Config do
   Returns the configured downloader adapter module.
 
   The modules is expected to adhere to the behaviour defined in
-  `RefInspector.Downloadaer.Adapter`.
+  `RefInspector.Downloader.Adapter`.
   """
   @spec downloader_adapter() :: module
   def downloader_adapter, do: get(:downloader_adapter, @default_downloader_adapter)
