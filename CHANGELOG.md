@@ -9,7 +9,12 @@
     - The library used to read YAML files can be changed by using the `:yaml_file_reader` configuration
 
 - Deprecations
-    - The functions `RefInspector.Downloader.path_local/1`, `RefInspector.Downloader.path_remote/1` and `RefInspector.Downloader.read_remote/1` are now declared internal and will result in a `Logger.info/1` message when called until they will be eventually removed
+    - Several functions are now declared internal and will result in a `Logger.info/1` message when called until they will be eventually removed:
+        - `RefInspector.Downloader.path_local/1`
+        - `RefInspector.Downloader.path_remote/1`
+        - `RefInspector.Downloader.read_remote/1`
+        - `RefInspector.Downloader.README.path_local/0`
+        - `RefInspector.Downloader.README.path_priv/0`
 
 ## v1.0.0 (2018-11-24)
 
