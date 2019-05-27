@@ -2,19 +2,20 @@ defmodule RefInspector.Downloader.README do
   @moduledoc false
 
   alias RefInspector.Config
+  alias RefInspector.Database.Location
 
   @readme "ref_inspector.readme.md"
 
   @doc """
   Returns the path to the local copy of the README file.
   """
-  @spec path_local() :: Path.t()
-  def path_local, do: Path.join(Config.database_path(), @readme)
+  @spec path_local() :: binary
+  def path_local, do: Location.local(@readme)
 
   @doc """
   Returns the path of the README file distributed in priv_dir.
   """
-  @spec path_priv() :: Path.t()
+  @spec path_priv() :: binary
   def path_priv, do: Application.app_dir(:ref_inspector, ["priv", @readme])
 
   @doc """
@@ -32,13 +33,14 @@ defmodule RefInspector.Downloader.README do
   end
 
   defp do_write do
-    dirname_local = Path.dirname(path_local())
+    readme_local = path_local()
+    dirname_local = Path.dirname(readme_local)
 
     unless File.dir?(dirname_local) do
       File.mkdir_p!(dirname_local)
     end
 
-    {:ok, _} = File.copy(path_priv(), path_local())
+    {:ok, _} = File.copy(path_priv(), readme_local)
     :ok
   end
 end
