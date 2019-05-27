@@ -61,13 +61,13 @@ defmodule RefInspector.Downloader do
 
   @doc false
   @spec read_remote(binary) :: {:ok, binary} | {:error, term}
-  def read_remote(path) do
+  def read_remote(location) do
     _ =
       Logger.info(
         "RefInspector.Downloader.read_remote/1 has been" <>
           " declared internal and will eventually be removed."
       )
 
-    Config.downloader_adapter().read_remote(path)
+    Config.downloader_adapter().read_remote(location)
   end
 end

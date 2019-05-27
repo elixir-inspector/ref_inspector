@@ -9,12 +9,12 @@ defmodule RefInspector.Downloader.Adapter.Hackney do
   Reads a remote file and returns it's contents.
   """
   @spec read_remote(binary) :: {:ok, binary} | {:error, term}
-  def read_remote(path) do
+  def read_remote(location) do
     _ = Application.ensure_all_started(:hackney)
 
     http_opts = Config.get(:http_opts, [])
 
-    case :hackney.get(path, [], [], http_opts) do
+    case :hackney.get(location, [], [], http_opts) do
       {:ok, _, _, client} -> :hackney.body(client)
       {:error, _} = error -> error
     end
