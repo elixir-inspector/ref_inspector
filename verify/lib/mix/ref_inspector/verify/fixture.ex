@@ -4,7 +4,7 @@ defmodule Mix.RefInspector.Verify.Fixture do
   """
 
   alias RefInspector.Config
-  alias RefInspector.Downloader
+  alias RefInspector.Database.Location
 
   @local "referer-tests.json"
   @remote "https://raw.githubusercontent.com/snowplow-referer-parser/referer-parser/master/resources/referer-tests.json"
@@ -22,11 +22,11 @@ defmodule Mix.RefInspector.Verify.Fixture do
   def download_fixture do
     Mix.shell().info(".. downloading: #{@local}")
 
-    {:ok, content} = Downloader.read_remote(@remote)
+    {:ok, content} = Config.downloader_adapter().read_remote(@remote)
 
     File.write!(local_file(), content)
   end
 
-  def local_file, do: Path.join([Config.database_path(), @local])
+  def local_file, do: Location.local(@local)
   def setup, do: File.mkdir_p!(Config.database_path())
 end
