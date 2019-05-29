@@ -8,7 +8,6 @@ defmodule RefInspector.Config do
       config :ref_inspector,
         database_files: ["referers.yml"],
         database_path: Application.app_dir(:ref_inspector, "priv"),
-        ets_cleanup_delay: 30_000,
         http_opts: [],
         remote_urls: [{"referers.yml", "https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yml"}],
         yaml_file_reader: {:yamerl_constr, :file, [[:str_node_as_binary]]}
@@ -113,14 +112,6 @@ defmodule RefInspector.Config do
 
       config :ref_inspector,
         downloader_adapter: MyDownloaderAdapter
-
-  ## Reload Configuration
-
-  When reloading the databases the old values will be deleted in a delayed
-  fashion to avoid false parse results.
-
-  You can manually configure this delay using the `:ets_cleanup_delay`
-  configuration value.
 
   ## YAML File Reader Configuration
 

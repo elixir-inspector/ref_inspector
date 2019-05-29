@@ -3,6 +3,7 @@
 ## v1.1.0-dev
 
 - Enhancements
+    - Database entries are now stored in a single named table instead of using an intermediate reference table
     - Default configuration entries for files and urls are available through `RefInspector.Config.default_files/0` and `RefInspector.Config.default_urls/0`
     - Output of mix task `ref_inspector.download` can be prevented by passing `--quiet` upon invocation. This does NOT imply `--force` and will still ask for confirmation
     - The library used to download the database files can be changed by configuring a module implementing the `RefInspector.Downloader.Adapter` behaviour
