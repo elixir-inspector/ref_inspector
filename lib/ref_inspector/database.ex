@@ -12,23 +12,17 @@ defmodule RefInspector.Database do
   @ets_table_name :ref_inspector
   @ets_table_opts [:named_table, :protected, :set, read_concurrency: true]
 
-  # GenServer lifecycle
-
-  @doc """
-  Starts the database server.
-  """
-  @spec start_link(term) :: GenServer.on_start()
+  @doc false
   def start_link(default \\ nil) do
     GenServer.start_link(__MODULE__, default, name: __MODULE__)
   end
 
+  @doc false
   def init(state) do
     :ok = GenServer.cast(__MODULE__, :reload)
 
     {:ok, state}
   end
-
-  # GenServer callbacks
 
   def handle_cast(:reload, state) do
     :ok = create_ets_table()
@@ -40,8 +34,6 @@ defmodule RefInspector.Database do
 
     {:noreply, state}
   end
-
-  # Convenience methods
 
   @doc """
   Returns all referer definitions.
@@ -58,8 +50,6 @@ defmodule RefInspector.Database do
         |> Keyword.get(:data, [])
     end
   end
-
-  # Internal methods
 
   defp create_ets_table do
     case :ets.info(@ets_table_name) do
