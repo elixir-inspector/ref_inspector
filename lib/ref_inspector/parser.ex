@@ -63,7 +63,7 @@ defmodule RefInspector.Parser do
   defp parse_query(_, []), do: :none
 
   defp parse_query(query, [param | params]) do
-    Map.get(query, param, parse_query(query, params))
+    Map.get_lazy(query, param, fn -> parse_query(query, params) end)
   end
 
   defp parse_ref(_, []), do: %Result{}
