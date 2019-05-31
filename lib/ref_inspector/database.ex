@@ -45,9 +45,10 @@ defmodule RefInspector.Database do
         []
 
       _ ->
-        @ets_table_name
-        |> :ets.lookup(:data)
-        |> Keyword.get(:data, [])
+        case :ets.lookup(@ets_table_name, :data) do
+          [{:data, entries}] -> entries
+          _ -> []
+        end
     end
   end
 
