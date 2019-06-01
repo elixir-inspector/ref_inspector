@@ -18,7 +18,7 @@ defmodule RefInspector.Parser do
       false ->
         uri
         |> Map.from_struct()
-        |> Map.put(:host_parts, uri.host |> String.split(".") |> Enum.reverse())
+        |> Map.put(:host_parts, host |> String.split(".") |> Enum.reverse())
         |> Map.put(:path, uri.path || "/")
         |> parse_ref(Database.list())
     end
