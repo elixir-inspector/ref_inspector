@@ -19,18 +19,17 @@ defmodule RefInspector.Database do
 
   @doc false
   def init(state) do
-    :ok = GenServer.cast(__MODULE__, :reload)
+    if Config.get(:startup_sync, false) do
+      :ok = reload_databases()
+    else
+      :ok = GenServer.cast(__MODULE__, :reload)
+    end
 
     {:ok, state}
   end
 
   def handle_cast(:reload, state) do
-    :ok = create_ets_table()
-
-    :ok =
-      Config.database_files()
-      |> read_databases()
-      |> update_ets_table()
+    :ok = reload_databases()
 
     {:noreply, state}
   end
@@ -88,6 +87,14 @@ defmodule RefInspector.Database do
 
       {file, entries}
     end)
+  end
+
+  defp reload_databases do
+    :ok = create_ets_table()
+
+    Config.database_files()
+    |> read_databases()
+    |> update_ets_table()
   end
 
   defp update_ets_table(datasets) do

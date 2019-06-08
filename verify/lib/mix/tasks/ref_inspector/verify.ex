@@ -15,7 +15,6 @@ defmodule Mix.Tasks.RefInspector.Verify do
 
     :ok = maybe_download(opts)
     {:ok, _} = Application.ensure_all_started(:ref_inspector)
-    true = wait_until_ready(5000)
 
     Verify.Fixture.local_file() |> verify_all()
 
@@ -81,19 +80,6 @@ defmodule Mix.Tasks.RefInspector.Verify do
           |> unravel_list()
 
         verify(testcases)
-    end
-  end
-
-  defp wait_until_ready(0), do: RefInspector.ready?()
-
-  defp wait_until_ready(timeout) do
-    case RefInspector.ready?() do
-      true ->
-        true
-
-      false ->
-        :timer.sleep(10)
-        wait_until_ready(timeout - 10)
     end
   end
 end

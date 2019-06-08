@@ -5,9 +5,11 @@ defmodule RefInspector.Database.InitTest do
 
   setup do
     app_files = Application.get_env(:ref_inspector, :database_files)
+    startup = Application.get_env(:ref_inspector, :startup_sync)
 
     on_exit(fn ->
       Application.put_env(:ref_inspector, :database_files, app_files)
+      Application.put_env(:ref_inspector, :startup_sync, startup)
     end)
   end
 
@@ -15,6 +17,7 @@ defmodule RefInspector.Database.InitTest do
     file = "something_that_is_no_file"
 
     Application.put_env(:ref_inspector, :database_files, [file])
+    Application.put_env(:ref_inspector, :startup_sync, false)
 
     log =
       capture_log(fn ->
