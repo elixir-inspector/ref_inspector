@@ -9,7 +9,7 @@ defmodule RefInspector.Database do
   alias RefInspector.Database.Loader
   alias RefInspector.Database.Parser
 
-  @ets_table_name :ref_inspector
+  @ets_table_name __MODULE__
   @ets_table_opts [:named_table, :protected, :set, read_concurrency: true]
 
   @doc false
