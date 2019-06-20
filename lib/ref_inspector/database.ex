@@ -77,12 +77,12 @@ defmodule RefInspector.Database do
         |> Path.join(file)
         |> Loader.load()
         |> case do
-          {:error, reason} ->
-            _ = Logger.info(reason)
-            %{}
-
-          entries when is_list(entries) ->
+          {:ok, entries} ->
             Parser.parse(entries)
+
+          {:error, reason} ->
+            _ = Logger.info("Failed to load #{file}: #{inspect(reason)}")
+            %{}
         end
 
       {file, entries}

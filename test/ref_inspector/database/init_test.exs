@@ -25,6 +25,6 @@ defmodule RefInspector.Database.InitTest do
         :timer.sleep(100)
       end)
 
-    assert log =~ ~r/invalid file.*#{file}/
+    assert log =~ ~r/Failed to load #{file}: :enoent/
   end
 end
