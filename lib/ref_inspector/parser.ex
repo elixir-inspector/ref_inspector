@@ -11,16 +11,14 @@ defmodule RefInspector.Parser do
   def parse(%URI{host: nil}), do: %Result{}
 
   def parse(%URI{host: host} = uri) do
-    case internal?(host) do
-      true ->
-        %Result{medium: :internal}
-
-      false ->
-        uri
-        |> Map.from_struct()
-        |> Map.put(:host_parts, host |> String.split(".") |> Enum.reverse())
-        |> Map.put(:path, uri.path || "/")
-        |> parse_ref(Database.list())
+    if internal?(host) do
+      %Result{medium: :internal}
+    else
+      uri
+      |> Map.from_struct()
+      |> Map.put(:host_parts, host |> String.split(".") |> Enum.reverse())
+      |> Map.put(:path, uri.path || "/")
+      |> parse_ref(Database.list())
     end
   end
 

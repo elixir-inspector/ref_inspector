@@ -53,33 +53,29 @@ defmodule Mix.Tasks.RefInspector.Verify do
     testcase = testcase |> parse() |> Verify.Cleanup.cleanup()
     result = testcase[:uri] |> RefInspector.parse()
 
-    case compare(testcase, result) do
-      true ->
-        verify(testcases)
+    if compare(testcase, result) do
+      verify(testcases)
+    else
+      IO.puts("-- verification failed --")
+      IO.puts("referer: #{testcase[:uri]}")
+      IO.puts("testcase: #{inspect(testcase)}")
+      IO.puts("result: #{inspect(result)}")
 
-      false ->
-        IO.puts("-- verification failed --")
-        IO.puts("referer: #{testcase[:uri]}")
-        IO.puts("testcase: #{inspect(testcase)}")
-        IO.puts("result: #{inspect(result)}")
-
-        throw("verification failed")
+      throw("verification failed")
     end
   end
 
   defp verify_all(fixture) do
-    case File.exists?(fixture) do
-      false ->
-        Mix.shell().error("Fixture file #{fixture} is missing.")
-        Mix.shell().error("Please run without '--quick' param to download it!")
+    if File.exists?(fixture) do
+      testcases =
+        fixture
+        |> :yamerl_constr.file([:str_node_as_binary])
+        |> unravel_list()
 
-      true ->
-        testcases =
-          fixture
-          |> :yamerl_constr.file([:str_node_as_binary])
-          |> unravel_list()
-
-        verify(testcases)
+      verify(testcases)
+    else
+      Mix.shell().error("Fixture file #{fixture} is missing.")
+      Mix.shell().error("Please run without '--quick' param to download it!")
     end
   end
 end

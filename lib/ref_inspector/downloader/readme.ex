@@ -40,9 +40,10 @@ defmodule RefInspector.Downloader.README do
     default? = Config.default_remote_database?()
     readme? = !Config.get(:skip_download_readme)
 
-    case default? && readme? do
-      true -> do_write()
-      false -> :ok
+    if default? && readme? do
+      do_write()
+    else
+      :ok
     end
   end
 
