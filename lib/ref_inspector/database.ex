@@ -28,6 +28,10 @@ defmodule RefInspector.Database do
     {:ok, state}
   end
 
+  def handle_call(:reload, _from, state) do
+    {:reply, reload_databases(), state}
+  end
+
   def handle_cast(:reload, state) do
     :ok = reload_databases()
 

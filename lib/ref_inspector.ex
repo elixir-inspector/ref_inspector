@@ -90,9 +90,15 @@ defmodule RefInspector do
   @doc """
   Reloads all databases.
 
-  This process is done asynchronously in the background, so be aware that for
-  some time the old data will be used for lookups.
+  You can pass `[async: true|false]` to define if the reload should happen
+  in the background or block your calling process until completed.
   """
-  @spec reload() :: :ok
-  def reload, do: GenServer.cast(Database, :reload)
+  @spec reload(Keyword.t()) :: :ok
+  def reload(opts \\ [async: true]) do
+    if opts[:async] do
+      GenServer.cast(Database, :reload)
+    else
+      GenServer.call(Database, :reload)
+    end
+  end
 end
