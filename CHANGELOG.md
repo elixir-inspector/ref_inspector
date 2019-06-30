@@ -3,7 +3,7 @@
 ## v1.1.0-dev
 
 - Enhancements
-    - Configuring `start_sync: true` allows you to ensure a synchronous database load is attempted before allowing to parse referers
+    - Configuring `startup_sync: true` allows you to ensure a synchronous database load is attempted before allowing to parse referers
     - Database entries are now stored in a single named table instead of using an intermediate reference table
     - Default configuration entries for files and urls are available through `RefInspector.Config.default_files/0` and `RefInspector.Config.default_urls/0`
     - Output of mix task `ref_inspector.download` can be prevented by passing `--quiet` upon invocation. This does NOT imply `--force` and will still ask for confirmation
