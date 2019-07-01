@@ -4,7 +4,7 @@ defmodule RefInspector.Benchmark.Database do
   alias RefInspector.Database.Parser
 
   def run do
-    entries = load_database()
+    {:ok, entries} = load_database()
 
     Benchee.run(
       %{
