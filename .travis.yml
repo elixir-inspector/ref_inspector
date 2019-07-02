@@ -29,8 +29,8 @@ jobs:
         mix ref_inspector.verify
 
     - stage: code quality
-      elixir: 1.8.1
-      otp_release: 21.0
+      elixir: 1.9.0
+      otp_release: 22.0
       script:
         - mix format --check-formatted
         - mix credo --strict
