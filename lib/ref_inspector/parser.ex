@@ -44,15 +44,15 @@ defmodule RefInspector.Parser do
 
   defp match_sources(
          %{host: ref_host, path: ref_path} = ref,
-         [%{host: src_host, path: src_path} = source | sources]
+         [{src_host, src_path, src_parameters, src_medium, src_name} | sources]
        ) do
     if String.ends_with?(ref_host, src_host) && String.starts_with?(ref_path, src_path) do
       result = %Result{
-        medium: source.medium,
-        source: source.name
+        medium: src_medium,
+        source: src_name
       }
 
-      maybe_parse_query(ref.query, source[:parameters], result)
+      maybe_parse_query(ref.query, src_parameters, result)
     else
       match_sources(ref, sources)
     end

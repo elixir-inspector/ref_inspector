@@ -9,10 +9,19 @@ defmodule RefInspector.Database.Parser do
 
   defp parse([], acc) do
     Enum.reduce(acc, %{}, fn source, red_acc ->
-      last_part = List.first(source[:host_parts])
-      part_acc = red_acc[last_part] || []
+      %{
+        host: host,
+        host_parts: [last_part | _],
+        medium: medium,
+        name: name,
+        parameters: parameters,
+        path: path
+      } = source
 
-      Map.put(red_acc, last_part, [source | part_acc])
+      part_acc = red_acc[last_part] || []
+      entry = {host, path, parameters, medium, name}
+
+      Map.put(red_acc, last_part, [entry | part_acc])
     end)
   end
 
