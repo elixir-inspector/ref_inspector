@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.2.0-dev
+
+- Bug fixes
+    - The mix download task now works properly with initializer modules
+
 ## v1.1.0 (2019-07-03)
 
 - Enhancements
