@@ -10,6 +10,7 @@ defmodule RefInspector.Config do
         database_path: Application.app_dir(:ref_inspector, "priv"),
         http_opts: [],
         remote_urls: [{"referers.yml", "https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yml"}],
+        startup_silent: true,
         startup_sync: false,
         yaml_file_reader: {:yamerl_constr, :file, [[:str_node_as_binary]]}
 
@@ -73,6 +74,17 @@ defmodule RefInspector.Config do
 
       config :ref_inspector,
         startup_sync: true
+
+  ### Starting Silently
+
+  When starting the application you will receive warnings if the database is
+  not available. If you want to hide these messages you can configure the
+  startup the be completely silent:
+
+      config :ref_inspector,
+        startup_silent: true
+
+  This will automatically be set when calling the mix download task.
 
   ## Database Configuration
 

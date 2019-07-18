@@ -67,30 +67,37 @@ defmodule RefInspector.Database do
   end
 
   defp read_databases([]) do
-    _ = Logger.warn("Reload error: no database files configured!")
+    _ =
+      unless Config.get(:startup_silent) do
+        Logger.warn("Reload error: no database files configured!")
+      end
 
     []
   end
 
   defp read_databases(files) do
-    database_path = Config.database_path()
-
     Enum.map(files, fn file ->
       entries =
-        database_path
+        Config.database_path()
         |> Path.join(file)
         |> Loader.load()
-        |> case do
-          {:ok, entries} ->
-            Parser.parse(entries)
-
-          {:error, reason} ->
-            _ = Logger.info("Failed to load #{file}: #{inspect(reason)}")
-            %{}
-        end
+        |> parse_database(file)
 
       {file, entries}
     end)
+  end
+
+  defp parse_database({:ok, entries}, _) do
+    Parser.parse(entries)
+  end
+
+  defp parse_database({:error, reason}, file) do
+    _ =
+      unless Config.get(:startup_silent) do
+        Logger.info("Failed to load #{file}: #{inspect(reason)}")
+      end
+
+    %{}
   end
 
   defp reload_databases do
