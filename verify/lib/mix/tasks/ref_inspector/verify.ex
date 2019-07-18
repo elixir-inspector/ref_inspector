@@ -39,25 +39,16 @@ defmodule Mix.Tasks.RefInspector.Verify do
     :ok
   end
 
-  defp parse(case_data) when is_list(case_data) do
-    Enum.into(case_data, %{}, fn {k, v} -> {String.to_atom(k), parse(v)} end)
-  end
-
-  defp parse(case_data), do: case_data
-
-  defp unravel_list([cases]), do: cases
-
   defp verify([]), do: nil
 
-  defp verify([testcase | testcases]) do
-    testcase = testcase |> parse() |> Verify.Cleanup.cleanup()
-    result = testcase[:uri] |> RefInspector.parse()
+  defp verify([%{uri: testuri} = testcase | testcases]) do
+    result = RefInspector.parse(testuri)
 
     if compare(testcase, result) do
       verify(testcases)
     else
       IO.puts("-- verification failed --")
-      IO.puts("referer: #{testcase[:uri]}")
+      IO.puts("referer: #{testuri}")
       IO.puts("testcase: #{inspect(testcase)}")
       IO.puts("result: #{inspect(result)}")
 
@@ -67,12 +58,15 @@ defmodule Mix.Tasks.RefInspector.Verify do
 
   defp verify_all(fixture) do
     if File.exists?(fixture) do
-      testcases =
-        fixture
-        |> :yamerl_constr.file([:str_node_as_binary])
-        |> unravel_list()
+      [testcases] = :yamerl_constr.file(fixture, [:str_node_as_binary])
 
-      verify(testcases)
+      testcases
+      |> Enum.map(fn testcase ->
+        testcase
+        |> Enum.into(%{}, fn {k, v} -> {String.to_atom(k), v} end)
+        |> Verify.Cleanup.cleanup()
+      end)
+      |> verify()
     else
       Mix.shell().error("Fixture file #{fixture} is missing.")
       Mix.shell().error("Please run without '--quick' param to download it!")
