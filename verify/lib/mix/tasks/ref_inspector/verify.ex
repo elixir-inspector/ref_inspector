@@ -16,8 +16,7 @@ defmodule Mix.Tasks.RefInspector.Verify do
     :ok = maybe_download(opts)
     {:ok, _} = Application.ensure_all_started(:ref_inspector)
 
-    Verify.Fixture.local_file() |> verify_all()
-
+    verify_all()
     Mix.shell().info("Verification complete!")
     :ok
   end
@@ -56,7 +55,9 @@ defmodule Mix.Tasks.RefInspector.Verify do
     end
   end
 
-  defp verify_all(fixture) do
+  defp verify_all do
+    fixture = Verify.Fixture.local_file()
+
     if File.exists?(fixture) do
       [testcases] = :yamerl_constr.file(fixture, [:str_node_as_binary])
 

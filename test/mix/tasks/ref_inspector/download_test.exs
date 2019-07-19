@@ -81,7 +81,7 @@ defmodule Mix.Tasks.RefInspector.DownloadTest do
 
     Enum.each(test_files, fn test_file ->
       if File.exists?(test_file) do
-        test_file |> File.rm!()
+        File.rm!(test_file)
       end
     end)
 
