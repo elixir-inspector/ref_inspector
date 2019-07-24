@@ -10,7 +10,7 @@ defmodule RefInspector.Config do
         database_path: Application.app_dir(:ref_inspector, "priv"),
         http_opts: [],
         remote_urls: [{"referers.yml", "https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yml"}],
-        startup_silent: true,
+        startup_silent: false,
         startup_sync: false,
         yaml_file_reader: {:yamerl_constr, :file, [[:str_node_as_binary]]}
 
