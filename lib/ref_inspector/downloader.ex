@@ -34,40 +34,4 @@ defmodule RefInspector.Downloader do
       File.write(local, content)
     end)
   end
-
-  @doc false
-  @spec path_local({binary, binary} | binary) :: binary
-  def path_local(local) do
-    _ =
-      Logger.info(
-        "RefInspector.Downloader.path_local/1 has been" <>
-          " declared internal and will eventually be removed."
-      )
-
-    Location.local(local)
-  end
-
-  @doc false
-  @spec path_remote({binary, binary} | binary) :: binary
-  def path_remote(remote) do
-    _ =
-      Logger.info(
-        "RefInspector.Downloader.path_remote/1 has been" <>
-          " declared internal and will eventually be removed."
-      )
-
-    Location.remote(remote)
-  end
-
-  @doc false
-  @spec read_remote(binary) :: {:ok, binary} | {:error, term}
-  def read_remote(location) do
-    _ =
-      Logger.info(
-        "RefInspector.Downloader.read_remote/1 has been" <>
-          " declared internal and will eventually be removed."
-      )
-
-    Config.downloader_adapter().read_remote(location)
-  end
 end

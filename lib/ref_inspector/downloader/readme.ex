@@ -8,30 +8,6 @@ defmodule RefInspector.Downloader.README do
 
   @readme "ref_inspector.readme.md"
 
-  @doc false
-  @spec path_local() :: binary
-  def path_local do
-    _ =
-      Logger.info(
-        "RefInspector.Downloader.README.path_local/0 has been" <>
-          " declared internal and will eventually be removed."
-      )
-
-    Location.local(@readme)
-  end
-
-  @doc false
-  @spec path_priv() :: binary
-  def path_priv do
-    _ =
-      Logger.info(
-        "RefInspector.Downloader.README.path_priv/0 has been" <>
-          " declared internal and will eventually be removed."
-      )
-
-    Application.app_dir(:ref_inspector, ["priv", @readme])
-  end
-
   @doc """
   Writes the informational README file if remote database is the default.
   """

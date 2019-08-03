@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.0.0-dev
+
+- Backwards incompatible changes
+    - Several deprecated functions have been removed completely:
+        - `RefInspector.Downloader.path_local/1`
+        - `RefInspector.Downloader.path_remote/1`
+        - `RefInspector.Downloader.read_remote/1`
+        - `RefInspector.Downloader.README.path_local/0`
+        - `RefInspector.Downloader.README.path_priv/0`
+
 ## v1.2.0 (2019-08-03)
 
 - Enhancements
