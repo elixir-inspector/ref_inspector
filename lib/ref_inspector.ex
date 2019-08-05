@@ -45,7 +45,7 @@ defmodule RefInspector do
 
   Your database can still include `"unknown"` and `"internal"` sections. These
   will be parsed fully and returned using a binary as the medium instead of
-  the aforementions atoms.
+  the aforementioned atoms.
   """
 
   alias RefInspector.Database
