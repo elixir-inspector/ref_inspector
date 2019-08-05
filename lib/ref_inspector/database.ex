@@ -19,7 +19,7 @@ defmodule RefInspector.Database do
 
   @doc false
   def init(state) do
-    if Config.get(:startup_sync, false) do
+    if Config.get(:startup_sync, true) do
       :ok = reload_databases()
     else
       :ok = GenServer.cast(__MODULE__, :reload)

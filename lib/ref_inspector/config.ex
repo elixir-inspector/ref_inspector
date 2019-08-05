@@ -11,7 +11,7 @@ defmodule RefInspector.Config do
         http_opts: [],
         remote_urls: [{"referers.yml", "https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yml"}],
         startup_silent: false,
-        startup_sync: false,
+        startup_sync: true,
         yaml_file_reader: {:yamerl_constr, :file, [[:str_node_as_binary]]}
 
   The default `:database_path` is evaluated at runtime and not compiled into
@@ -65,15 +65,16 @@ defmodule RefInspector.Config do
 
   ## Startup Behaviour
 
-  Databases are loaded asynchronously when starting the application using a
-  `:reload` cast. This default behaviour can lead to the first parsing calls to
-  work with an empty database and therefore not return the results you expect.
+  Databases are loaded synchronously when starting the application.
 
-  You can change this behaviour to have the application force a synchronous
+  You can change this behaviour to have the application force an asynchronous
   database loading during the initial startup:
 
       config :ref_inspector,
-        startup_sync: true
+        startup_sync: false
+
+  This can lead to the first parsing calls to work with an empty database
+  and therefore not return the results you expect.
 
   ### Starting Silently
 

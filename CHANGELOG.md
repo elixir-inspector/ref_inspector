@@ -10,6 +10,7 @@
         - `RefInspector.Downloader.read_remote/1`
         - `RefInspector.Downloader.README.path_local/0`
         - `RefInspector.Downloader.README.path_priv/0`
+    - Startup is now done with a blocking database load by default
 
 ## v1.2.0 (2019-08-03)
 
