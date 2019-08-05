@@ -2,6 +2,9 @@
 
 ## v2.0.0-dev
 
+- Enhancements
+    - Calling `RefInspector.parse/1` with an empty referer (`""` or `nil`) will now return the input as is in the result struct instead of previously returning `nil` for both inputs
+
 - Backwards incompatible changes
     - Minimum required elixir version is now `~> 1.7`
     - Several deprecated functions have been removed completely:

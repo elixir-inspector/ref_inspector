@@ -71,8 +71,8 @@ defmodule RefInspector do
   without accessing the database.
   """
   @spec parse(URI.t() | String.t() | nil) :: Result.t()
-  def parse(nil), do: %Result{}
-  def parse(""), do: %Result{}
+  def parse(nil), do: %Result{referer: nil}
+  def parse(""), do: %Result{referer: ""}
 
   def parse(%URI{} = uri) do
     uri
