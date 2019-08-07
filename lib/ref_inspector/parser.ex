@@ -7,10 +7,10 @@ defmodule RefInspector.Parser do
   @doc """
   Checks if a given URI struct is a known referer.
   """
-  @spec parse(URI.t()) :: Result.t()
-  def parse(%URI{host: nil}), do: %Result{}
+  @spec parse(URI.t(), Keyword.t()) :: Result.t()
+  def parse(%URI{host: nil}, _), do: %Result{}
 
-  def parse(%URI{host: host} = uri) do
+  def parse(%URI{host: host} = uri, opts) do
     if internal?(host) do
       %Result{medium: :internal}
     else
@@ -18,7 +18,7 @@ defmodule RefInspector.Parser do
       |> Map.from_struct()
       |> Map.put(:host_parts, host |> String.split(".") |> Enum.reverse())
       |> Map.put(:path, uri.path || "/")
-      |> parse_ref(Database.list())
+      |> parse_ref(Database.list(opts[:instance]))
     end
   end
 

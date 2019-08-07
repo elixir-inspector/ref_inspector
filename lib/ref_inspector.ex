@@ -61,8 +61,8 @@ defmodule RefInspector do
   Checking the state is done using the currently active database.
   Any potentially concurrent reload requests are not considered.
   """
-  @spec ready?() :: boolean
-  def ready?, do: [] != Database.list()
+  @spec ready?(atom) :: boolean
+  def ready?(instance \\ :ref_inspector_default), do: [] != Database.list(instance)
 
   @doc """
   Parses a referer.
@@ -70,15 +70,17 @@ defmodule RefInspector do
   Passing an empty referer (`""` or `nil`) will directly return an empty result
   without accessing the database.
   """
-  @spec parse(URI.t() | String.t() | nil) :: Result.t()
-  def parse(nil), do: %Result{referer: nil}
-  def parse(""), do: %Result{referer: ""}
+  @spec parse(URI.t() | String.t() | nil, Keyword.t()) :: Result.t()
+  def parse(ref, opts \\ [instance: :ref_inspector_default])
 
-  def parse(ref) when is_binary(ref), do: ref |> URI.parse() |> parse()
+  def parse(nil, _), do: %Result{referer: nil}
+  def parse("", _), do: %Result{referer: ""}
 
-  def parse(%URI{} = uri) do
+  def parse(ref, opts) when is_binary(ref), do: ref |> URI.parse() |> parse(opts)
+
+  def parse(%URI{} = uri, opts) do
     uri
-    |> Parser.parse()
+    |> Parser.parse(opts)
     |> Map.put(:referer, URI.to_string(uri))
   end
 
@@ -89,5 +91,9 @@ defmodule RefInspector do
   in the background or block your calling process until completed.
   """
   @spec reload(Keyword.t()) :: :ok
-  def reload(opts \\ [async: true]), do: Database.reload(opts)
+  def reload(opts \\ []) do
+    [async: true, instance: :ref_inspector_default]
+    |> Keyword.merge(opts)
+    |> Database.reload()
+  end
 end

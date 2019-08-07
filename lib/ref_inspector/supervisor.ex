@@ -41,6 +41,11 @@ defmodule RefInspector.Supervisor do
   def init(_state) do
     :ok = Config.init_env()
 
-    Supervisor.init([RefInspector.Database], strategy: :one_for_one)
+    Supervisor.init(
+      [
+        {RefInspector.Database, :ref_inspector_default}
+      ],
+      strategy: :one_for_one
+    )
   end
 end

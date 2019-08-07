@@ -21,8 +21,9 @@ defmodule RefInspector.Database.InitTest do
 
     log =
       capture_log(fn ->
-        RefInspector.Database.init(:ignored)
-        :timer.sleep(100)
+        {RefInspector.Database, :ref_inspector_init_test}
+        |> start_supervised!()
+        |> :sys.get_state()
       end)
 
     assert log =~ ~r/Failed to load #{file}: :enoent/

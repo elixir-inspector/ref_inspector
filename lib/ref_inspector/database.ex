@@ -9,46 +9,45 @@ defmodule RefInspector.Database do
   alias RefInspector.Database.Loader
   alias RefInspector.Database.Parser
 
-  @ets_table_name __MODULE__
   @ets_table_opts [:named_table, :protected, :set, read_concurrency: true]
 
   @doc false
-  def start_link(default \\ nil) do
-    GenServer.start_link(__MODULE__, default, name: __MODULE__)
+  def start_link(instance) do
+    GenServer.start_link(__MODULE__, instance, name: instance)
   end
 
   @doc false
-  def init(state) do
+  def init(instance) do
     if Config.get(:startup_sync, true) do
-      :ok = reload_databases()
+      :ok = reload_databases(instance)
     else
-      :ok = GenServer.cast(__MODULE__, :reload)
+      :ok = GenServer.cast(instance, :reload)
     end
 
-    {:ok, state}
+    {:ok, instance}
   end
 
-  def handle_call(:reload, _from, state) do
-    {:reply, reload_databases(), state}
+  def handle_call(:reload, _from, instance) do
+    {:reply, reload_databases(instance), instance}
   end
 
-  def handle_cast(:reload, state) do
-    :ok = reload_databases()
+  def handle_cast(:reload, instance) do
+    :ok = reload_databases(instance)
 
-    {:noreply, state}
+    {:noreply, instance}
   end
 
   @doc """
   Returns all referer definitions.
   """
-  @spec list() :: [tuple]
-  def list do
-    case :ets.info(@ets_table_name) do
+  @spec list(atom) :: [tuple]
+  def list(instance) do
+    case :ets.info(instance) do
       :undefined ->
         []
 
       _ ->
-        case :ets.lookup(@ets_table_name, :data) do
+        case :ets.lookup(instance, :data) do
           [{:data, entries}] -> entries
           _ -> []
         end
@@ -63,16 +62,16 @@ defmodule RefInspector.Database do
   """
   def reload(opts) do
     if opts[:async] do
-      GenServer.cast(__MODULE__, :reload)
+      GenServer.cast(opts[:instance], :reload)
     else
-      GenServer.call(__MODULE__, :reload)
+      GenServer.call(opts[:instance], :reload)
     end
   end
 
-  defp create_ets_table do
-    case :ets.info(@ets_table_name) do
+  defp create_ets_table(instance) do
+    case :ets.info(instance) do
       :undefined ->
-        _ = :ets.new(@ets_table_name, @ets_table_opts)
+        _ = :ets.new(instance, @ets_table_opts)
         :ok
 
       _ ->
@@ -114,16 +113,16 @@ defmodule RefInspector.Database do
     %{}
   end
 
-  defp reload_databases do
-    :ok = create_ets_table()
+  defp reload_databases(instance) do
+    :ok = create_ets_table(instance)
 
     Config.database_files()
     |> read_databases()
-    |> update_ets_table()
+    |> update_ets_table(instance)
   end
 
-  defp update_ets_table(datasets) do
-    true = :ets.insert(@ets_table_name, {:data, datasets})
+  defp update_ets_table(datasets, instance) do
+    true = :ets.insert(instance, {:data, datasets})
     :ok
   end
 end
