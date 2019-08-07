@@ -89,11 +89,5 @@ defmodule RefInspector do
   in the background or block your calling process until completed.
   """
   @spec reload(Keyword.t()) :: :ok
-  def reload(opts \\ [async: true]) do
-    if opts[:async] do
-      GenServer.cast(Database, :reload)
-    else
-      GenServer.call(Database, :reload)
-    end
-  end
+  def reload(opts \\ [async: true]), do: Database.reload(opts)
 end

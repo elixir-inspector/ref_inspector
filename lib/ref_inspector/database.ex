@@ -55,6 +55,20 @@ defmodule RefInspector.Database do
     end
   end
 
+  @doc """
+  Reloads the database.
+
+  Depending on the boolean option `:async` the reload will be performed
+  using `GenServer.cast/2` oder `GenServer.call/2`.
+  """
+  def reload(opts) do
+    if opts[:async] do
+      GenServer.cast(__MODULE__, :reload)
+    else
+      GenServer.call(__MODULE__, :reload)
+    end
+  end
+
   defp create_ets_table do
     case :ets.info(@ets_table_name) do
       :undefined ->
