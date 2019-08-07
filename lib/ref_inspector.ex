@@ -74,17 +74,12 @@ defmodule RefInspector do
   def parse(nil), do: %Result{referer: nil}
   def parse(""), do: %Result{referer: ""}
 
+  def parse(ref) when is_binary(ref), do: ref |> URI.parse() |> parse()
+
   def parse(%URI{} = uri) do
     uri
     |> Parser.parse()
     |> Map.put(:referer, URI.to_string(uri))
-  end
-
-  def parse(ref) when is_binary(ref) do
-    ref
-    |> URI.parse()
-    |> Parser.parse()
-    |> Map.put(:referer, ref)
   end
 
   @doc """
