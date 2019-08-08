@@ -32,13 +32,28 @@ defmodule RefInspector.Database.ReloadTest do
     assert RefInspector.parse("http://twitter.com/test").source == "Twitter"
   end
 
-  test "warns about missing files configuration" do
+  test "warns about missing files configuration (sync reload)" do
+    Application.put_env(:ref_inspector, :database_files, [])
+
+    log =
+      capture_log(fn ->
+        RefInspector.reload(async: false)
+      end)
+
+    assert log =~ ~r/no database files/i
+    refute RefInspector.ready?()
+  end
+
+  test "warns about missing files configuration (async reload)" do
     Application.put_env(:ref_inspector, :database_files, [])
 
     log =
       capture_log(fn ->
         RefInspector.reload()
-        :timer.sleep(100)
+
+        :ref_inspector_default
+        |> Process.whereis()
+        |> :sys.get_state()
       end)
 
     assert log =~ ~r/no database files/i
