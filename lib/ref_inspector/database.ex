@@ -18,6 +18,8 @@ defmodule RefInspector.Database do
 
   @doc false
   def init(instance) do
+    :ok = Config.init_env()
+
     if Config.get(:startup_sync, true) do
       :ok = reload_databases(instance)
     else

@@ -38,7 +38,6 @@ defmodule Mix.Tasks.RefInspector.Download do
 
   def run(args) do
     :ok = start_app()
-    :ok = Config.init_env()
 
     {opts, _argv, _errors} = OptionParser.parse(args, @cli_options)
 
