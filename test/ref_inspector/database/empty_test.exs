@@ -1,6 +1,9 @@
 defmodule RefInspector.Database.EmptyTest do
   use ExUnit.Case, async: false
 
+  alias RefInspector.Database
+  alias RefInspector.Database.State
+
   setup do
     app_files = Application.get_env(:ref_inspector, :database_files)
     startup = Application.get_env(:ref_inspector, :startup_sync)
@@ -15,6 +18,6 @@ defmodule RefInspector.Database.EmptyTest do
     Application.put_env(:ref_inspector, :database_files, ["empty.yml"])
     Application.put_env(:ref_inspector, :startup_sync, false)
 
-    assert {:ok, _} = RefInspector.Database.init(:ignored)
+    assert {:ok, _} = Database.init(%State{instance: :ignored})
   end
 end

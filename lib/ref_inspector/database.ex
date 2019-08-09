@@ -14,23 +14,17 @@ defmodule RefInspector.Database do
 
   @doc false
   def start_link(instance) do
-    GenServer.start_link(__MODULE__, instance, name: instance)
+    GenServer.start_link(__MODULE__, %State{instance: instance}, name: instance)
   end
 
   @doc false
-  def init(instance) do
-    :ok = Config.init_env()
-
-    state = %State{
-      instance: instance,
-      startup_silent: Config.get(:startup_silent, false),
-      startup_sync: Config.get(:startup_sync, true)
-    }
+  def init(%State{} = state) do
+    state = init_state(state)
 
     if state.startup_sync do
       :ok = reload_databases(state)
     else
-      :ok = GenServer.cast(instance, :reload)
+      :ok = GenServer.cast(state.instance, :reload)
     end
 
     {:ok, state}
@@ -86,6 +80,16 @@ defmodule RefInspector.Database do
       _ ->
         :ok
     end
+  end
+
+  defp init_state(state) do
+    :ok = Config.init_env()
+
+    %State{
+      state
+      | startup_silent: Config.get(:startup_silent, state.startup_silent),
+        startup_sync: Config.get(:startup_sync, state.startup_sync)
+    }
   end
 
   defp read_databases([], silent) do
