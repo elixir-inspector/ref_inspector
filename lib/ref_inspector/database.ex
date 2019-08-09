@@ -8,6 +8,7 @@ defmodule RefInspector.Database do
   alias RefInspector.Config
   alias RefInspector.Database.Loader
   alias RefInspector.Database.Parser
+  alias RefInspector.Database.State
 
   @ets_table_opts [:named_table, :protected, :set, read_concurrency: true]
 
@@ -20,23 +21,29 @@ defmodule RefInspector.Database do
   def init(instance) do
     :ok = Config.init_env()
 
-    if Config.get(:startup_sync, true) do
-      :ok = reload_databases(instance)
+    state = %State{
+      instance: instance,
+      startup_silent: Config.get(:startup_silent, false),
+      startup_sync: Config.get(:startup_sync, true)
+    }
+
+    if state.startup_sync do
+      :ok = reload_databases(state)
     else
       :ok = GenServer.cast(instance, :reload)
     end
 
-    {:ok, instance}
+    {:ok, state}
   end
 
-  def handle_call(:reload, _from, instance) do
-    {:reply, reload_databases(instance), instance}
+  def handle_call(:reload, _from, state) do
+    {:reply, reload_databases(state), state}
   end
 
-  def handle_cast(:reload, instance) do
-    :ok = reload_databases(instance)
+  def handle_cast(:reload, state) do
+    :ok = reload_databases(state)
 
-    {:noreply, instance}
+    {:noreply, state}
   end
 
   @doc """
@@ -81,45 +88,45 @@ defmodule RefInspector.Database do
     end
   end
 
-  defp read_databases([]) do
+  defp read_databases([], silent) do
     _ =
-      unless Config.get(:startup_silent) do
+      unless silent do
         Logger.warn("Reload error: no database files configured!")
       end
 
     []
   end
 
-  defp read_databases(files) do
+  defp read_databases(files, silent) do
     Enum.map(files, fn file ->
       entries =
         Config.database_path()
         |> Path.join(file)
         |> Loader.load()
-        |> parse_database(file)
+        |> parse_database(file, silent)
 
       {file, entries}
     end)
   end
 
-  defp parse_database({:ok, entries}, _) do
+  defp parse_database({:ok, entries}, _, _) do
     Parser.parse(entries)
   end
 
-  defp parse_database({:error, reason}, file) do
+  defp parse_database({:error, reason}, file, silent) do
     _ =
-      unless Config.get(:startup_silent) do
+      unless silent do
         Logger.info("Failed to load #{file}: #{inspect(reason)}")
       end
 
     %{}
   end
 
-  defp reload_databases(instance) do
+  defp reload_databases(%{instance: instance, startup_silent: silent}) do
     :ok = create_ets_table(instance)
 
     Config.database_files()
-    |> read_databases()
+    |> read_databases(silent)
     |> update_ets_table(instance)
   end
 
