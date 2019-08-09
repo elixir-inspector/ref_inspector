@@ -3,25 +3,30 @@ defmodule RefInspector.Database.InitTest do
 
   import ExUnit.CaptureLog
 
+  alias RefInspector.Database
+
   setup do
     app_files = Application.get_env(:ref_inspector, :database_files)
-    startup = Application.get_env(:ref_inspector, :startup_sync)
 
     on_exit(fn ->
       Application.put_env(:ref_inspector, :database_files, app_files)
-      Application.put_env(:ref_inspector, :startup_sync, startup)
     end)
+  end
+
+  test "require instance name" do
+    Process.flag(:trap_exit, true)
+
+    assert {:error, "missing instance name"} = Database.start_link([])
   end
 
   test "log info when initial load failed" do
     file = "something_that_is_no_file"
 
     Application.put_env(:ref_inspector, :database_files, [file])
-    Application.put_env(:ref_inspector, :startup_sync, false)
 
     log =
       capture_log(fn ->
-        {RefInspector.Database, :ref_inspector_init_test}
+        {Database, [instance: :ref_inspector_init_test, startup_sync: false]}
         |> start_supervised!()
         |> :sys.get_state()
       end)

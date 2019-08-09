@@ -13,11 +13,17 @@ defmodule RefInspector.Database do
   @ets_table_opts [:named_table, :protected, :set, read_concurrency: true]
 
   @doc false
-  def start_link(instance) do
-    GenServer.start_link(__MODULE__, %State{instance: instance}, name: instance)
+  def start_link(instance) when is_atom(instance), do: start_link(instance: instance)
+
+  def start_link(opts) do
+    state = struct!(State, opts)
+
+    GenServer.start_link(__MODULE__, state, name: state.instance)
   end
 
   @doc false
+  def init(%State{instance: nil}), do: {:stop, "missing instance name"}
+
   def init(%State{} = state) do
     state = init_state(state)
 
