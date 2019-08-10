@@ -105,6 +105,19 @@ defmodule RefInspector.Database do
     Keyword.put_new(opts, key, config)
   end
 
+  defp parse_database({:ok, entries}, _, _) do
+    Parser.parse(entries)
+  end
+
+  defp parse_database({:error, reason}, file, silent) do
+    _ =
+      unless silent do
+        Logger.info("Failed to load #{file}: #{inspect(reason)}")
+      end
+
+    %{}
+  end
+
   defp read_databases([], silent) do
     _ =
       unless silent do
@@ -124,19 +137,6 @@ defmodule RefInspector.Database do
 
       {file, entries}
     end)
-  end
-
-  defp parse_database({:ok, entries}, _, _) do
-    Parser.parse(entries)
-  end
-
-  defp parse_database({:error, reason}, file, silent) do
-    _ =
-      unless silent do
-        Logger.info("Failed to load #{file}: #{inspect(reason)}")
-      end
-
-    %{}
   end
 
   defp reload_databases(%{instance: instance, startup_silent: silent}) do
