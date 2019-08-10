@@ -176,7 +176,7 @@ defmodule RefInspector.Config do
   @doc """
   Returns the list of configured database files.
   """
-  @spec database_files() :: list
+  @spec database_files() :: [binary]
   def database_files do
     case get(:database_files) do
       nil -> default_files()
