@@ -16,7 +16,7 @@ defmodule RefInspector.Database do
   def start_link(instance) when is_atom(instance), do: start_link(instance: instance)
 
   def start_link(opts) do
-    state = struct!(State, opts)
+    state = init_state(opts)
 
     GenServer.start_link(__MODULE__, state, name: state.instance)
   end
@@ -25,8 +25,6 @@ defmodule RefInspector.Database do
   def init(%State{instance: nil}), do: {:stop, "missing instance name"}
 
   def init(%State{} = state) do
-    state = init_state(state)
-
     if state.startup_sync do
       :ok = reload_databases(state)
     else
@@ -88,14 +86,23 @@ defmodule RefInspector.Database do
     end
   end
 
-  defp init_state(state) do
+  defp init_state(opts) do
     :ok = Config.init_env()
+    state = %State{}
 
-    %State{
-      state
-      | startup_silent: Config.get(:startup_silent, state.startup_silent),
-        startup_sync: Config.get(:startup_sync, state.startup_sync)
-    }
+    opts =
+      opts
+      |> init_state_option(:startup_silent, state)
+      |> init_state_option(:startup_sync, state)
+
+    struct!(State, opts)
+  end
+
+  defp init_state_option(opts, key, state) do
+    default = Map.fetch!(state, key)
+    config = Config.get(key, default)
+
+    Keyword.put_new(opts, key, config)
   end
 
   defp read_databases([], silent) do
