@@ -35,10 +35,13 @@ defmodule RefInspector.Database do
   end
 
   def handle_call(:reload, _from, state) do
+    state = reinit_state(state)
+
     {:reply, reload_databases(state), state}
   end
 
   def handle_cast(:reload, state) do
+    state = reinit_state(state)
     :ok = reload_databases(state)
 
     {:noreply, state}
@@ -138,6 +141,8 @@ defmodule RefInspector.Database do
       {file, entries}
     end)
   end
+
+  defp reinit_state(state), do: state |> Map.to_list() |> init_state()
 
   defp reload_databases(%{instance: instance, startup_silent: silent}) do
     :ok = create_ets_table(instance)
