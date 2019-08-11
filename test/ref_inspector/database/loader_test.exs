@@ -3,28 +3,16 @@ defmodule RefInspector.Database.LoaderTest do
 
   alias RefInspector.Database.Loader
 
-  setup do
-    yaml_file_reader = Application.get_env(:ref_inspector, :yaml_file_reader)
-
-    on_exit(fn ->
-      Application.put_env(:ref_inspector, :yaml_file_reader, yaml_file_reader)
-    end)
-  end
-
   defmodule NoopYAML do
     def call_mf(_file), do: [:ok_mf]
     def call_mfa(_file, [:arg]), do: [:ok_mfa]
   end
 
   test "yaml file reader: {mod, fun}" do
-    Application.put_env(:ref_inspector, :yaml_file_reader, {NoopYAML, :call_mf})
-
-    assert {:ok, :ok_mf} = Loader.load(__ENV__.file)
+    assert {:ok, :ok_mf} = Loader.load(__ENV__.file, {NoopYAML, :call_mf, []})
   end
 
   test "yaml file reader: {mod, fun, extra_args}" do
-    Application.put_env(:ref_inspector, :yaml_file_reader, {NoopYAML, :call_mfa, [[:arg]]})
-
-    assert {:ok, :ok_mfa} = Loader.load(__ENV__.file)
+    assert {:ok, :ok_mfa} = Loader.load(__ENV__.file, {NoopYAML, :call_mfa, [[:arg]]})
   end
 end

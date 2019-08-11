@@ -3,6 +3,7 @@ defmodule RefInspector.Database.State do
 
   defstruct [
     :instance,
+    :yaml_reader,
     startup_silent: false,
     startup_sync: true
   ]
@@ -10,6 +11,7 @@ defmodule RefInspector.Database.State do
   @type t :: %__MODULE__{
           instance: atom,
           startup_silent: boolean,
-          startup_sync: boolean
+          startup_sync: boolean,
+          yaml_reader: {module, atom, [term]}
         }
 end

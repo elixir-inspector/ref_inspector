@@ -97,6 +97,7 @@ defmodule RefInspector.Database do
       opts
       |> init_state_option(:startup_silent, state)
       |> init_state_option(:startup_sync, state)
+      |> Keyword.put_new(:yaml_reader, Config.yaml_file_reader())
 
     struct!(State, opts)
   end
@@ -121,7 +122,7 @@ defmodule RefInspector.Database do
     %{}
   end
 
-  defp read_databases([], silent) do
+  defp read_databases([], silent, _) do
     _ =
       unless silent do
         Logger.warn("Reload error: no database files configured!")
@@ -130,12 +131,12 @@ defmodule RefInspector.Database do
     []
   end
 
-  defp read_databases(files, silent) do
+  defp read_databases(files, silent, yaml_reader) do
     Enum.map(files, fn file ->
       entries =
         Config.database_path()
         |> Path.join(file)
-        |> Loader.load()
+        |> Loader.load(yaml_reader)
         |> parse_database(file, silent)
 
       {file, entries}
@@ -144,11 +145,11 @@ defmodule RefInspector.Database do
 
   defp reinit_state(state), do: state |> Map.to_list() |> init_state()
 
-  defp reload_databases(%{instance: instance, startup_silent: silent}) do
+  defp reload_databases(%{instance: instance, startup_silent: silent, yaml_reader: yaml_reader}) do
     :ok = create_ets_table(instance)
 
     Config.database_files()
-    |> read_databases(silent)
+    |> read_databases(silent, yaml_reader)
     |> update_ets_table(instance)
   end
 
