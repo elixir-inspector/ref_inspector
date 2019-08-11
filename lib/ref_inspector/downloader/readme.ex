@@ -1,8 +1,6 @@
 defmodule RefInspector.Downloader.README do
   @moduledoc false
 
-  require Logger
-
   alias RefInspector.Config
   alias RefInspector.Database.Location
 

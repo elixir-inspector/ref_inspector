@@ -13,8 +13,6 @@ defmodule RefInspector.Downloader do
   using a mix task to obtain your database file(s).
   """
 
-  require Logger
-
   alias RefInspector.Config
   alias RefInspector.Database.Location
 
