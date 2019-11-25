@@ -37,6 +37,12 @@ defmodule RefInspector.ParserTest do
     assert parsed == RefInspector.parse(referer)
   end
 
+  test "internal referer without exact domain match" do
+    referer = "http://not-www.example.com/sub-page"
+
+    assert %Result{referer: referer} == RefInspector.parse(referer)
+  end
+
   test "no query" do
     referer = "http://www.google.fr/imgres?ignored=parameters"
 
@@ -94,6 +100,42 @@ defmodule RefInspector.ParserTest do
       referer: referer,
       medium: "social",
       source: "Twitter"
+    }
+
+    assert parsed == RefInspector.parse(referer)
+  end
+
+  test "referer without exact domain match" do
+    referer = "https://not-twitter.com/elixirlang"
+
+    assert %Result{referer: referer} == RefInspector.parse(referer)
+  end
+
+  test "referer without exact path match" do
+    referer = "http://www.google.fr/imgres-mismatch"
+
+    assert %Result{referer: referer} == RefInspector.parse(referer)
+  end
+
+  test "referer with subdomain match" do
+    referer = "https://also.twitter.com/elixirlang"
+
+    parsed = %Result{
+      referer: referer,
+      medium: "social",
+      source: "Twitter"
+    }
+
+    assert parsed == RefInspector.parse(referer)
+  end
+
+  test "referer with subpath match" do
+    referer = "http://www.google.fr/imgres/also-matched"
+
+    parsed = %Result{
+      referer: referer,
+      medium: "search",
+      source: "Google Images"
     }
 
     assert parsed == RefInspector.parse(referer)

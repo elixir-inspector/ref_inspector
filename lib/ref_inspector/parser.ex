@@ -11,7 +11,7 @@ defmodule RefInspector.Parser do
   def parse(%URI{host: nil}), do: %Result{}
 
   def parse(%URI{host: host} = uri) do
-    if internal?(host) do
+    if internal?(host, Application.get_env(:ref_inspector, :internal, [])) do
       %Result{medium: :internal}
     else
       uri
@@ -22,10 +22,14 @@ defmodule RefInspector.Parser do
     end
   end
 
-  defp internal?(host) do
-    sources = Application.get_env(:ref_inspector, :internal, [])
+  defp internal?(_, []), do: false
 
-    String.ends_with?(host, sources)
+  defp internal?(host, [internal_host | internal_hosts]) do
+    if host == internal_host || String.ends_with?(host, "." <> internal_host) do
+      true
+    else
+      internal?(host, internal_hosts)
+    end
   end
 
   defp maybe_parse_query(nil, _, result), do: result
@@ -44,9 +48,14 @@ defmodule RefInspector.Parser do
 
   defp match_sources(
          %{host: ref_host, path: ref_path} = ref,
-         [{src_host, src_path, src_parameters, src_medium, src_name} | sources]
+         [
+           {src_host, src_subdomains, src_path, src_subpaths, src_parameters, src_medium,
+            src_name}
+           | sources
+         ]
        ) do
-    if String.ends_with?(ref_host, src_host) && String.starts_with?(ref_path, src_path) do
+    if (ref_host == src_host || String.ends_with?(ref_host, src_subdomains)) &&
+         (ref_path == src_path || String.starts_with?(ref_path, src_subpaths)) do
       result = %Result{
         medium: src_medium,
         source: src_name
