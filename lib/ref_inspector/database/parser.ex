@@ -19,7 +19,16 @@ defmodule RefInspector.Database.Parser do
       } = source
 
       part_acc = red_acc[last_part] || []
-      entry = {host, path, parameters, medium, name}
+
+      entry = {
+        host,
+        "." <> String.trim_leading(host, "."),
+        path,
+        String.trim_trailing(path, "/") <> "/",
+        parameters,
+        medium,
+        name
+      }
 
       Map.put(red_acc, last_part, [entry | part_acc])
     end)

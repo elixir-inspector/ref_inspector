@@ -15,6 +15,16 @@
         - `RefInspector.Downloader.README.path_priv/0`
     - Startup is now done with a blocking database load by default
 
+## v1.3.0 (2019-11-27)
+
+- Bug fixes
+    - Hosts are now matched more strict to match expectations ([#2](https://github.com/elixir-inspector/ref_inspector/issues/2))
+        - `*.host` will still match `host`
+        - `*host` (without a dot) will no longer match `host`
+    - Paths are now matched more strict to match expectations ([#2](https://github.com/elixir-inspector/ref_inspector/issues/2))
+        - `/some/folder` will still match `/some`
+        - `/somefolder` (without a slash) will no longer match `/some`
+
 ## v1.2.0 (2019-08-03)
 
 - Enhancements
