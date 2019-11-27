@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.3.0-dev
+## v1.3.0 (2019-11-27)
 
 - Bug fixes
     - Hosts are now matched more strict to match expectations ([#2](https://github.com/elixir-inspector/ref_inspector/issues/2))
