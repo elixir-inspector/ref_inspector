@@ -52,16 +52,12 @@ defmodule RefInspector.Database do
   """
   @spec list(atom) :: [tuple]
   def list(instance) do
-    case :ets.info(instance) do
-      :undefined ->
-        []
-
-      _ ->
-        case :ets.lookup(instance, :data) do
-          [{:data, entries}] -> entries
-          _ -> []
-        end
+    case :ets.lookup(instance, :data) do
+      [{:data, entries}] -> entries
+      _ -> []
     end
+  rescue
+    _ -> []
   end
 
   @doc """
