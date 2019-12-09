@@ -108,7 +108,7 @@ defmodule RefInspector.Config do
 
       config :ref_inspector,
         remote_urls: [
-          "http://example.com/database.yml"
+          "http://example.com/database.yml",
           {"database_local.yml", "http://example.com/database_remote.yml"}
         ]
 
