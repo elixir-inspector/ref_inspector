@@ -4,7 +4,7 @@ defmodule RefInspector.Result do
   """
 
   @type t :: %__MODULE__{
-          referer: String.t(),
+          referer: String.t() | nil,
           medium: String.t() | :internal | :unknown,
           source: String.t() | :unknown,
           term: String.t() | :none
