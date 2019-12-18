@@ -10,14 +10,16 @@ defmodule RefInspector.Parser do
   @spec parse(URI.t(), Keyword.t()) :: Result.t()
   def parse(%URI{host: nil}, _), do: %Result{}
 
-  def parse(%URI{host: host} = uri, opts) do
+  def parse(%URI{host: host, path: path, query: query}, opts) do
     if internal?(host, Application.get_env(:ref_inspector, :internal, [])) do
       %Result{medium: :internal}
     else
-      uri
-      |> Map.from_struct()
-      |> Map.put(:host_parts, host |> String.split(".") |> Enum.reverse())
-      |> Map.put(:path, uri.path || "/")
+      %{
+        host: host,
+        host_parts: host |> String.split(".") |> Enum.reverse(),
+        path: path || "/",
+        query: query
+      }
       |> parse_ref(Database.list(opts[:instance]))
     end
   end
@@ -47,7 +49,7 @@ defmodule RefInspector.Parser do
   defp match_sources(_, []), do: nil
 
   defp match_sources(
-         %{host: ref_host, path: ref_path} = ref,
+         %{host: ref_host, path: ref_path, query: query} = ref,
          [
            {src_host, src_subdomains, src_path, src_subpaths, src_parameters, src_medium,
             src_name}
@@ -61,7 +63,7 @@ defmodule RefInspector.Parser do
         source: src_name
       }
 
-      maybe_parse_query(ref.query, src_parameters, result)
+      maybe_parse_query(query, src_parameters, result)
     else
       match_sources(ref, sources)
     end
