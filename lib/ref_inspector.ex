@@ -28,7 +28,7 @@ defmodule RefInspector do
   - `:medium` will be `:internal` (if configured), `:unknown` if no matching
     database entry could be found, or a string matching the entry in the
     database. Detecting a referer as `:internal` requires additional
-    configuration.
+    configuration (see `RefInspector.Config`).
 
   - `:source` will be `:unknown` if no known source could be detected.
     Otherwise it will contain a string with the provider's name.

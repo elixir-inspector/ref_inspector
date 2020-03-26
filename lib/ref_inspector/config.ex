@@ -119,6 +119,19 @@ defmodule RefInspector.Config do
   If the remote and local names match you can configure a `{local, remote}`
   tuple to deactivate the automatic name extraction.
 
+  ### Internal Domains
+
+  To exclude some domains from parsing you can mark
+  them as `:internal` using your configuration:
+
+      config :ref_inspector,
+        internal: ["www.example.com", "www.example.org"]
+
+  If a referer matches one of the configured
+  domains (== ends with, paths ignored!), it will return a result with
+  the medium `:internal`. Both `:source` and `:term` will be left at the
+  initial/unknown state not intended for further processing.
+
   ## Download Configuration
 
   Using the default configuration all download requests for your database files

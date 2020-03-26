@@ -28,17 +28,6 @@ For a detailed list of available configuration options please consult `RefInspec
 
 The default database is taken from the [snowplow-referer-parser](https://github.com/snowplow-referer-parser/referer-parser) project.
 
-### Internal Domains
-
-To exclude some domains from parsing you can mark them as internal using your configuration:
-
-```elixir
-config :ref_inspector,
-  internal: ["www.example.com", "www.example.org"]
-```
-
-If a referer matches at least one of the configured domains (== ends with, paths ignored!), it will return a result with the medium `:internal`. Both `:source` and `:term` will be left at the initial/unknown state not intended for further processing.
-
 ## Basic Usage
 
 ### Database Download
