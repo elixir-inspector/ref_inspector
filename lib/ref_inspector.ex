@@ -25,9 +25,10 @@ defmodule RefInspector do
 
   - `:referer` will contain the unmodified referer passed to the parser.
 
-  - `:medium` will be `:unknown` if no matching database entry could be found
-    `:internal`, or a string matching the entry in the database. Detecting a
-    referer as internal requires additional configuration.
+  - `:medium` will be `:internal` (if configured), `:unknown` if no matching
+    database entry could be found, or a string matching the entry in the
+    database. Detecting a referer as `:internal` requires additional
+    configuration.
 
   - `:source` will be `:unknown` if no known source could be detected.
     Otherwise it will contain a string with the provider's name.
