@@ -37,7 +37,7 @@ defmodule Mix.Tasks.RefInspector.Download do
   ]
 
   def run(args) do
-    :ok = start_app(args)
+    :ok = load_app(args)
     :ok = Config.init_env()
 
     {opts, _argv, _errors} = OptionParser.parse(args, @cli_options)
@@ -85,20 +85,11 @@ defmodule Mix.Tasks.RefInspector.Download do
     end
   end
 
-  defp start_app(args) do
+  defp load_app(args) do
     _ = Mix.Task.run("loadpaths", args)
 
     unless "--no-compile" in args do
-      _ = Mix.Project.compile(args)
-    end
-
-    if :ref_inspector not in Application.started_applications() do
-      startup_silent = Application.get_env(:ref_inspector, :startup_silent, false)
-      :ok = Application.put_env(:ref_inspector, :startup_silent, true)
-
-      _ = Application.ensure_all_started(:ref_inspector)
-
-      :ok = Application.put_env(:ref_inspector, :startup_silent, startup_silent)
+      _ = Mix.Task.run("compile", args)
     end
 
     :ok
