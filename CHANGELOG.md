@@ -5,6 +5,9 @@
 - Enhancements
     - Calling `RefInspector.parse/1` with an empty referer (`""` or `nil`) will now return the input as is in the result struct instead of previously returning `nil` for both inputs
 
+- Bug fixes
+    - The mix download task no longer tries to start your full application, only `:ref_inspector` if not already running
+
 - Backwards incompatible changes
     - Minimum required elixir version is now `~> 1.7`
     - Several deprecated functions have been removed completely:
