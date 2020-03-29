@@ -5,7 +5,7 @@ defmodule RefInspector.Database.LoaderTest do
 
   defmodule NoopYAML do
     def call_mf(_file), do: [:ok_mf]
-    def call_mfa(_file, [:arg]), do: [:ok_mfa]
+    def call_mfargs(_file, [:arg]), do: [:ok_mfargs]
   end
 
   test "yaml file reader: {mod, fun}" do
@@ -13,6 +13,6 @@ defmodule RefInspector.Database.LoaderTest do
   end
 
   test "yaml file reader: {mod, fun, extra_args}" do
-    assert {:ok, :ok_mfa} = Loader.load(__ENV__.file, {NoopYAML, :call_mfa, [[:arg]]})
+    assert {:ok, :ok_mfargs} = Loader.load(__ENV__.file, {NoopYAML, :call_mfargs, [[:arg]]})
   end
 end
