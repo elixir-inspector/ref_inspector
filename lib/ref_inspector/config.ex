@@ -85,8 +85,6 @@ defmodule RefInspector.Config do
       config :ref_inspector,
         startup_silent: true
 
-  This will automatically be set when calling the mix download task.
-
   ## Database Configuration
 
   Configuring the database to use can be done using three related values:
