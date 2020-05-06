@@ -9,7 +9,7 @@ defmodule RefInspector.Config do
         database_files: ["referers.yml"],
         database_path: Application.app_dir(:ref_inspector, "priv"),
         http_opts: [],
-        remote_urls: [{"referers.yml", "https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yml"}],
+        remote_urls: [{"referers.yml", "https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yaml"}],
         startup_silent: false,
         startup_sync: false,
         yaml_file_reader: {:yamerl_constr, :file, [[:str_node_as_binary]]}
@@ -156,7 +156,7 @@ defmodule RefInspector.Config do
 
   require Logger
 
-  @upstream_remote "https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yml"
+  @upstream_remote "https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yaml"
 
   @default_files ["referers.yml"]
   @default_urls [{"referers.yml", @upstream_remote}]
