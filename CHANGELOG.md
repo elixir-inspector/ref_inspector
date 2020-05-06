@@ -18,6 +18,11 @@
         - `RefInspector.Downloader.README.path_priv/0`
     - Startup is now done with a blocking database load by default
 
+## v1.3.1 (2020-05-06)
+
+- Bug fixes
+    - Default remote url for the referer parser database has been changed after upstream changes ([#3](https://github.com/elixir-inspector/ref_inspector/issues/3))
+
 ## v1.3.0 (2019-11-27)
 
 - Bug fixes
