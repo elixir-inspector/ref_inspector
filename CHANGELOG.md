@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.3.1-dev
+## v1.3.1 (2020-05-06)
 
 - Bug fixes
     - Default remote url for the referer parser database has been changed after upstream changes ([#3](https://github.com/elixir-inspector/ref_inspector/issues/3))
