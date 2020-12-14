@@ -33,10 +33,3 @@ jobs:
       script: |-
         cd "${TRAVIS_BUILD_DIR}/verify"
         mix ref_inspector.verify
-
-    - stage: code quality
-      elixir: 1.11.1
-      otp_release: 23.0
-      script:
-        - mix format --check-formatted
-        - mix credo --strict
