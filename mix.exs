@@ -19,8 +19,7 @@ defmodule RefInspector.MixProject do
         "bench.database": :bench,
         "bench.parse": :bench,
         coveralls: :test,
-        "coveralls.detail": :test,
-        "coveralls.travis": :test
+        "coveralls.detail": :test
       ],
       test_coverage: [tool: ExCoveralls]
     ]
