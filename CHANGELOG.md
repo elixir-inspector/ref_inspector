@@ -9,7 +9,7 @@
     - The mix download task should no longer start unnecessary applications
 
 - Backwards incompatible changes
-    - Minimum required elixir version is now `~> 1.7`
+    - Minimum required elixir version is now `~> 1.9`
     - Several deprecated functions have been removed completely:
         - `RefInspector.Downloader.path_local/1`
         - `RefInspector.Downloader.path_remote/1`
