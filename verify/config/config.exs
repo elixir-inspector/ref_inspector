@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :ref_inspector,
   database_files: ["referers.yml"],
