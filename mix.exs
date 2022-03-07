@@ -78,7 +78,7 @@ defmodule RefInspector.MixProject do
   defp package do
     %{
       files: ["CHANGELOG.md", "LICENSE", "mix.exs", "README.md", "lib", "priv"],
-      licenses: ["Apache 2.0"],
+      licenses: ["Apache-2.0"],
       links: %{"GitHub" => @url_github}
     }
   end
