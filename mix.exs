@@ -2,12 +2,13 @@ defmodule RefInspector.MixProject do
   use Mix.Project
 
   @url_github "https://github.com/elixir-inspector/ref_inspector"
+  @version "2.0.0-dev"
 
   def project do
     [
       app: :ref_inspector,
       name: "RefInspector",
-      version: "2.0.0-dev",
+      version: @version,
       elixir: "~> 1.9",
       aliases: aliases(),
       deps: deps(),
@@ -70,7 +71,7 @@ defmodule RefInspector.MixProject do
   defp docs do
     [
       main: "RefInspector",
-      source_ref: "master",
+      source_ref: "v#{@version}",
       source_url: @url_github
     ]
   end
