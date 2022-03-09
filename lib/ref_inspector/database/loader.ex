@@ -8,8 +8,7 @@ defmodule RefInspector.Database.Loader do
   def load(file, {reader_mod, reader_fun, reader_extra_args}) do
     case File.stat(file) do
       {:ok, _} ->
-        reader_mod
-        |> apply(reader_fun, [file | reader_extra_args])
+        apply(reader_mod, reader_fun, [file | reader_extra_args])
         |> maybe_hd()
 
       error ->
