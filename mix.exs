@@ -77,6 +77,12 @@ defmodule RefInspector.MixProject do
         "README.md": [title: "Overview"]
       ],
       formatters: ["html"],
+      groups_for_modules: [
+        "Database Downloader": [
+          RefInspector.Downloader,
+          RefInspector.Downloader.Adapter
+        ]
+      ],
       main: "RefInspector",
       skip_undefined_reference_warnings_on: ["CHANGELOG.md"],
       source_ref: "v#{@version}",
