@@ -76,6 +76,7 @@ defmodule RefInspector.MixProject do
         LICENSE: [title: "License"],
         "README.md": [title: "Overview"]
       ],
+      formatters: ["html"],
       main: "RefInspector",
       skip_undefined_reference_warnings_on: ["CHANGELOG.md"],
       source_ref: "v#{@version}",
