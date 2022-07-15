@@ -12,9 +12,6 @@ defmodule RefInspector.Database do
 
   @ets_table_opts [:named_table, :protected, :set, read_concurrency: true]
 
-  @doc false
-  def start_link(instance) when is_atom(instance), do: start_link(instance: instance)
-
   def start_link(opts) do
     state = init_state(opts)
 
@@ -93,6 +90,7 @@ defmodule RefInspector.Database do
       opts
       |> init_state_option(:startup_silent, state)
       |> init_state_option(:startup_sync, state)
+      |> Keyword.put_new(:instance, :ref_inspector_default)
       |> Keyword.put_new(:yaml_reader, Config.yaml_file_reader())
 
     struct!(State, opts)

@@ -38,9 +38,7 @@ defmodule RefInspector.Supervisor do
   @doc false
   def init(_state) do
     Supervisor.init(
-      [
-        {RefInspector.Database, :ref_inspector_default}
-      ],
+      [RefInspector.Database],
       strategy: :one_for_one
     )
   end

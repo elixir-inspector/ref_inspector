@@ -13,12 +13,6 @@ defmodule RefInspector.Database.InitTest do
     end)
   end
 
-  test "require instance name" do
-    Process.flag(:trap_exit, true)
-
-    assert {:error, "missing instance name"} = Database.start_link([])
-  end
-
   test "log info when initial load failed" do
     file = "something_that_is_no_file"
 
@@ -26,7 +20,7 @@ defmodule RefInspector.Database.InitTest do
 
     log =
       capture_log(fn ->
-        {Database, [instance: :ref_inspector_init_test, startup_sync: false]}
+        {Database, instance: :ref_inspector_init_test, startup_sync: false}
         |> start_supervised!()
         |> :sys.get_state()
       end)
