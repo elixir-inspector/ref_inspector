@@ -20,7 +20,7 @@ defmodule RefInspector.Database.InitTest do
 
     log =
       capture_log(fn ->
-        {Database, instance: :ref_inspector_init_test, startup_sync: false}
+        {Database, instance: :init_test, startup_sync: false}
         |> start_supervised!()
         |> :sys.get_state()
       end)
