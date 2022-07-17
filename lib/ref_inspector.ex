@@ -63,7 +63,7 @@ defmodule RefInspector do
   Any potentially concurrent reload requests are not considered.
   """
   @spec ready?(atom) :: boolean
-  def ready?(instance \\ :ref_inspector_default), do: [] != Database.list(instance)
+  def ready?(instance \\ :default), do: [] != Database.list(instance)
 
   @doc """
   Parses a referer.
@@ -72,7 +72,7 @@ defmodule RefInspector do
   without accessing the database.
   """
   @spec parse(URI.t() | String.t() | nil, Keyword.t()) :: Result.t()
-  def parse(ref, opts \\ [instance: :ref_inspector_default])
+  def parse(ref, opts \\ [instance: :default])
 
   def parse(nil, _), do: %Result{referer: nil}
   def parse("", _), do: %Result{referer: ""}
@@ -93,7 +93,7 @@ defmodule RefInspector do
   """
   @spec reload(Keyword.t()) :: :ok
   def reload(opts \\ []) do
-    [async: true, instance: :ref_inspector_default]
+    [async: true, instance: :default]
     |> Keyword.merge(opts)
     |> Database.reload()
   end

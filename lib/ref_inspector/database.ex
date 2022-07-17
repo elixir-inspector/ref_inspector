@@ -14,8 +14,9 @@ defmodule RefInspector.Database do
 
   def start_link(opts) do
     state = init_state(opts)
+    name = identifier(state.instance)
 
-    GenServer.start_link(__MODULE__, state, name: state.instance)
+    GenServer.start_link(__MODULE__, state, name: name)
   end
 
   @doc false
@@ -25,7 +26,10 @@ defmodule RefInspector.Database do
     if state.startup_sync do
       :ok = reload_databases(state)
     else
-      :ok = GenServer.cast(state.instance, :reload)
+      :ok =
+        state.instance
+        |> identifier()
+        |> GenServer.cast(:reload)
     end
 
     {:ok, state}
@@ -49,7 +53,9 @@ defmodule RefInspector.Database do
   """
   @spec list(atom) :: [tuple]
   def list(instance) do
-    case :ets.lookup(instance, :data) do
+    table_name = identifier(instance)
+
+    case :ets.lookup(table_name, :data) do
       [{:data, entries}] -> entries
       _ -> []
     end
@@ -64,23 +70,27 @@ defmodule RefInspector.Database do
   using `GenServer.cast/2` oder `GenServer.call/2`.
   """
   def reload(opts) do
+    identifier = identifier(opts[:instance])
+
     if opts[:async] do
-      GenServer.cast(opts[:instance], :reload)
+      GenServer.cast(identifier, :reload)
     else
-      GenServer.call(opts[:instance], :reload)
+      GenServer.call(identifier, :reload)
     end
   end
 
-  defp create_ets_table(instance) do
-    case :ets.info(instance) do
+  defp create_ets_table(table_name) do
+    case :ets.info(table_name) do
       :undefined ->
-        _ = :ets.new(instance, @ets_table_opts)
+        _ = :ets.new(table_name, @ets_table_opts)
         :ok
 
       _ ->
         :ok
     end
   end
+
+  defp identifier(instance), do: :"ref_inspector_#{instance}"
 
   defp init_state(opts) do
     :ok = Config.init_env()
@@ -90,7 +100,7 @@ defmodule RefInspector.Database do
       opts
       |> init_state_option(:startup_silent, state)
       |> init_state_option(:startup_sync, state)
-      |> Keyword.put_new(:instance, :ref_inspector_default)
+      |> Keyword.put_new(:instance, :default)
       |> Keyword.put_new(:yaml_reader, Config.yaml_file_reader())
 
     struct!(State, opts)
@@ -140,15 +150,16 @@ defmodule RefInspector.Database do
   defp reinit_state(state), do: state |> Map.to_list() |> init_state()
 
   defp reload_databases(%{instance: instance, startup_silent: silent, yaml_reader: yaml_reader}) do
-    :ok = create_ets_table(instance)
+    table_name = identifier(instance)
+    :ok = create_ets_table(table_name)
 
     Config.database_files()
     |> read_databases(silent, yaml_reader)
-    |> update_ets_table(instance)
+    |> update_ets_table(table_name)
   end
 
-  defp update_ets_table(datasets, instance) do
-    true = :ets.insert(instance, {:data, datasets})
+  defp update_ets_table(datasets, table_name) do
+    true = :ets.insert(table_name, {:data, datasets})
     :ok
   end
 end
