@@ -15,7 +15,7 @@ defmodule RefInspector.Database.EmptyTest do
   test "empty files are ignored" do
     Application.put_env(:ref_inspector, :database_files, ["empty.yml"])
 
-    state = %State{instance: :ignored, startup_sync: false}
+    state = %State{database: :ignored, startup_sync: false}
 
     assert {:ok, _} = Database.init(state)
   end

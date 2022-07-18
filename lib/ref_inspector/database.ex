@@ -14,20 +14,20 @@ defmodule RefInspector.Database do
 
   def start_link(opts) do
     state = init_state(opts)
-    name = identifier(state.instance)
+    name = identifier(state.database)
 
     GenServer.start_link(__MODULE__, state, name: name)
   end
 
   @doc false
-  def init(%State{instance: nil}), do: {:stop, "missing instance name"}
+  def init(%State{database: nil}), do: {:stop, "missing database name"}
 
   def init(%State{} = state) do
     if state.startup_sync do
       :ok = reload_databases(state)
     else
       :ok =
-        state.instance
+        state.database
         |> identifier()
         |> GenServer.cast(:reload)
     end
@@ -52,8 +52,8 @@ defmodule RefInspector.Database do
   Returns all referer definitions.
   """
   @spec list(atom) :: [tuple]
-  def list(instance) do
-    table_name = identifier(instance)
+  def list(database) do
+    table_name = identifier(database)
 
     case :ets.lookup(table_name, :data) do
       [{:data, entries}] -> entries
@@ -70,7 +70,7 @@ defmodule RefInspector.Database do
   using `GenServer.cast/2` oder `GenServer.call/2`.
   """
   def reload(opts) do
-    identifier = identifier(opts[:instance])
+    identifier = identifier(opts[:database])
 
     if opts[:async] do
       GenServer.cast(identifier, :reload)
@@ -90,7 +90,7 @@ defmodule RefInspector.Database do
     end
   end
 
-  defp identifier(instance), do: :"ref_inspector_#{instance}"
+  defp identifier(database), do: :"ref_inspector_#{database}"
 
   defp init_state(opts) do
     :ok = Config.init_env()
@@ -100,7 +100,7 @@ defmodule RefInspector.Database do
       opts
       |> init_state_option(:startup_silent, state)
       |> init_state_option(:startup_sync, state)
-      |> Keyword.put_new(:instance, :default)
+      |> Keyword.put_new(:database, :default)
       |> Keyword.put_new(:yaml_reader, Config.yaml_file_reader())
 
     struct!(State, opts)
@@ -149,8 +149,8 @@ defmodule RefInspector.Database do
 
   defp reinit_state(state), do: state |> Map.to_list() |> init_state()
 
-  defp reload_databases(%{instance: instance, startup_silent: silent, yaml_reader: yaml_reader}) do
-    table_name = identifier(instance)
+  defp reload_databases(%{database: database, startup_silent: silent, yaml_reader: yaml_reader}) do
+    table_name = identifier(database)
     :ok = create_ets_table(table_name)
 
     Config.database_files()

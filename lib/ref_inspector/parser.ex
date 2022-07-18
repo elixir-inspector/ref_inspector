@@ -20,7 +20,7 @@ defmodule RefInspector.Parser do
         path: path || "/",
         query: query
       }
-      |> parse_ref(Database.list(opts[:instance]))
+      |> parse_ref(Database.list(opts[:database]))
     end
   end
 

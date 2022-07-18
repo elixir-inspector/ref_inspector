@@ -24,7 +24,7 @@ defmodule RefInspector.Database.InitializerTest do
     :ok = Application.put_env(:ref_inspector, :init, {Initializer, :call_init})
 
     {:ok, _} = start_supervised(Initializer)
-    {:ok, _} = start_supervised({RefInspector.Database, instance: :initializer_test})
+    {:ok, _} = start_supervised({RefInspector.Database, database: :initializer_test})
 
     assert :ok_empty == Initializer.get_init()
   end
@@ -33,7 +33,7 @@ defmodule RefInspector.Database.InitializerTest do
     :ok = Application.put_env(:ref_inspector, :init, {Initializer, :call_init, [:ok_passed]})
 
     {:ok, _} = start_supervised(Initializer)
-    {:ok, _} = start_supervised({RefInspector.Database, instance: :initializer_test})
+    {:ok, _} = start_supervised({RefInspector.Database, database: :initializer_test})
 
     assert :ok_passed == Initializer.get_init()
   end
