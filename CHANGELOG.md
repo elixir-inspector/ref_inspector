@@ -9,7 +9,7 @@
     - The mix download task should no longer start unnecessary applications
 
 - Backwards incompatible changes
-    - Minimum required elixir version is now `~> 1.9`
+    - Minimum required Elixir version is now `~> 1.9`
     - Several deprecated functions have been removed completely:
         - `RefInspector.Downloader.path_local/1`
         - `RefInspector.Downloader.path_remote/1`
@@ -21,7 +21,7 @@
 ## v1.3.1 (2020-05-06)
 
 - Bug fixes
-    - Default remote url for the referer parser database has been changed after upstream changes ([#3](https://github.com/elixir-inspector/ref_inspector/issues/3))
+    - Default remote URL for the referer parser database has been changed after upstream changes ([#3](https://github.com/elixir-inspector/ref_inspector/issues/3))
 
 ## v1.3.0 (2019-11-27)
 
@@ -75,7 +75,7 @@
 - Backwards incompatible changes
     - Internal parser process pooling has been removed. If you require pooling you need to manually wrap `RefInspector.parse/1`
     - Medium information in the result struct is now returned as a `String.t()` instead of an `atom`. The only exceptions are `:unknown` and `:internal` referers
-    - Minimum required elixir version is now `~> 1.5`
+    - Minimum required Elixir version is now `~> 1.5`
     - Support for `{:system, var}` configuration has been removed
 
 ## v0.20.0 (2018-07-22)
@@ -124,7 +124,7 @@
 ## v0.16.0 (2017-09-24)
 
 - Backwards incompatible changes
-    - Minimum required elixir version is now `~> 1.3`
+    - Minimum required Elixir version is now `~> 1.3`
 
 ## v0.15.0 (2017-09-12)
 
@@ -147,7 +147,7 @@
 ## v0.13.0 (2016-11-19)
 
 - Enhancements
-    - Downloaded files can be automatically stored under a custom filename differing from the url basename
+    - Downloaded files can be automatically stored under a custom filename differing from the URL basename
     - Multiple files can be configured for download
 
 - Deprecations
@@ -165,7 +165,7 @@
 ## v0.11.0 (2016-09-07)
 
 - Enhancements
-    - Remote url of database file is now configurable
+    - Remote URL of database file is now configurable
 
 - Deprecations
     - Configuring a single `:yaml` as the database has been deprecated
@@ -181,15 +181,15 @@
 
 - Backwards incompatible changes
     - Downloads are now done using `:hackney` instead of `mix`. This may force you to manually reconfigure the client
-    - Minimum required elixir version is now `~> 1.2`
-    - Minimum required erlang version is now `~> 18.0`
+    - Minimum required Elixir version is now `~> 1.2`
+    - Minimum required Erlang version is now `~> 18.0`
 
 ## v0.9.0 (2016-03-30)
 
 - Enhancements
     - Database is reloaded if the storage process gets restarted
     - Path can be configured by accessing the system environment
-    - Referer database can be reloaded usind `RefInspector.load/1`
+    - Referer database can be reloaded using `RefInspector.load/1`
 
 - Backwards incompatible changes
     - Reloading the database drops previously loaded (unconfigured) entries
@@ -208,7 +208,7 @@
     - Worker pool options are no longer defined at compile time
 
 - Backwards incompatible changes
-    - Pool configuration is now expected to be a `Keyword.t`
+    - Pool configuration is now expected to be a `Keyword.t()`
 
 ## v0.6.0 (2015-04-03)
 
