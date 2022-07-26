@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.0.0-dev
+## v2.0.0 (2022-07-26)
 
 - Enhancements
     - Calling `RefInspector.parse/1` with an empty referer (`""` or `nil`) will now return the input as is in the result struct instead of previously returning `nil` for both inputs

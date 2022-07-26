@@ -10,7 +10,7 @@ To use RefInspector with your projects, edit your `mix.exs` file and add the req
 defp deps do
   [
     # ...
-    {:ref_inspector, "~> 1.0"},
+    {:ref_inspector, "~> 2.0"},
     # ...
   ]
 end
