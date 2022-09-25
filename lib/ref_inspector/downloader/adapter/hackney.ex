@@ -5,10 +5,7 @@ defmodule RefInspector.Downloader.Adapter.Hackney do
 
   @behaviour RefInspector.Downloader.Adapter
 
-  @doc """
-  Reads a remote file and returns it's contents.
-  """
-  @spec read_remote(binary) :: {:ok, binary} | {:error, term}
+  @impl RefInspector.Downloader.Adapter
   def read_remote(location) do
     _ = Application.ensure_all_started(:hackney)
 
