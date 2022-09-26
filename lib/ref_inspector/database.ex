@@ -67,7 +67,7 @@ defmodule RefInspector.Database do
   Reloads the database.
 
   Depending on the boolean option `:async` the reload will be performed
-  using `GenServer.cast/2` oder `GenServer.call/2`.
+  using `GenServer.cast/2` or `GenServer.call/2`.
   """
   def reload(opts) do
     identifier = identifier(opts[:database])
