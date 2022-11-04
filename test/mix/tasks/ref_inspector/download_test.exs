@@ -79,11 +79,11 @@ defmodule Mix.Tasks.RefInspector.DownloadTest do
     orig_path = Application.get_env(:ref_inspector, :database_path)
     test_files = Enum.map(@test_files, &Path.join([@test_path, &1]))
 
-    Enum.each(test_files, fn test_file ->
+    for test_file <- test_files do
       if File.exists?(test_file) do
         File.rm!(test_file)
       end
-    end)
+    end
 
     console =
       capture_io(fn ->
@@ -92,12 +92,12 @@ defmodule Mix.Tasks.RefInspector.DownloadTest do
         Application.put_env(:ref_inspector, :database_path, orig_path)
       end)
 
-    Enum.each(test_files, fn test_file ->
+    for test_file <- test_files do
       fixture_file = Path.join([@fixture_path, Path.basename(test_file)])
 
       assert File.exists?(test_file)
       assert String.contains?(console, test_file)
       assert File.stat!(test_file).size == File.stat!(fixture_file).size
-    end)
+    end
   end
 end
