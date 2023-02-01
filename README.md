@@ -39,7 +39,7 @@ Refer to `RefInspector.Downloader` for more details.
 ### Referer Parsing
 
 ```elixir
-iex(1)> RefInspector.parse("http://www.google.com/search?q=ref_inspector")
+iex> RefInspector.parse("http://www.google.com/search?q=ref_inspector")
 %RefInspector.Result{
   medium: "search",
   referer: "http://www.google.com/search?q=ref_inspector",
