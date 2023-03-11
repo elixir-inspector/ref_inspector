@@ -1,10 +1,16 @@
 name: Verification
 
 on:
-  push:
   pull_request:
+  push:
+    branches:
+      - master
+      - test
+    tags:
+      - '*'
   schedule:
     - cron: '15 16 * * *'
+  workflow_dispatch:
 
 jobs:
   check:
