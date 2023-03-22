@@ -59,18 +59,22 @@ defmodule Mix.Tasks.RefInspector.Verify do
     fixture = Verify.Fixture.local_file()
 
     if File.exists?(fixture) do
-      [testcases] = :yamerl_constr.file(fixture, [:str_node_as_binary])
-
-      testcases
-      |> Enum.map(fn testcase ->
-        testcase
-        |> Enum.into(%{}, fn {k, v} -> {String.to_atom(k), v} end)
-        |> Verify.Cleanup.cleanup()
-      end)
-      |> verify()
+      verify_fixture(fixture)
     else
       Mix.shell().error("Fixture file #{fixture} is missing.")
       Mix.shell().error("Please run without '--quick' param to download it!")
     end
+  end
+
+  defp verify_fixture(fixture) do
+    [testcases] = :yamerl_constr.file(fixture, [:str_node_as_binary])
+
+    testcases
+    |> Enum.map(fn testcase ->
+      testcase
+      |> Enum.into(%{}, fn {k, v} -> {String.to_atom(k), v} end)
+      |> Verify.Cleanup.cleanup()
+    end)
+    |> verify()
   end
 end
