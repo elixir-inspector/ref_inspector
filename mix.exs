@@ -29,7 +29,7 @@ defmodule RefInspector.MixProject do
 
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: extra_applications(Mix.env()) ++ [:logger],
       mod: {RefInspector.Application, []}
     ]
   end
@@ -40,6 +40,9 @@ defmodule RefInspector.MixProject do
       "bench.parse": "run bench/parse.exs"
     ]
   end
+
+  defp extra_applications(:test), do: [:inets]
+  defp extra_applications(_), do: []
 
   defp deps do
     [

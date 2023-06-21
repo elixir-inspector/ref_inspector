@@ -10,9 +10,6 @@ defmodule Mix.Tasks.RefInspector.DownloadTest do
   @test_path Path.expand("../../../downloads", __DIR__)
 
   setup_all do
-    # setup internal testing webserver
-    Application.ensure_all_started(:inets)
-
     httpd_opts = [
       port: 0,
       server_name: 'ref_inspector_test',
