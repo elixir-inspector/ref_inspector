@@ -126,13 +126,24 @@ defmodule RefInspector.Database do
     %{}
   end
 
-  defp read_databases([], silent, _) do
-    _ =
-      unless silent do
-        Logger.warn("Reload error: no database files configured!")
-      end
+  if macro_exported?(Logger, :warning, 1) do
+    defp read_databases([], silent, _) do
+      _ =
+        unless silent do
+          Logger.warning("Reload error: no database files configured!")
+        end
 
-    []
+      []
+    end
+  else
+    defp read_databases([], silent, _) do
+      _ =
+        unless silent do
+          Logger.warn("Reload error: no database files configured!")
+        end
+
+      []
+    end
   end
 
   defp read_databases(files, silent, yaml_reader) do
