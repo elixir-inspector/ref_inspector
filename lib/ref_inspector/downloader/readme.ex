@@ -31,7 +31,11 @@ defmodule RefInspector.Downloader.README do
       File.mkdir_p!(dirname_local)
     end
 
-    {:ok, _} = File.copy(readme_priv, readme_local)
+    _ =
+      unless readme_priv == readme_local do
+        File.copy!(readme_priv, readme_local)
+      end
+
     :ok
   end
 end
