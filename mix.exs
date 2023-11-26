@@ -46,9 +46,9 @@ defmodule RefInspector.MixProject do
 
   defp deps do
     [
-      {:benchee, "~> 1.1", only: :bench, runtime: false},
+      {:benchee, "~> 1.2", only: :bench, runtime: false},
       {:credo, "~> 1.7", only: :dev, runtime: false},
-      {:dialyxir, "~> 1.3", only: :dev, runtime: false},
+      {:dialyxir, "~> 1.4", only: :dev, runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:excoveralls, "~> 0.16.0", only: :test, runtime: false},
       {:hackney, "~> 1.0"},
