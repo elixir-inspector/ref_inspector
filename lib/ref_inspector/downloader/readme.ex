@@ -27,12 +27,12 @@ defmodule RefInspector.Downloader.README do
 
     dirname_local = Path.dirname(readme_local)
 
-    unless File.dir?(dirname_local) do
+    if !File.dir?(dirname_local) do
       File.mkdir_p!(dirname_local)
     end
 
     _ =
-      unless readme_priv == readme_local do
+      if readme_priv != readme_local do
         File.copy!(readme_priv, readme_local)
       end
 

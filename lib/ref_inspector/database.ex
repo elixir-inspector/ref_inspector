@@ -119,7 +119,7 @@ defmodule RefInspector.Database do
 
   defp parse_database({:error, reason}, file, silent) do
     _ =
-      unless silent do
+      if !silent do
         Logger.info("Failed to load #{file}: #{inspect(reason)}")
       end
 
@@ -129,7 +129,7 @@ defmodule RefInspector.Database do
   if macro_exported?(Logger, :warning, 1) do
     defp read_databases([], silent, _) do
       _ =
-        unless silent do
+        if !silent do
           Logger.warning("Reload error: no database files configured!")
         end
 
@@ -138,7 +138,7 @@ defmodule RefInspector.Database do
   else
     defp read_databases([], silent, _) do
       _ =
-        unless silent do
+        if !silent do
           Logger.warn("Reload error: no database files configured!")
         end
 
