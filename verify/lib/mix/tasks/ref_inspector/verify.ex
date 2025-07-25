@@ -21,20 +21,6 @@ defmodule Mix.Tasks.RefInspector.Verify do
     :ok
   end
 
-  defp compare(
-         %{
-           uri: "https://rich-v01.bluewin.ch/cp/applink/mail/LoadMessageContent",
-           source: "Bluewin.ch"
-         } = testcase,
-         result
-       ) do
-    # typo in fixtures?
-    compare(
-      %{testcase | source: "Bluewin"},
-      result
-    )
-  end
-
   defp compare(testcase, result) do
     testcase.uri == result.referer && testcase.medium == result.medium &&
       testcase.source == result.source && testcase.term == result.term
