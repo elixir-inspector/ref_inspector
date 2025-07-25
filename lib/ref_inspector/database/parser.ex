@@ -4,11 +4,13 @@ defmodule RefInspector.Database.Parser do
   @doc """
   Parses a list of database entries and modifies them to be usable.
   """
-  @spec parse(list) :: map
+  @spec parse([{binary, list}]) :: map
   def parse(entries) do
     entries
     |> parse([])
     |> Enum.reduce(%{}, &reduce_database/2)
+    |> Enum.map(fn {k, v} -> {k, sort_database(v)} end)
+    |> Map.new()
   end
 
   defp parse([], acc), do: acc
@@ -72,5 +74,11 @@ defmodule RefInspector.Database.Parser do
     }
 
     Map.put(red_acc, last_part, [entry | part_acc])
+  end
+
+  defp sort_database(entries) do
+    Enum.sort(entries, fn {_, host_a, _, path_a, _, _, _}, {_, host_b, _, path_b, _, _, _} ->
+      byte_size(host_a <> path_a) > byte_size(host_b <> path_b)
+    end)
   end
 end
