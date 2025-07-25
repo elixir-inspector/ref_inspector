@@ -4,35 +4,14 @@ defmodule RefInspector.Database.Parser do
   @doc """
   Parses a list of database entries and modifies them to be usable.
   """
-  @spec parse(list) :: list
-  def parse(entries), do: parse(entries, [])
-
-  defp parse([], acc) do
-    Enum.reduce(acc, %{}, fn source, red_acc ->
-      %{
-        host: host,
-        host_parts: [last_part | _],
-        medium: medium,
-        name: name,
-        parameters: parameters,
-        path: path
-      } = source
-
-      part_acc = red_acc[last_part] || []
-
-      entry = {
-        host,
-        "." <> String.trim_leading(host, "."),
-        path,
-        String.trim_trailing(path, "/") <> "/",
-        parameters,
-        medium,
-        name
-      }
-
-      Map.put(red_acc, last_part, [entry | part_acc])
-    end)
+  @spec parse(list) :: map
+  def parse(entries) do
+    entries
+    |> parse([])
+    |> Enum.reduce(%{}, &reduce_database/2)
   end
+
+  defp parse([], acc), do: acc
 
   defp parse([{medium, sources} | entries], acc) do
     sources =
@@ -68,5 +47,30 @@ defmodule RefInspector.Database.Parser do
     acc = acc ++ parse_domains(source, domains, [])
 
     parse_sources(sources, acc)
+  end
+
+  defp reduce_database(source, red_acc) do
+    %{
+      host: host,
+      host_parts: [last_part | _],
+      medium: medium,
+      name: name,
+      parameters: parameters,
+      path: path
+    } = source
+
+    part_acc = red_acc[last_part] || []
+
+    entry = {
+      host,
+      "." <> String.trim_leading(host, "."),
+      path,
+      String.trim_trailing(path, "/") <> "/",
+      parameters,
+      medium,
+      name
+    }
+
+    Map.put(red_acc, last_part, [entry | part_acc])
   end
 end
