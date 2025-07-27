@@ -6,13 +6,9 @@ defmodule RefInspector.Benchmark.Database do
   def run do
     {:ok, entries} = load_database()
 
-    Benchee.run(
-      %{
-        "parse database" => fn -> Parser.parse(entries) end
-      },
-      warmup: 2,
-      time: 10
-    )
+    Benchee.run(%{
+      "parse database" => fn -> Parser.parse(entries) end
+    })
   end
 
   defp load_database do
