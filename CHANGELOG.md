@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.0-dev
+
+- Enhancements
+    - Match referrers based on "longest host/path combination first"
+
 ## v2.0.0 (2022-07-26)
 
 - Enhancements
