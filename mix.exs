@@ -10,7 +10,7 @@ defmodule RefInspector.MixProject do
       app: :ref_inspector,
       name: "RefInspector",
       version: @version,
-      elixir: "~> 1.9",
+      elixir: "~> 1.17",
       aliases: aliases(),
       deps: deps(),
       description: "Referer parser library",
