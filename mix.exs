@@ -17,12 +17,6 @@ defmodule RefInspector.MixProject do
       dialyzer: dialyzer(),
       docs: docs(),
       package: package(),
-      preferred_cli_env: [
-        "bench.database": :bench,
-        "bench.parse": :bench,
-        coveralls: :test,
-        "coveralls.detail": :test
-      ],
       test_coverage: [tool: ExCoveralls]
     ]
   end
@@ -31,6 +25,17 @@ defmodule RefInspector.MixProject do
     [
       extra_applications: extra_applications(Mix.env()) ++ [:logger],
       mod: {RefInspector.Application, []}
+    ]
+  end
+
+  def cli do
+    [
+      preferred_envs: [
+        "bench.database": :bench,
+        "bench.parse": :bench,
+        coveralls: :test,
+        "coveralls.detail": :test
+      ]
     ]
   end
 
