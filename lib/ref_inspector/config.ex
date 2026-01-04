@@ -264,7 +264,7 @@ defmodule RefInspector.Config do
   @spec yaml_urls() :: [String.t() | {String.t(), String.t()}]
   def yaml_urls do
     case get(:remote_urls) do
-      files when is_list(files) and 0 < length(files) -> files
+      [_ | _] = files -> files
       _ -> default_urls()
     end
   end
