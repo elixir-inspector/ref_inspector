@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           persist-credentials: false
 
@@ -30,7 +30,7 @@ jobs:
           otp-version: '28.3'
 
       - name: mix-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: mix-cache
         with:
           path: deps
@@ -45,7 +45,7 @@ jobs:
           mix deps.get
 
       - name: plt-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: plt-cache
         with:
           path: plts
@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           persist-credentials: false
 
@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           persist-credentials: false
 
@@ -87,7 +87,7 @@ jobs:
           otp-version: '28.3'
 
       - name: mix-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: mix-cache
         with:
           path: deps
@@ -130,7 +130,7 @@ jobs:
             otp: '28.3'
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           persist-credentials: false
 
@@ -141,7 +141,7 @@ jobs:
           otp-version: ${{ matrix.otp }}
 
       - name: mix-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: mix-cache
         with:
           path: deps
